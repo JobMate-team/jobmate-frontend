@@ -1,1 +1,97 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@font-face {
+  font-family: Pretendard;
+  font-weight: 400;
+  src:
+    local('Pretendard Regular'),
+    url('./assets/fonts/Pretendard-Regular.woff') format('woff'),
+    url('./assets/fonts/Pretendard-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Pretendard;
+  font-weight: 500;
+  src:
+    local('Pretendard Medium'),
+    url('./assets/fonts/Pretendard-Medium.woff') format('woff2'),
+    url('./assets/fonts/Pretendard-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Pretendard;
+  font-weight: 700;
+  src:
+    local('Pretendard Bold'),
+    url('./assets/fonts/Pretendard-Bold.woff') format('woff'),
+    url('./assets/fonts/Pretendard-Bold.woff2') format('woff2');
+}
+
+html,
+body {
+  height: 100dvh; /* 뷰포트 단위 높이 확보 */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+  overflow-y: auto; /* 세로 스크롤 허용 */
+  background-color: var(--color-bg-white);
+  font-family:
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+}
+
+/* 
+  body는 컨텐츠에 따라 확장될 수 있도록 min-height를 추가.
+  html과 달리 height: 100%를 지정해 flex 레이아웃 등에 대응.
+*/
+body {
+  min-height: 100dvh;
+  height: 100%;
+  overflow-x: hidden;
+  line-height: 1;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section {
+  display: block;
+}
+
+menu,
+ol,
+ul {
+  list-style: none;
+}
+
+/* 버튼은 기본적으로 클릭 가능한 상태를 보장 */
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+}
