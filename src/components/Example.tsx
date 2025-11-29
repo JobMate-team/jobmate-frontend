@@ -2,7 +2,7 @@ import { ShiningIcon } from '@/assets';
 import Button from './common/Button';
 import Modal from './common/Modal';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
+import { showToast } from '@/utils/toast';
 
 const Example = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,10 +21,7 @@ const Example = () => {
         type='button'
         icon={<ShiningIcon className='h-5 w-5' />}
         className='mt-5 border-[0.5px] border-gray-400 bg-[#BFFCD9]'
-        onClick={() => {
-          toast.dismiss();
-          toast.success('로그인 성공');
-        }}
+        onClick={() => showToast.success('로그인 성공!')}
       >
         성공 토스트 열기
       </Button>
@@ -33,10 +30,7 @@ const Example = () => {
         type='button'
         icon={<ShiningIcon className='h-5 w-5' />}
         className='mt-5 border-[0.5px] border-gray-400 bg-[#FFE0E1]'
-        onClick={() => {
-          toast.dismiss();
-          toast.error('로그인 실패');
-        }}
+        onClick={() => showToast.error('로그아인 에러')}
       >
         실패 토스트 열기
       </Button>
