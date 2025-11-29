@@ -1,7 +1,13 @@
+import Toast from './components/common/Toast';
 import Example from './components/Example';
 
 function App() {
-  return <Example />;
+  return (
+    <>
+      <Example />
+      <Toast />
+    </>
+  );
 }
 
 export default App;

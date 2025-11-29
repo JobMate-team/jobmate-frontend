@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 interface ButtonProps {
-  children: string;
+  children: React.ReactNode;
   type: 'button' | 'submit' | 'reset';
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
