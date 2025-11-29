@@ -1,10 +1,10 @@
+import { Outlet } from 'react-router-dom';
 import Toast from './components/common/Toast';
-import Example from './components/Example';
 
 function App() {
   return (
     <>
-      <Example />
+      <Outlet />
       <Toast />
     </>
   );
