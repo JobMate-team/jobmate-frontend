@@ -1,15 +1,30 @@
 import { ShiningIcon } from '@/assets';
 import Button from './common/Button';
+import Modal from './common/Modal';
+import { useState } from 'react';
 
 const Example = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Button
-      type='button'
-      icon={<ShiningIcon className='h-5 w-5' />}
-      className='border-[0.5px] border-gray-400'
-    >
-      테스트
-    </Button>
+    <>
+      <Button
+        type='button'
+        icon={<ShiningIcon className='h-5 w-5' />}
+        className='border-[0.5px] border-gray-400'
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
+        모달 열기
+      </Button>
+      {isOpen && (
+        <Modal
+          title='해당 히스토리를 삭제하시겠습니까?'
+          content='이 작업은 되돌릴 수 없습니다. 모든 면접 답변 기록이 영구적으로 삭제됩니다.'
+          onCancel={() => setIsOpen((prev) => !prev)}
+          onConfirm={() => setIsOpen((prev) => !prev)}
+        />
+      )}
+    </>
   );
 };
 
