@@ -1,14 +1,12 @@
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { RouterProvider } from 'react-router-dom';
-import router from './Router';
-
-const queryClient = new QueryClient();
+import { Outlet } from 'react-router-dom';
+import Toast from './components/common/Toast';
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <>
+      <Outlet />
+      <Toast />
+    </>
   );
 }
 
