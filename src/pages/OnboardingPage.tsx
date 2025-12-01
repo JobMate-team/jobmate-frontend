@@ -4,14 +4,20 @@ import { onboardingDatas } from '@/data/onboardingDatas';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
+import { useNavigate } from 'react-router-dom';
 
 const OnboardingPage = () => {
   const [page, setPage] = useState(0);
 
+  const navigate = useNavigate();
+
   const goNext = () => {
-    if (page < onboardingDatas.length - 1) {
-      setPage((prev) => prev + 1);
+    if (page === onboardingDatas.length - 1) {
+      navigate('/signin');
+      return;
     }
+
+    setPage((prev) => prev + 1);
   };
 
   const goPrev = () => {
@@ -24,7 +30,9 @@ const OnboardingPage = () => {
 
   return (
     <div className='relative bg-gray-50 h-dvh flex justify-center items-center p-4'>
-      <button className='absolute top-4 right-4 font-medium'>건너뛰기</button>
+      <button onClick={() => navigate('/signin')} className='absolute top-4 right-4 font-medium'>
+        건너뛰기
+      </button>
       <div className='w-full max-w-sm p-4'>
         {/* 아이콘 */}
         <div className='flex justify-center'>
@@ -86,7 +94,7 @@ const OnboardingPage = () => {
         ) : (
           <Button
             type='button'
-            className='w-full bg-black text-white font-medium hover:bg-gray-900'
+            className='w-full bg-black text-white font-medium hover:bg-gray-800'
             onClick={goNext}
           >
             다음 <FaAngleRight />

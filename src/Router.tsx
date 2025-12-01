@@ -3,6 +3,7 @@ import App from './App';
 import Example from './components/Example';
 import Homepage from './pages/Homepage';
 import OnboardingPage from './pages/OnboardingPage';
+import LoginPage from './pages/LoginPage';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: 'onboarding',
         element: <OnboardingPage />,
+      },
+      {
+        path: 'signin',
+        element: <LoginPage />,
       },
     ],
   },
