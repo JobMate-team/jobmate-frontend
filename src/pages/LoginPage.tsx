@@ -1,5 +1,6 @@
 import { KakaoIcon, LogoIcon } from '@/assets';
 import Button from '@/components/common/Button';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
@@ -26,7 +27,10 @@ const LoginPage = () => {
           <Button
             type='button'
             className='w-full bg-[#FEE500] font-medium'
-            onClick={() => navigate('/role')}
+            onClick={() => {
+              navigate('/role');
+              toast.success('카카오 로그인 성공!');
+            }}
           >
             <KakaoIcon /> 카카오로 로그인
           </Button>
