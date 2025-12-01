@@ -21,7 +21,7 @@ const Button = ({
   onClick,
 }: ButtonProps) => {
   const baseStyle =
-    'px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:brightness-90 transition-all'; // 버튼 기본 스타일
+    'px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:brightness-90 transition-all'; // 버튼 기본 스타일
 
   return (
     <button
