@@ -11,6 +11,7 @@ import {
 } from 'react-icons/io';
 import { useState } from 'react';
 import clsx from 'clsx';
+import toast from 'react-hot-toast';
 
 const roleList = [
   { id: 1, icon: <IoMdPaper size={28} />, name: '기획' },
@@ -66,7 +67,10 @@ const SelectRolePage = () => {
           <Button
             type='button'
             className='w-full bg-black text-white font-medium'
-            onClick={() => navigate('/')}
+            onClick={() => {
+              navigate('/');
+              toast.success('환영합니다!');
+            }}
           >
             시작하기
           </Button>
