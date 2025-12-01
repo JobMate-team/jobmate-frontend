@@ -4,6 +4,7 @@ import Example from './components/Example';
 import Homepage from './pages/Homepage';
 import OnboardingPage from './pages/OnboardingPage';
 import LoginPage from './pages/LoginPage';
+import SelectRolePage from './pages/SelectRolePage';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: 'signin',
         element: <LoginPage />,
+      },
+      {
+        path: 'role',
+        element: <SelectRolePage />,
       },
     ],
   },

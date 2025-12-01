@@ -1,9 +1,12 @@
 import { KakaoIcon, LogoIcon } from '@/assets';
 import Button from '@/components/common/Button';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className='relative bg-gray-50 h-dvh flex justify-center items-center p-4'>
+    <div className='relative bg-gray-50 min-h-dvh flex justify-center items-center p-4'>
       <div className='w-full max-w-sm p-4'>
         {/* 아이콘 */}
         <div className='flex justify-center'>
@@ -23,9 +26,7 @@ const LoginPage = () => {
           <Button
             type='button'
             className='w-full bg-[#FEE500] font-medium'
-            onClick={() => {
-              console.log('로그인 버튼 클릭');
-            }}
+            onClick={() => navigate('/role')}
           >
             <KakaoIcon /> 카카오로 로그인
           </Button>
