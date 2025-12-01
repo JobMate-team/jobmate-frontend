@@ -6,8 +6,8 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className='relative bg-gray-50 min-h-dvh flex justify-center items-center p-4'>
-      <div className='w-full max-w-sm p-4'>
+    <main className='relative bg-gray-50 min-h-dvh flex justify-center items-center p-4'>
+      <section className='w-full max-w-sm p-4'>
         {/* 아이콘 */}
         <div className='flex justify-center'>
           <div className='flex justify-center items-center rounded-3xl mb-10 bg-black w-30 h-30'>
@@ -35,13 +35,13 @@ const LoginPage = () => {
         <p className='text-center text-[13px] text-[#6A7282] mt-4'>
           카카오 계정으로 간편하게 시작하세요
         </p>
-      </div>
+      </section>
 
       <p className='absolute bottom-6 text-center w-full text-xs text-[#6A7282]'>
         로그인 시 서비스 이용약관 및 <br />
         개인정보 처리방침에 동의하게 됩니다
       </p>
-    </div>
+    </main>
   );
 };
 

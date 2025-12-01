@@ -29,11 +29,11 @@ const OnboardingPage = () => {
   const current = onboardingDatas[page];
 
   return (
-    <div className='relative bg-gray-50 min-h-dvh flex justify-center items-center p-4'>
+    <main className='relative bg-gray-50 min-h-dvh flex justify-center items-center p-4'>
       <button onClick={() => navigate('/signin')} className='absolute top-4 right-4 font-medium'>
         건너뛰기
       </button>
-      <div className='w-full max-w-sm p-4'>
+      <section className='w-full max-w-sm p-4'>
         {/* 아이콘 */}
         <div className='flex justify-center'>
           <div className='flex justify-center items-center rounded-3xl mb-10 bg-black w-30 h-30'>
@@ -75,7 +75,7 @@ const OnboardingPage = () => {
         </div>
 
         {page > 0 ? (
-          <div className='flex items-center gap-5'>
+          <footer className='flex items-center gap-5'>
             <Button
               type='button'
               className='w-full ring bg-gray-50 ring-[#DADADA] font-medium'
@@ -90,14 +90,14 @@ const OnboardingPage = () => {
             >
               다음 <FaAngleRight />
             </Button>
-          </div>
+          </footer>
         ) : (
           <Button type='button' className='w-full bg-black text-white font-medium' onClick={goNext}>
             다음 <FaAngleRight />
           </Button>
         )}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

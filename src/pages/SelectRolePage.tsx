@@ -26,8 +26,8 @@ const SelectRolePage = () => {
   const [selectedRole, setSelectedRole] = useState<number | null>(null);
 
   return (
-    <div className='bg-gray-50 min-h-dvh flex justify-center items-center p-4'>
-      <div className='w-full max-w-sm p-4'>
+    <main className='bg-gray-50 min-h-dvh flex justify-center items-center p-4'>
+      <section className='w-full max-w-sm p-4'>
         {/* 아이콘 */}
         <div className='flex justify-center mb-5'>
           <Logo className='w-20 h-20' />
@@ -40,12 +40,12 @@ const SelectRolePage = () => {
           </p>
         </div>
 
-        <div className='grid grid-cols-2 gap-4 mb-9'>
+        <ul className='grid grid-cols-2 gap-4 mb-9'>
           {roleList.map((role) => {
             const isSelected = selectedRole === role.id;
 
             return (
-              <div
+              <li
                 key={role.id}
                 onClick={() => setSelectedRole(role.id)}
                 className={clsx(
@@ -57,12 +57,12 @@ const SelectRolePage = () => {
               >
                 {role.icon}
                 <p className='text-xl'>{role.name}</p>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
 
-        <div className='flex items-center gap-5'>
+        <footer className='flex items-center gap-5'>
           <Button
             type='button'
             className='w-full bg-black text-white font-medium'
@@ -70,9 +70,9 @@ const SelectRolePage = () => {
           >
             시작하기
           </Button>
-        </div>
-      </div>
-    </div>
+        </footer>
+      </section>
+    </main>
   );
 };
 
