@@ -57,21 +57,6 @@ body {
   line-height: 1;
 }
 
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-main,
-menu,
-nav,
-section {
-  display: block;
-}
-
 menu,
 ol,
 ul {
