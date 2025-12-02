@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Home, MessageSquare, History, FileText, User, Menu, PanelLeft } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const menuItems = [
   { id: 'home', icon: Home, label: '홈' },
@@ -14,10 +14,23 @@ const SideBar = () => {
   const [activeMenu, setActiveMenu] = useState('home');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+
+    const handleResize = () => {
+      setIsSidebarOpen(mediaQuery.matches);
+    };
+
+    handleResize(); // 초기 실행
+    mediaQuery.addEventListener('change', handleResize);
+
+    return () => mediaQuery.removeEventListener('change', handleResize);
+  }, []);
+
   return (
     <aside
       className={clsx(
-        'bg-white border-r border-gray-200 flex flex-col transition-all duration-150',
+        'hidden sm:flex bg-white border-r border-gray-200 flex-col transition-all duration-150',
         isSidebarOpen ? 'w-64' : 'w-20',
       )}
     >
