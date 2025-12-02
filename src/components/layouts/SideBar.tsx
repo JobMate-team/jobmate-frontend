@@ -17,31 +17,35 @@ const SideBar = () => {
   return (
     <aside
       className={clsx(
-        'bg-white border-r border-gray-200 flex flex-col transition-all duration-300',
+        'bg-white border-r border-gray-200 flex flex-col transition-all duration-150',
         isSidebarOpen ? 'w-64' : 'w-20',
       )}
     >
-      {/* 상단 헤더 */}
-      <div className='p-6 border-b border-gray-200 flex items-center justify-between'>
-        {isSidebarOpen && (
-          <div>
-            <div className='flex flex-row gap-2'>
-              <h1 className='text-xl font-bold text-gray-900'>JobMate.AI</h1>
-            </div>
-
-            <p className='text-sm text-gray-500 mt-1'>AI 면접 코칭 챗봇</p>
+      {isSidebarOpen ? (
+        <div className='p-4 border-b border-gray-200 flex flex-col space-y-2'>
+          <div className='flex flex-row justify-between items-center'>
+            <h1 className='leading-6 text-xl whitespace-nowrap'>JobMate.AI</h1>
+            <button
+              type='button'
+              onClick={() => setIsSidebarOpen((prev) => !prev)}
+              className='rounded-full p-2 hover:bg-gray-200 transition-colors'
+            >
+              <PanelLeft size={20} />
+            </button>
           </div>
-        )}
+        </div>
+      ) : (
+        <div className='p-4 border-b border-gray-200 pl-[22px]'>
+          <button
+            type='button'
+            onClick={() => setIsSidebarOpen((prev) => !prev)}
+            className='rounded-full p-2 hover:bg-gray-200 transition-colors'
+          >
+            <Menu size={20} />
+          </button>
+        </div>
+      )}
 
-        <button
-          onClick={() => setIsSidebarOpen((prev) => !prev)}
-          className='p-2 rounded-md hover:bg-gray-100'
-        >
-          {isSidebarOpen ? <PanelLeft size={20} /> : <Menu size={20} />}
-        </button>
-      </div>
-
-      {/* 메뉴 */}
       <nav className='flex-1 p-4'>
         {menuItems.map((item) => {
           const Icon = item.icon;
@@ -52,12 +56,12 @@ const SideBar = () => {
               key={item.id}
               onClick={() => setActiveMenu(item.id)}
               className={clsx(
-                'w-full flex items-center transition-colors mb-2 rounded-lg px-4 py-3 gap-3',
-                isActive ? 'bg-black text-white' : 'text-gray-700 hover:bg-gray-100',
+                'w-full flex items-center mb-2 rounded-lg py-3 transition-colors px-3.5 gap-3',
+                isActive ? 'bg-black text-white' : 'hover:bg-gray-200',
               )}
             >
               <Icon className='w-5 h-5 min-w-5' />
-              {isSidebarOpen && <span>{item.label}</span>}
+              {isSidebarOpen && <span className='whitespace-nowrap'>{item.label}</span>}
             </button>
           );
         })}
