@@ -24,7 +24,7 @@ const SideBar = () => {
       {isSidebarOpen ? (
         <div className='p-4 border-b border-gray-200 flex flex-col space-y-2'>
           <div className='flex flex-row justify-between items-center'>
-            <h1 className='leading-6 text-xl whitespace-nowrap'>JobMate.AI</h1>
+            <h1 className='leading-6 font-semibold text-xl whitespace-nowrap'>JobMate.AI</h1>
             <button
               type='button'
               onClick={() => setIsSidebarOpen((prev) => !prev)}
@@ -66,6 +66,25 @@ const SideBar = () => {
           );
         })}
       </nav>
+
+      {isSidebarOpen && (
+        <div className='p-4 border-t border-gray-200'>
+          <div className='flex items-center gap-3 p-2 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-150'>
+            <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
+              정
+            </div>
+            <div
+              className={clsx(
+                'flex flex-col overflow-hidden transition-all duration-200',
+                isSidebarOpen ? 'opacity-100 translate-x-0 w-32' : 'opacity-0 -translate-x-2 w-0',
+              )}
+            >
+              <span className='text-sm font-medium whitespace-nowrap'>정찬원</span>
+              <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
+            </div>
+          </div>
+        </div>
+      )}
     </aside>
   );
 };
