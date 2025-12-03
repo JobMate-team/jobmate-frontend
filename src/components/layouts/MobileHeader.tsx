@@ -1,15 +1,16 @@
+import { useLocation } from 'react-router-dom';
+import HomeHeader from './headers/HomeHeader';
+import CoachingHeader from './headers/CoachingHeader';
+
 const MobileHeader = () => {
-  return (
-    <div className='bg-black sm:hidden flex justify-between items-center px-4 py-3'>
-      <h3 className='text-white text-2xl font-semibold'>JobMate.AI</h3>
-      <button
-        type='button'
-        className='w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-lg text-gray-500'
-      >
-        정
-      </button>
-    </div>
-  );
+  const location = useLocation();
+
+  const renderHeader = () => {
+    if (location.pathname === '/') return <HomeHeader />;
+    if (location.pathname.startsWith('/coaching')) return <CoachingHeader />;
+  };
+
+  return <header className='bg-black sm:hidden'>{renderHeader()}</header>;
 };
 
 export default MobileHeader;

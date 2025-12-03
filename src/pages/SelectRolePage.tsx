@@ -65,7 +65,7 @@ const SelectRolePage = () => {
 
         <footer className='flex items-center gap-5'>
           <Button
-            type='button'
+            type='submit'
             className='w-full bg-black text-white font-medium'
             onClick={() => {
               navigate('/');

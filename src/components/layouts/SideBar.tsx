@@ -1,18 +1,14 @@
+import { menuItems } from '@/data/menuItems';
 import clsx from 'clsx';
-import { Home, MessageSquare, History, FileText, User, Menu, PanelLeft } from 'lucide-react';
+import { Menu, PanelLeft } from 'lucide-react';
 import { useState, useEffect } from 'react';
-
-const menuItems = [
-  { id: 'home', icon: Home, label: '홈' },
-  { id: 'tasks', icon: MessageSquare, label: '코칭' },
-  { id: 'missions', icon: History, label: '히스토리' },
-  { id: 'schedule', icon: FileText, label: '후기' },
-  { id: 'mypage', icon: User, label: '마이' },
-];
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const SideBar = () => {
-  const [activeMenu, setActiveMenu] = useState('home');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 768px)');
@@ -24,7 +20,7 @@ const SideBar = () => {
     handleResize(); // 초기 실행
     mediaQuery.addEventListener('change', handleResize);
 
-    return () => mediaQuery.removeEventListener('change', handleResize);
+    return () => mediaQuery.removeEventListener('change', handleResize); // cleanUp
   }, []);
 
   return (
@@ -62,12 +58,12 @@ const SideBar = () => {
       <nav className='flex-1 p-4'>
         {menuItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeMenu === item.id;
+          const isActive = location.pathname === item.path;
 
           return (
             <button
               key={item.id}
-              onClick={() => setActiveMenu(item.id)}
+              onClick={() => navigate(item.path)}
               className={clsx(
                 'w-full flex items-center mb-2 rounded-lg py-3 transition-colors px-3.5 gap-3',
                 isActive ? 'bg-black text-white' : 'hover:bg-gray-200',
