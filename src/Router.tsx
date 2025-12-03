@@ -6,6 +6,7 @@ import OnboardingPage from './pages/OnboardingPage';
 import LoginPage from './pages/LoginPage';
 import SelectRolePage from './pages/SelectRolePage';
 import ErrorPage from './pages/ErrorPage';
+import AppLayout from './layouts/AppLayout';
 
 const router = createBrowserRouter([
   {
@@ -14,8 +15,13 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        index: true,
-        element: <Homepage />,
+        element: <AppLayout />,
+        children: [
+          {
+            index: true,
+            element: <Homepage />,
+          },
+        ],
       },
       {
         path: 'example',

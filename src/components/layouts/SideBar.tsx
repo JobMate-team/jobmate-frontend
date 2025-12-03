@@ -1,0 +1,105 @@
+import clsx from 'clsx';
+import { Home, MessageSquare, History, FileText, User, Menu, PanelLeft } from 'lucide-react';
+import { useState, useEffect } from 'react';
+
+const menuItems = [
+  { id: 'home', icon: Home, label: '홈' },
+  { id: 'tasks', icon: MessageSquare, label: '코칭' },
+  { id: 'missions', icon: History, label: '히스토리' },
+  { id: 'schedule', icon: FileText, label: '후기' },
+  { id: 'mypage', icon: User, label: '마이' },
+];
+
+const SideBar = () => {
+  const [activeMenu, setActiveMenu] = useState('home');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+
+    const handleResize = () => {
+      setIsSidebarOpen(mediaQuery.matches);
+    };
+
+    handleResize(); // 초기 실행
+    mediaQuery.addEventListener('change', handleResize);
+
+    return () => mediaQuery.removeEventListener('change', handleResize);
+  }, []);
+
+  return (
+    <aside
+      className={clsx(
+        'hidden sm:flex bg-white border-r border-gray-200 flex-col transition-all duration-150',
+        isSidebarOpen ? 'w-64' : 'w-20',
+      )}
+    >
+      {isSidebarOpen ? (
+        <div className='p-4 border-b border-gray-200 flex flex-col space-y-2'>
+          <div className='flex flex-row justify-between items-center'>
+            <h1 className='leading-6 font-semibold text-xl whitespace-nowrap'>JobMate.AI</h1>
+            <button
+              type='button'
+              onClick={() => setIsSidebarOpen((prev) => !prev)}
+              className='rounded-full p-2 hover:bg-gray-200 transition-colors'
+            >
+              <PanelLeft size={20} />
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className='p-4 border-b border-gray-200 pl-[22px]'>
+          <button
+            type='button'
+            onClick={() => setIsSidebarOpen((prev) => !prev)}
+            className='rounded-full p-2 hover:bg-gray-200 transition-colors'
+          >
+            <Menu size={20} />
+          </button>
+        </div>
+      )}
+
+      <nav className='flex-1 p-4'>
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = activeMenu === item.id;
+
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveMenu(item.id)}
+              className={clsx(
+                'w-full flex items-center mb-2 rounded-lg py-3 transition-colors px-3.5 gap-3',
+                isActive ? 'bg-black text-white' : 'hover:bg-gray-200',
+              )}
+            >
+              <Icon className='w-5 h-5 min-w-5' />
+              {isSidebarOpen && <span className='whitespace-nowrap'>{item.label}</span>}
+            </button>
+          );
+        })}
+      </nav>
+
+      {isSidebarOpen && (
+        <div className='p-4 border-t border-gray-200'>
+          <div className='flex items-center gap-3 p-2 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-150'>
+            <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
+              정
+            </div>
+            <div
+              className={clsx(
+                'flex flex-col overflow-hidden transition-all duration-200',
+                isSidebarOpen ? 'opacity-100 translate-x-0 w-32' : 'opacity-0 -translate-x-2 w-0',
+              )}
+            >
+              <span className='text-sm font-medium whitespace-nowrap'>정찬원</span>
+              <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </aside>
+  );
+};
+
+export default SideBar;
