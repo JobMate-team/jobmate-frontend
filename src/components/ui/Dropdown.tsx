@@ -74,12 +74,12 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
         type='button'
         ref={buttonRef}
         onClick={() => setOpen((prev) => !prev)}
-        className='bg-[#F3F3F5] rounded-lg p-2.5 px-4 text-sm flex justify-between'
+        className='bg-[#F3F3F5] rounded-lg p-2.5 px-4 text-sm flex justify-between outline-none focus:outline-none'
       >
         <p className={clsx(selected ? 'text-black font-medium' : 'text-[#717182]')}>
           {selected ?? placeholder}
         </p>
-        <div className={clsx('transition-transform duration-200', open && 'rotate-180')}>
+        <div className={clsx('transition-transform duration-300', open && 'rotate-180')}>
           <ChevronDown size={20} stroke='#717182' />
         </div>
       </button>
@@ -90,7 +90,7 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
           <div
             ref={dropdownRef}
             className={clsx(
-              ' bg-white shadow-lg rounded-lg border border-[#E5E5E5] p-3 transition-all duration-200 ease-out',
+              ' bg-white shadow-lg rounded-lg border border-[#E5E5E5] p-3 transition-all duration-150 ease-out',
               animate ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2',
             )}
             style={dropdownStyle}
@@ -98,7 +98,7 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
             {items.map((item) => (
               <div
                 key={item}
-                className='p-2 rounded-lg hover:bg-gray-100 cursor-pointer'
+                className='cursor-pointer rounded-lg p-2.5 hover:bg-gray-100 text-sm'
                 onClick={() => handleSelect(item)}
               >
                 {item}
