@@ -10,7 +10,7 @@ const menuItems = [
   { id: 'mypage', icon: User, label: '마이' },
 ];
 
-const MobileNav = () => {
+const MobileFooter = () => {
   const [activeMenu, setActiveMenu] = useState('home');
 
   return (
@@ -40,4 +40,4 @@ const MobileNav = () => {
   );
 };
 
-export default MobileNav;
+export default MobileFooter;
