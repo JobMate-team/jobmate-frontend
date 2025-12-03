@@ -18,7 +18,7 @@ const MobileFooter = () => {
             <button
               key={item.id}
               onClick={() => navigate(item.path)}
-              className='flex flex-col items-center gap-1'
+              className='flex flex-col items-center gap-1 px-3'
             >
               <Icon className={clsx('w-6 h-6', isActive ? 'text-black' : 'text-gray-500')} />
               <span

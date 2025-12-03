@@ -1,7 +1,10 @@
 import { LogoIcon } from '@/assets';
 import { features } from '@/data/homeFeatures';
+import { useNavigate } from 'react-router-dom';
 
 const Homepage = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <div className='bg-black rounded-2xl p-8 text-white mb-8 shadow-lg'>
@@ -15,7 +18,11 @@ const Homepage = () => {
             </div>
           </div>
         </div>
-        <button className='bg-white text-black font-semibold px-20 py-3 rounded-lg hover:bg-gray-200 transition whitespace-nowrap'>
+        <button
+          type='button'
+          onClick={() => navigate('/coaching')}
+          className='bg-white text-black font-semibold px-20 py-3 rounded-lg hover:bg-gray-200 transition whitespace-nowrap'
+        >
           지금 시작하기 →
         </button>
       </div>
