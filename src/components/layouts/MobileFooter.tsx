@@ -1,11 +1,15 @@
+import { pageAtom } from '@/atoms';
 import { menuItems } from '@/data/menuItems';
 import clsx from 'clsx';
+import { useSetAtom } from 'jotai';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const MobileFooter = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const setPage = useSetAtom(pageAtom);
 
   return (
     <nav className='fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 sm:hidden'>
@@ -17,7 +21,12 @@ const MobileFooter = () => {
           return (
             <button
               key={item.id}
-              onClick={() => navigate(item.path)}
+              onClick={() => {
+                if (item.path === '/coaching') {
+                  setPage(1);
+                }
+                navigate(item.path);
+              }}
               className='flex flex-col items-center gap-1 px-3'
             >
               <Icon className={clsx('w-6 h-6', isActive ? 'text-black' : 'text-gray-500')} />

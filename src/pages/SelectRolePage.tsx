@@ -66,7 +66,7 @@ const SelectRolePage = () => {
         <footer className='flex items-center gap-5'>
           <Button
             type='submit'
-            className='w-full bg-black text-white font-medium'
+            className='w-full bg-black text-white font-medium px-4 py-3'
             onClick={() => {
               navigate('/');
               showToast.success('환영합니다!');

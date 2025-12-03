@@ -1,11 +1,14 @@
+import { pageAtom } from '@/atoms';
 import { menuItems } from '@/data/menuItems';
 import clsx from 'clsx';
+import { useSetAtom } from 'jotai';
 import { Menu, PanelLeft } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const SideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const setPage = useSetAtom(pageAtom);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,7 +66,12 @@ const SideBar = () => {
           return (
             <button
               key={item.id}
-              onClick={() => navigate(item.path)}
+              onClick={() => {
+                if (item.path === '/coaching') {
+                  setPage(1);
+                }
+                navigate(item.path);
+              }}
               className={clsx(
                 'w-full flex items-center mb-2 rounded-lg py-3 transition-colors px-3.5 gap-3',
                 isActive ? 'bg-black text-white' : 'hover:bg-gray-200',

@@ -8,7 +8,7 @@ const CoachingHeader = () => {
 
   return (
     <div className='flex flex-col p-6'>
-      <h3 className='text-white text-lg font-semibold mb-2'>면접 코칭</h3>
+      <h3 className='text-white text-xl font-semibold mb-2'>면접 코칭</h3>
       <div className='flex gap-3'>
         {coachStep.map((step) => (
           <div

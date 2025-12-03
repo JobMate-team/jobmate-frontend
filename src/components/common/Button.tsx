@@ -11,7 +11,7 @@ interface ButtonProps {
 
 const Button = ({ children, type, className, disabled = false, onClick }: ButtonProps) => {
   const baseStyle =
-    'px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:brightness-90 transition-all'; // 버튼 기본 스타일
+    'rounded-lg flex items-center justify-center gap-1 hover:brightness-90 transition-all'; // 버튼 기본 스타일
 
   return (
     <button

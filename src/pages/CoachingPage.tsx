@@ -52,10 +52,11 @@ const CoachingPage = () => {
     setSelectedQuestion(null);
     setCustomQuestion('');
     setCustomAnswer('');
+    setShowExampleAnswer(false);
   };
 
   return (
-    <div className='space-y-5 relative'>
+    <div className='space-y-5 relative sm:max-w-200 sm:mx-auto pb-30'>
       <div className='hidden sm:flex flex-col my-10'>
         <h3 className='text-2xl font-semibold mb-2'>면접 코칭</h3>
         <p className='text-[#717182] mb-6'>질문에 답변하고 AI로부터 즉각적인 피드백을 받아보세요</p>
@@ -106,7 +107,7 @@ const CoachingPage = () => {
 
           <Button
             type='button'
-            className='w-full bg-black text-white font-medium'
+            className='w-full bg-black text-white font-medium sm:max-w-[80%] sm:mx-auto mt-10 px-4 py-3 gap-2'
             onClick={handleNextStep}
           >
             다음 <FaAngleRight />
@@ -132,17 +133,17 @@ const CoachingPage = () => {
             />
           </div>
 
-          <div className='flex items-center gap-5'>
+          <div className='flex items-center gap-5 sm:max-w-[80%] sm:mx-auto mt-10'>
             <Button
               type='button'
-              className='w-full ring bg-gray-50 ring-[#DADADA] font-medium'
+              className='w-full ring bg-gray-50 ring-[#DADADA] font-medium px-4 py-3 gap-2'
               onClick={() => setPage((prev) => prev - 1)}
             >
               <FaAngleLeft /> 이전
             </Button>
             <Button
               type='button'
-              className='w-full bg-black text-white font-medium'
+              className='w-full bg-black text-white font-medium px-4 py-3 gap-2'
               onClick={handleNextStep}
             >
               <FeedbackIcon />
@@ -169,28 +170,32 @@ const CoachingPage = () => {
             <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>넌 안돼 망할거라 우우~</div>
           </div>
 
-          <div className='flex max-sm:flex-col items-center gap-5'>
+          <div className='flex max-sm:flex-col items-center gap-5 sm:max-w-[80%] sm:mx-auto mt-10'>
             <Button
               type='button'
-              className='w-full bg-black text-white'
+              className='w-full bg-black text-white px-4 py-3 gap-2'
               onClick={() => setShowExampleAnswer((prev) => !prev)}
             >
               <LuLightbulb size={18} />{' '}
               {showExampleAnswer ? '모범 답변 숨기기' : '모범 답변 예시 보기'}
             </Button>
 
-            <Button type='button' className='w-full bg-black text-white' onClick={newCoaching}>
+            <Button
+              type='button'
+              className='w-full bg-black text-white px-4 py-3 gap-2'
+              onClick={newCoaching}
+            >
               <LuRotateCcw size={18} /> 새로운 질문 연습하기
             </Button>
           </div>
 
           {showExampleAnswer && (
-            <div className='bg-white rounded-xl px-6 py-4  border border-[#E5E5E5] flex flex-col gap-4 mb-30'>
+            <div className='bg-white rounded-xl px-6 py-4  border border-[#E5E5E5] flex flex-col gap-4'>
               <div className='flex items-center justify-between'>
                 <p className='font-semibold'>📝 모범 답변 예시</p>
-                <button
+                <Button
                   type='button'
-                  className='border border-black/10 rounded-lg text-sm font-medium flex items-center justify-center gap-1.5 p-2 px-3 bg-white hover:brightness-90 transition'
+                  className='border border-black/10 text-sm font-medium gap-1.5 p-2 px-3 bg-white'
                   onClick={() => {
                     navigator.clipboard.writeText(feedback);
                     showToast.success('복사되었습니다');
@@ -198,7 +203,7 @@ const CoachingPage = () => {
                 >
                   <FiSave size={18} />
                   복사
-                </button>
+                </Button>
               </div>
               <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>{feedback}</div>
             </div>
