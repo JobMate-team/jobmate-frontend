@@ -7,24 +7,19 @@ import { showToast } from '@/utils/toast';
 import { FeedbackIcon } from '@/assets';
 import { FiSave } from 'react-icons/fi';
 import { LuLightbulb, LuRotateCcw } from 'react-icons/lu';
+import { basicItems, coachStep, jobItems } from '@/data/coachItems';
+import { useAtom } from 'jotai';
+import { pageAtom } from '@/atoms';
+import clsx from 'clsx';
 
 const CoachingPage = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useAtom(pageAtom);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
   const [customQuestion, setCustomQuestion] = useState<string>('');
   const [customAnswer, setCustomAnswer] = useState<string>('');
   const [feedback, setFeedback] = useState<string>('');
   const [showExampleAnswer, setShowExampleAnswer] = useState<boolean>(false);
-
-  const jobItems = ['기획', '개발', '마케팅', '디자인', '영업', '인사'];
-  const basicItems = [
-    '자기소개 부탁드립니다.',
-    '가장 어려웠던 기술적 문제와 해결 방법은?',
-    '최근에 관심있는 기술 트렌드는 무엇인가요?',
-    '코드 리뷰에서 가장 중요하게 생각하는 것은?',
-    '본인의 개발 철학은 무엇인가요?',
-  ];
 
   const handleNextStep = () => {
     if (page === 1) {
@@ -61,6 +56,23 @@ const CoachingPage = () => {
 
   return (
     <div className='space-y-5 relative'>
+      <div className='hidden sm:flex flex-col my-10'>
+        <h3 className='text-2xl font-semibold mb-2'>면접 코칭</h3>
+        <p className='text-[#717182] mb-6'>질문에 답변하고 AI로부터 즉각적인 피드백을 받아보세요</p>
+        <div className='flex gap-3'>
+          {coachStep.map((step) => (
+            <div
+              key={step.id}
+              className={clsx(
+                'rounded-lg max-sm:text-xs font-medium px-2 sm:px-3 py-1 sm:py-2',
+                page === step.id ? 'bg-black text-white' : 'bg-[#D1D1D1]',
+              )}
+            >
+              {step.content}
+            </div>
+          ))}
+        </div>
+      </div>
       {page === 1 && (
         <>
           <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
@@ -157,16 +169,23 @@ const CoachingPage = () => {
             <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>넌 안돼 망할거라 우우~</div>
           </div>
 
-          <Button
-            type='button'
-            className='w-full bg-black text-white'
-            onClick={() => setShowExampleAnswer((prev) => !prev)}
-          >
-            <LuLightbulb size={18} />{' '}
-            {showExampleAnswer ? '모범 답변 숨기기' : '모범 답변 예시 보기'}
-          </Button>
+          <div className='flex max-sm:flex-col items-center gap-5'>
+            <Button
+              type='button'
+              className='w-full bg-black text-white'
+              onClick={() => setShowExampleAnswer((prev) => !prev)}
+            >
+              <LuLightbulb size={18} />{' '}
+              {showExampleAnswer ? '모범 답변 숨기기' : '모범 답변 예시 보기'}
+            </Button>
+
+            <Button type='button' className='w-full bg-black text-white' onClick={newCoaching}>
+              <LuRotateCcw size={18} /> 새로운 질문 연습하기
+            </Button>
+          </div>
+
           {showExampleAnswer && (
-            <div className='bg-white rounded-xl px-6 py-4  border border-[#E5E5E5] flex flex-col gap-4'>
+            <div className='bg-white rounded-xl px-6 py-4  border border-[#E5E5E5] flex flex-col gap-4 mb-30'>
               <div className='flex items-center justify-between'>
                 <p className='font-semibold'>📝 모범 답변 예시</p>
                 <button
@@ -184,10 +203,6 @@ const CoachingPage = () => {
               <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>{feedback}</div>
             </div>
           )}
-
-          <Button type='button' className='w-full bg-black text-white' onClick={newCoaching}>
-            <LuRotateCcw size={18} /> 새로운 질문 연습하기
-          </Button>
         </>
       )}
     </div>
