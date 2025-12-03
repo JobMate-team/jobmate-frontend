@@ -25,7 +25,7 @@ const LoginPage = () => {
 
         <div className='flex items-center gap-5 mx-5'>
           <Button
-            type='button'
+            type='submit'
             className='w-full bg-[#FEE500] font-medium'
             onClick={() => {
               navigate('/role');

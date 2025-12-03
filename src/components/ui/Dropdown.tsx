@@ -75,7 +75,7 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
         ref={buttonRef}
         onClick={() => setOpen((prev) => !prev)}
         className={clsx(
-          'bg-[#F3F3F5] rounded-lg p-2.5 px-4 text-sm flex justify-between outline-gray-300',
+          'bg-[#F3F3F5] rounded-lg p-2.5 px-4 text-sm flex justify-between outline-none',
           open ? 'border border-gray-300' : 'border border-transparent',
         )}
       >

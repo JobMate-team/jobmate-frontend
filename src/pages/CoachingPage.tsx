@@ -4,13 +4,18 @@ import Button from '@/components/common/Button';
 import DropDown from '@/components/ui/Dropdown';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import { showToast } from '@/utils/toast';
+import { FeedbackIcon } from '@/assets';
+import { FiSave } from 'react-icons/fi';
+import { LuLightbulb, LuRotateCcw } from 'react-icons/lu';
 
 const CoachingPage = () => {
-  const [page, setPage] = useState(1); // 페이지 상태
+  const [page, setPage] = useState(1);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
   const [customQuestion, setCustomQuestion] = useState<string>('');
   const [customAnswer, setCustomAnswer] = useState<string>('');
+  const [feedback, setFeedback] = useState<string>('');
+  const [showExampleAnswer, setShowExampleAnswer] = useState<boolean>(false);
 
   const jobItems = ['기획', '개발', '마케팅', '디자인', '영업', '인사'];
   const basicItems = [
@@ -23,7 +28,6 @@ const CoachingPage = () => {
 
   const handleNextStep = () => {
     if (page === 1) {
-      // 1페이지 검증
       if (!selectedJob) {
         showToast.error('직무를 선택해주세요');
         return;
@@ -34,11 +38,25 @@ const CoachingPage = () => {
         return;
       }
 
-      // 페이지 2로 이동
       setPage((prev) => prev + 1);
     } else if (page === 2) {
+      if (!customAnswer.trim()) {
+        showToast.error('답변을 작성해주세요');
+        return;
+      }
+
+      setFeedback('모범 답변 예시입니당');
       setPage((prev) => prev + 1);
+      showToast.success('피드백이 생성되었습니다');
     }
+  };
+
+  const newCoaching = () => {
+    setPage(1);
+    setSelectedJob(null);
+    setSelectedQuestion(null);
+    setCustomQuestion('');
+    setCustomAnswer('');
   };
 
   return (
@@ -68,79 +86,109 @@ const CoachingPage = () => {
             <TextareaAutosize
               minRows={3}
               placeholder='면접 질문을 직접 입력하세요'
-              className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2 outline-gray-300'
+              className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2 border border-transparent focus:border-gray-300 focus:outline-none'
               value={customQuestion}
               onChange={(e) => setCustomQuestion(e.target.value)}
             />
           </div>
+
+          <Button
+            type='button'
+            className='w-full bg-black text-white font-medium'
+            onClick={handleNextStep}
+          >
+            다음 <FaAngleRight />
+          </Button>
         </>
       )}
 
       {page === 2 && (
         <>
-          <div className='bg-black rounded-xl px-6 py-4 flex flex-col gap-4 text-white'>
-            <p className='font-semibold text-lg'>질문</p>
+          <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white'>
+            <p className='font-semibold'>질문</p>
             <p>{selectedQuestion || customQuestion}</p>
           </div>
 
           <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
-            <p className='font-semibold'>면접 질문</p>
+            <p className='font-semibold'>답변 작성</p>
             <TextareaAutosize
               minRows={7}
               placeholder='면접 질문에 대한 답변을 작성해주세요'
-              className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2 outline-gray-300'
+              className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2 border border-transparent focus:border-gray-300 focus:outline-none'
               value={customAnswer}
               onChange={(e) => setCustomAnswer(e.target.value)}
             />
+          </div>
+
+          <div className='flex items-center gap-5'>
+            <Button
+              type='button'
+              className='w-full ring bg-gray-50 ring-[#DADADA] font-medium'
+              onClick={() => setPage((prev) => prev - 1)}
+            >
+              <FaAngleLeft /> 이전
+            </Button>
+            <Button
+              type='button'
+              className='w-full bg-black text-white font-medium'
+              onClick={handleNextStep}
+            >
+              <FeedbackIcon />
+              피드백 받기
+            </Button>
           </div>
         </>
       )}
 
       {page === 3 && (
         <>
-          <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
-            <p className='font-semibold text-lg'>다음 단계 페이지</p>
+          <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white'>
+            <p className='font-semibold'>질문</p>
             <p>{selectedQuestion || customQuestion}</p>
           </div>
 
-          <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
-            <p className='font-semibold'>면접 질문</p>
-            <TextareaAutosize
-              minRows={3}
-              placeholder='면접 질문을 직접 입력하세요'
-              className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'
-              value={customAnswer}
-              onChange={(e) => setCustomAnswer(e.target.value)}
-            />
+          <div className='bg-white rounded-xl p-6 flex flex-col gap-4 border border-[#E5E5E5]'>
+            <p className='font-semibold'>내 답변</p>
+            <p>{customAnswer}</p>
           </div>
-        </>
-      )}
 
-      {page > 1 ? (
-        <footer className='flex items-center gap-5'>
+          <div className='bg-white rounded-xl p-6  border border-[#E5E5E5] flex flex-col gap-4'>
+            <p className='font-semibold'>AI 피드백</p>
+            <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>넌 안돼 망할거라 우우~</div>
+          </div>
+
           <Button
             type='button'
-            className='w-full ring bg-gray-50 ring-[#DADADA] font-medium'
-            onClick={() => setPage((prev) => prev - 1)}
+            className='w-full bg-black text-white'
+            onClick={() => setShowExampleAnswer((prev) => !prev)}
           >
-            <FaAngleLeft /> 이전
+            <LuLightbulb size={18} />{' '}
+            {showExampleAnswer ? '모범 답변 숨기기' : '모범 답변 예시 보기'}
           </Button>
-          <Button
-            type='button'
-            className='w-full bg-black text-white font-medium'
-            onClick={handleNextStep}
-          >
-            피드백 받기
+          {showExampleAnswer && (
+            <div className='bg-white rounded-xl px-6 py-4  border border-[#E5E5E5] flex flex-col gap-4'>
+              <div className='flex items-center justify-between'>
+                <p className='font-semibold'>📝 모범 답변 예시</p>
+                <button
+                  type='button'
+                  className='border border-black/10 rounded-lg text-sm font-medium flex items-center justify-center gap-1.5 p-2 px-3 bg-white hover:brightness-90 transition'
+                  onClick={() => {
+                    navigator.clipboard.writeText(feedback);
+                    showToast.success('복사되었습니다');
+                  }}
+                >
+                  <FiSave size={18} />
+                  복사
+                </button>
+              </div>
+              <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>{feedback}</div>
+            </div>
+          )}
+
+          <Button type='button' className='w-full bg-black text-white' onClick={newCoaching}>
+            <LuRotateCcw size={18} /> 새로운 질문 연습하기
           </Button>
-        </footer>
-      ) : (
-        <Button
-          type='button'
-          className='w-full bg-black text-white font-medium'
-          onClick={handleNextStep}
-        >
-          다음 <FaAngleRight />
-        </Button>
+        </>
       )}
     </div>
   );
