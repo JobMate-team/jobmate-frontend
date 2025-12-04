@@ -1,10 +1,10 @@
-import { isModalOpenAtom } from '@/atoms';
 import Button from '@/components/common/Button';
-import { useSetAtom } from 'jotai';
+
 import { FaPlus } from 'react-icons/fa6';
+import { useNavigate } from 'react-router-dom';
 
 const ReviewHeader = () => {
-  const setIsModalOpen = useSetAtom(isModalOpenAtom);
+  const navigate = useNavigate();
 
   return (
     <div className='flex justify-between items-center p-6'>
@@ -16,7 +16,7 @@ const ReviewHeader = () => {
       <Button
         type='button'
         className='bg-white font-medium text-sm px-2.5 py-2 border border-[#E5E5E5]'
-        onClick={() => setIsModalOpen((prev) => !prev)}
+        onClick={() => navigate('/review/create')}
       >
         <FaPlus size={14} />
         후기 작성

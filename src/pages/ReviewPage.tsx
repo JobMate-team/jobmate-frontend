@@ -5,6 +5,8 @@ import { FaPlus } from 'react-icons/fa6';
 import { IoBusinessSharp } from 'react-icons/io5';
 import { LuBriefcaseBusiness } from 'react-icons/lu';
 import { ChevronDown } from 'lucide-react';
+import { useState } from 'react';
+import clsx from 'clsx';
 
 const mockReviewData = [
   {
@@ -40,6 +42,7 @@ const mockReviewData = [
 ];
 
 const ReviewPage = () => {
+  const [openIds, setOpenIds] = useState<number[]>([]);
   const navigate = useNavigate();
 
   return (
@@ -53,6 +56,7 @@ const ReviewPage = () => {
         </div>
         <Button
           type='button'
+          onClick={() => navigate('/review/create')}
           className='bg-black text-white font-medium text-sm px-2.5 py-2 border border-[#E5E5E5] whitespace-nowrap'
         >
           <FaPlus size={16} />
@@ -60,48 +64,65 @@ const ReviewPage = () => {
         </Button>
       </div>
 
-      {mockReviewData.map((data) => (
-        <div
-          key={data.id}
-          className='bg-white rounded-xl px-6 py-5 border border-[#E5E5E5] flex flex-col gap-4'
-        >
-          <div className='flex items-center gap-3'>
-            <div className='w-10 h-10 rounded-full bg-black flex items-center justify-center font-medium text-lg text-white'>
-              {data.user.charAt(0)}
-            </div>
-            <div>
-              <p className='text-lg font-medium'>{data.user}</p>
-              <p className='text-[#6A7282] text-sm flex items-center gap-1'>
-                <FiCalendar size={16} />
-                {data.date}
-              </p>
-            </div>
-          </div>
+      {mockReviewData.map((data) => {
+        const isOpen = openIds.includes(data.id);
 
-          <div className='flex items-center gap-2 mb-1'>
-            <div className='flex items-center text-xs border border-[#E5E5E5] rounded-lg p-1 px-2 gap-1'>
-              <IoBusinessSharp size={14} />
-              {data.company}
+        return (
+          <div
+            key={data.id}
+            className='bg-white rounded-xl px-6 py-5 border border-[#E5E5E5] flex flex-col gap-4'
+          >
+            <div className='flex items-center gap-3 pl-2'>
+              <div className='w-10 h-10 rounded-full bg-black flex items-center justify-center font-medium text-lg text-white'>
+                {data.user.charAt(0)}
+              </div>
+              <div>
+                <p className='text-lg font-medium'>{data.user}</p>
+                <p className='text-[#6A7282] text-sm flex items-center gap-1'>
+                  <FiCalendar size={16} />
+                  {data.date}
+                </p>
+              </div>
             </div>
-            <div className='flex items-center text-xs border border-[#E5E5E5] rounded-lg p-1 px-2 gap-1'>
-              <LuBriefcaseBusiness size={14} />
-              {data.job}
-            </div>
-          </div>
 
-          <p className='text-[#364153] leading-6 line-clamp-4'>{data.review}</p>
-          <div className='flex items-center justify-center'>
-            <button
-              type='button'
-              onClick={() => navigate('/review/create')}
-              className='flex flex-row items-center gap-1 mt-1 cursor-pointer outline-none hover:text-[#585858]'
-            >
-              <ChevronDown size={20} />
-              <span className='text-sm font-medium'>더보기</span>
-            </button>
+            <div className='flex items-center gap-2 mb-1 pl-2'>
+              <div className='flex items-center text-xs border border-[#E5E5E5] rounded-lg p-1 px-2 gap-1'>
+                <IoBusinessSharp size={14} />
+                {data.company}
+              </div>
+              <div className='flex items-center text-xs border border-[#E5E5E5] rounded-lg p-1 px-2 gap-1'>
+                <LuBriefcaseBusiness size={14} />
+                {data.job}
+              </div>
+            </div>
+            <p className='text-[#364153] leading-[22px] line-clamp-4'>{data.review}</p>
+
+            {isOpen && (
+              <div className='bg-[#F3F3F5] rounded-xl p-6 flex flex-col gap-4'>
+                <p className='font-semibold'>💡 면접 준비 팁</p>
+                <p className='text-[#364153] leading-[18px]'>{data.tip}</p>
+              </div>
+            )}
+
+            <div className='flex items-center justify-center'>
+              <button
+                type='button'
+                onClick={() =>
+                  setOpenIds((prev) =>
+                    prev.includes(data.id)
+                      ? prev.filter((id) => id !== data.id)
+                      : [...prev, data.id],
+                  )
+                }
+                className='flex flex-row items-center gap-1 mt-1 cursor-pointer outline-none hover:text-[#585858]'
+              >
+                <ChevronDown size={20} className={clsx(isOpen ? 'rotate-180' : 'rotate-0')} />
+                <span className='text-sm font-medium'>{isOpen ? '접기' : '더보기'}</span>
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
 
       <Outlet />
     </div>
