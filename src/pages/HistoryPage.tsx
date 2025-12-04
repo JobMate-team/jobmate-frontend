@@ -1,4 +1,8 @@
 import { RightIcon } from '@/assets';
+import { isModalOpenAtom } from '@/atoms';
+import Button from '@/components/common/Button';
+import { useSetAtom } from 'jotai';
+import { FaRegTrashAlt } from 'react-icons/fa';
 import { FiCalendar } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,13 +33,24 @@ const historyItems = [
 ];
 
 const HistoryPage = () => {
+  const setIsModalOpen = useSetAtom(isModalOpenAtom);
   const navigate = useNavigate();
 
   return (
     <div className='space-y-5 relative pb-30'>
-      <div className='hidden sm:flex flex-col my-10'>
-        <h3 className='text-2xl font-semibold mb-2'>히스토리</h3>
-        <p className='text-[#717182] mb-6'>과거 연습 기록을 확인하고 발전 과정을 추적하세요</p>
+      <div className='flex items-center justify-between'>
+        <div className='hidden sm:flex flex-col mt-10'>
+          <h3 className='text-2xl font-semibold mb-2'>히스토리</h3>
+          <p className='text-[#717182] mb-6'>과거 연습 기록을 확인하고 발전 과정을 추적하세요</p>
+        </div>
+        <Button
+          type='button'
+          className='bg-white font-medium text-sm px-2.5 py-2 border border-[#E5E5E5]'
+          onClick={() => setIsModalOpen((prev) => !prev)}
+        >
+          <FaRegTrashAlt size={16} />
+          전체 삭제
+        </Button>
       </div>
 
       {historyItems.map((item) => (
