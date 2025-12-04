@@ -45,7 +45,7 @@ const HistoryPage = () => {
         </div>
         <Button
           type='button'
-          className='bg-white font-medium text-sm px-2.5 py-2 border border-[#E5E5E5]'
+          className='bg-white font-medium text-sm px-2.5 py-2 border border-[#E5E5E5] whitespace-nowrap'
           onClick={() => setIsModalOpen((prev) => !prev)}
         >
           <FaRegTrashAlt size={16} />
@@ -73,10 +73,10 @@ const HistoryPage = () => {
           <button
             type='button'
             onClick={() => navigate(`/history/${item.id}`)}
-            className='flex flex-row items-center gap-1 mt-1 cursor-pointer justify-between'
+            className='flex flex-row items-center gap-1 mt-1 cursor-pointer justify-between outline-none'
           >
             <p className='line-clamp-1 text-[#99A1AF]'>{item.answer}</p>
-            <RightIcon className='h-4 w-4' />
+            <RightIcon className='h-4 min-w-4' />
           </button>
         </div>
       ))}
