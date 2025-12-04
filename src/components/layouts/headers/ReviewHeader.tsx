@@ -15,11 +15,11 @@ const ReviewHeader = () => {
 
       <Button
         type='button'
-        className='bg-white font-medium text-sm px-2.5 p-1 border border-[#E5E5E5]'
+        className='bg-white font-medium text-sm px-2.5 py-2 border border-[#E5E5E5]'
         onClick={() => setIsModalOpen((prev) => !prev)}
       >
         <FaPlus size={14} />
-        작성
+        후기 작성
       </Button>
     </div>
   );
