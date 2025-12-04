@@ -37,7 +37,7 @@ const mockReviewData = [
     job: 'PM',
     review:
       '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
-    tip: '저는 개인적으로 고양이 발이 더 좋습니다. 고양이 발바닥을 보시면 핑크색 젤리가 있는데 그게 참 야무지거든요.',
+    tip: '면접관들의 눈을 보면서 하면 압박감이 더 심해질 수 있으니 인중을 보는 것이 좋습니다. 우리가 인중을 볼 때 상대방은 눈을 마주보는 듯한 느낌을 받습니다.',
   },
 ];
 
@@ -100,7 +100,7 @@ const ReviewPage = () => {
             {isOpen && (
               <div className='bg-[#F3F3F5] rounded-xl p-6 flex flex-col gap-4'>
                 <p className='font-semibold'>💡 면접 준비 팁</p>
-                <p className='text-[#364153] leading-[18px]'>{data.tip}</p>
+                <p className='text-[#364153] leading-5'>{data.tip}</p>
               </div>
             )}
 

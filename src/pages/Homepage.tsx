@@ -31,7 +31,7 @@ const Homepage = () => {
         {features.map((feature, idx) => (
           <div
             key={idx}
-            className='bg-white rounded-xl p-6 cursor-pointer border border-[#E5E5E5] hover:border-gray-400 transition flex sm:flex-col flex-row sm:gap-0 gap-6'
+            className='bg-white rounded-xl p-6 border border-[#E5E5E5] flex sm:flex-col flex-row sm:gap-0 gap-6'
           >
             <div className='sm:mb-4'>{feature.icon}</div>
             <div>
