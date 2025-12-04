@@ -12,6 +12,7 @@ import SecondHomeIcon from '@/assets/icons/HomeIcon2.svg?react';
 import ThirdomeIcon from '@/assets/icons/HomeIcon3.svg?react';
 import ForthHomeIcon from '@/assets/icons/HomeIcon4.svg?react';
 import FeedbackIcon from '@/assets/icons/Feedback.svg?react';
+import RightIcon from '@/assets/icons/Right.svg?react';
 
 export {
   Logo,
@@ -28,4 +29,5 @@ export {
   ThirdomeIcon,
   ForthHomeIcon,
   FeedbackIcon,
+  RightIcon,
 };

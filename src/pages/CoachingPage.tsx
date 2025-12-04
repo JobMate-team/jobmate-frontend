@@ -118,8 +118,8 @@ const CoachingPage = () => {
       {page === 2 && (
         <>
           <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white'>
-            <p className='font-semibold'>질문</p>
-            <p>{selectedQuestion || customQuestion}</p>
+            <p className='font-semibold'>선택된 질문</p>
+            <p>{customQuestion || selectedQuestion}</p>
           </div>
 
           <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
@@ -142,7 +142,7 @@ const CoachingPage = () => {
               <FaAngleLeft /> 이전
             </Button>
             <Button
-              type='button'
+              type='submit'
               className='w-full bg-black text-white font-medium px-4 py-3 gap-2'
               onClick={handleNextStep}
             >
@@ -156,8 +156,8 @@ const CoachingPage = () => {
       {page === 3 && (
         <>
           <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white'>
-            <p className='font-semibold'>질문</p>
-            <p>{selectedQuestion || customQuestion}</p>
+            <p className='font-semibold'>선택된 질문</p>
+            <p>{customQuestion || selectedQuestion}</p>
           </div>
 
           <div className='bg-white rounded-xl p-6 flex flex-col gap-4 border border-[#E5E5E5]'>
@@ -176,7 +176,7 @@ const CoachingPage = () => {
               className='w-full bg-black text-white px-4 py-3 gap-2'
               onClick={() => setShowExampleAnswer((prev) => !prev)}
             >
-              <LuLightbulb size={18} />{' '}
+              <LuLightbulb size={18} />
               {showExampleAnswer ? '모범 답변 숨기기' : '모범 답변 예시 보기'}
             </Button>
 
@@ -198,11 +198,11 @@ const CoachingPage = () => {
                   className='border border-black/10 text-sm font-medium gap-1.5 p-2 px-3 bg-white'
                   onClick={() => {
                     navigator.clipboard.writeText(feedback);
-                    showToast.success('복사되었습니다');
+                    showToast.success('히스토리에 저장되었습니다');
                   }}
                 >
                   <FiSave size={18} />
-                  복사
+                  저장
                 </Button>
               </div>
               <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>{feedback}</div>
