@@ -79,7 +79,7 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
           open ? 'border border-gray-300' : 'border border-transparent',
         )}
       >
-        <p className={clsx(selected ? 'text-black font-medium' : 'text-[#717182]')}>
+        <p className={clsx(selected ? 'text-black' : 'text-[#717182]')}>
           {selected ?? placeholder}
         </p>
         <div className={clsx('transition-transform duration-300', open && 'rotate-180')}>
@@ -101,7 +101,7 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
             {items.map((item) => (
               <div
                 key={item}
-                className='cursor-pointer rounded-lg p-2.5 hover:bg-gray-100 text-sm'
+                className='cursor-pointer rounded-lg sm:p-4 p-2.5 hover:bg-gray-100 max-sm:text-sm'
                 onClick={() => handleSelect(item)}
               >
                 {item}

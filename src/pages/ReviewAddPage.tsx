@@ -78,7 +78,8 @@ const ReviewAddPage = () => {
                 </label>
                 <input
                   type='text'
-                  placeholder='정찬원'
+                  placeholder='예: 정찬원'
+                  value='정찬원'
                   className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none'
                 />
               </div>
@@ -103,7 +104,7 @@ const ReviewAddPage = () => {
               <DropDown
                 items={jobItems}
                 selected={selectedJob}
-                placeholder='기본 질문 선택'
+                placeholder='직무 선택'
                 onSelect={(question) => setSelectedJob(question)}
               />
             </div>
@@ -122,7 +123,7 @@ const ReviewAddPage = () => {
 
             <div className='flex flex-col gap-2'>
               <label className='font-medium'>
-                면접 준비 팁 <span className='text-red-500'>*</span>
+                💡 면접 준비 팁 <span className='text-red-500'>*</span>
               </label>
 
               <TextareaAutosize
