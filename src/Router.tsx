@@ -32,11 +32,8 @@ const router = createBrowserRouter([
           },
           {
             path: 'history',
+            element: <HistoryPage />, // 부모로 이동
             children: [
-              {
-                index: true,
-                element: <HistoryPage />,
-              },
               {
                 path: ':id',
                 element: <HistoryDetailPage />,

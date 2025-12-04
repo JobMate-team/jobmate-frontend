@@ -1,4 +1,8 @@
-import { useParams } from 'react-router-dom';
+import clsx from 'clsx';
+import { useEffect, useState } from 'react';
+import { FiCalendar } from 'react-icons/fi';
+import { IoIosClose } from 'react-icons/io';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const mockHistoryItems = [
   {
@@ -28,18 +32,59 @@ const mockHistoryItems = [
 
 const HistoryDetailPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const item = mockHistoryItems.find((h) => h.id === Number(id));
 
-  if (!item) return <p>존재하지 않는 히스토리입니다.</p>;
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setOpen(true), 10); // mount 후 transition 트리거
+  }, []);
+
+  const handleClose = () => {
+    setOpen(false);
+    setTimeout(() => navigate(-1), 200); // 애니메이션 끝난 뒤 닫기
+  };
+
+  if (!item) return null;
 
   return (
-    <div className='p-6 space-y-4'>
-      <h2 className='text-2xl font-semibold'>{item.category}</h2>
-      <p className='text-gray-500'>{item.date}</p>
+    <div
+      className={clsx(
+        'fixed inset-0 bg-black/40 transition-opacity duration-200 ',
+        open ? 'opacity-100' : 'opacity-0',
+      )}
+      onClick={handleClose}
+    >
+      <div
+        className={clsx(
+          'fixed bottom-0 left-0 right-0 h-[80vh] bg-white rounded-t-2xl shadow-xl p-8 transition-transform duration-300',
+          open ? 'translate-y-0' : 'translate-y-full',
+        )}
+      >
+        <div className='flex items-center justify-between px-2 mb-10'>
+          <div className='flex flex-row items-center justify-center gap-5'>
+            <div className='bg-black text-white text-xs font-medium p-1 px-4 border border-[#E5E5E5] rounded-lg'>
+              {item.category}
+            </div>
+            <p className='text-[#6A7282] flex items-center gap-1'>
+              <FiCalendar size={18} />
+              {item.date}
+            </p>
+          </div>
+          <button
+            onClick={handleClose}
+            className='text-[#0A0A0A] bg-white rounded-full hover:brightness-90 transition'
+          >
+            <IoIosClose size={30} />
+          </button>
+        </div>
 
-      <div className='mt-4 p-4 bg-white rounded-xl border border-gray-200'>
-        <p className='font-medium text-lg mb-2'>{item.question}</p>
-        <p className='text-gray-700'>{item.answer}</p>
+        <div className='mt-4 p-4 bg-white rounded-xl border border-gray-200'>
+          <p className='font-medium text-lg mb-2'>{item.question}</p>
+          <p className='text-gray-700'>{item.answer}</p>
+        </div>
       </div>
     </div>
   );

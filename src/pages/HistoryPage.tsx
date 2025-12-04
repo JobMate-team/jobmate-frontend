@@ -4,7 +4,7 @@ import Button from '@/components/common/Button';
 import { useSetAtom } from 'jotai';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { FiCalendar } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const historyItems = [
   {
@@ -37,9 +37,9 @@ const HistoryPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className='space-y-5 relative pb-30'>
-      <div className='flex items-center justify-between'>
-        <div className='hidden sm:flex flex-col mt-10'>
+    <div className='space-y-5 relative pb-30 '>
+      <div className='hidden sm:flex items-center justify-between'>
+        <div className='flex flex-col mt-10'>
           <h3 className='text-2xl font-semibold mb-2'>히스토리</h3>
           <p className='text-[#717182] mb-6'>과거 연습 기록을 확인하고 발전 과정을 추적하세요</p>
         </div>
@@ -80,6 +80,8 @@ const HistoryPage = () => {
           </button>
         </div>
       ))}
+
+      <Outlet />
     </div>
   );
 };
