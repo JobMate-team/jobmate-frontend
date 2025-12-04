@@ -26,7 +26,7 @@ const LoginPage = () => {
         <div className='flex items-center gap-5 mx-5'>
           <Button
             type='submit'
-            className='w-full bg-[#FEE500] font-medium'
+            className='w-full bg-[#FEE500] font-medium px-4 py-3 gap-2'
             onClick={() => {
               navigate('/role');
               showToast.success('카카오 로그인 성공!');

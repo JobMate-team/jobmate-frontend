@@ -78,21 +78,25 @@ const OnboardingPage = () => {
           <footer className='flex items-center gap-5'>
             <Button
               type='button'
-              className='w-full ring bg-gray-50 ring-[#DADADA] font-medium'
+              className='w-full ring bg-gray-50 ring-[#DADADA] font-medium px-4 py-3 gap-2'
               onClick={goPrev}
             >
               <FaAngleLeft /> 이전
             </Button>
             <Button
               type='button'
-              className='w-full bg-black text-white font-medium'
+              className='w-full bg-black text-white font-medium px-4 py-3 gap-2'
               onClick={goNext}
             >
               다음 <FaAngleRight />
             </Button>
           </footer>
         ) : (
-          <Button type='button' className='w-full bg-black text-white font-medium' onClick={goNext}>
+          <Button
+            type='button'
+            className='w-full bg-black text-white font-medium px-4 py-3 gap-2'
+            onClick={goNext}
+          >
             다음 <FaAngleRight />
           </Button>
         )}

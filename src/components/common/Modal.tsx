@@ -16,14 +16,14 @@ const Modal = ({ title, content, onConfirm, onCancel }: ModalProps) => {
         <Button
           type='button'
           onClick={onConfirm}
-          className='bg-black text-white text-sm font-semibold mt-1'
+          className='bg-black text-white text-sm font-semibold mt-1 p-2.5'
         >
           삭제
         </Button>
         <Button
           type='button'
           onClick={onCancel}
-          className='bg-white border border-[#DADADA] text-sm font-semibold'
+          className='bg-white border border-[#DADADA] text-sm font-semibold p-2.5'
         >
           취소
         </Button>

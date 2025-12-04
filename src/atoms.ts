@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
 
 const pageAtom = atom<number>(1);
+const isModalOpenAtom = atom<boolean>(false);
 
-export { pageAtom };
+export { pageAtom, isModalOpenAtom };
