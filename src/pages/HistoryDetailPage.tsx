@@ -1,3 +1,5 @@
+import Modal from '@/components/common/Modal';
+import { showToast } from '@/utils/toast';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
@@ -37,17 +39,23 @@ const HistoryDetailPage = () => {
 
   const item = mockHistoryItems.find((h) => h.id === Number(id));
 
-  const [open, setOpen] = useState(false);
+  const [isOpen, setISOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setOpen(true), 10); // mount 후 transition 트리거
+    setTimeout(() => setISOpen(true), 10); // mount 후 transition 트리거
   }, []);
 
   useEffect(() => {
-    if (!open) return;
-
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key !== 'Escape') return;
+
+      if (isModalOpen) {
+        setIsModalOpen(false);
+        return;
+      }
+
+      if (isOpen) {
         handleClose();
       }
     };
@@ -55,11 +63,17 @@ const HistoryDetailPage = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, [isModalOpen, isOpen]);
 
   const handleClose = () => {
-    setOpen(false);
+    setISOpen(false);
     setTimeout(() => navigate('/history'), 200); // 애니메이션 끝난 뒤 닫기
+  };
+
+  const handleDelete = () => {
+    setIsModalOpen((prev) => !prev);
+    showToast.success('삭제되었습니다');
+    navigate('/history');
   };
 
   if (!item) return null;
@@ -68,15 +82,17 @@ const HistoryDetailPage = () => {
     <div
       className={clsx(
         'fixed inset-0 bg-black/40 transition-opacity duration-300 ',
-        open ? 'opacity-100' : 'opacity-0',
+        isOpen ? 'opacity-100' : 'opacity-0',
       )}
-      onClick={handleClose}
+      onClick={() => {
+        if (!isModalOpen) handleClose();
+      }}
     >
       <main
         onClick={(e) => e.stopPropagation()}
         className={clsx(
           'fixed bottom-0 left-0 right-0 h-[80vh] bg-white rounded-t-2xl shadow-xl p-8 transition-transform duration-300 overflow-y-auto hide-scrollbar',
-          open ? 'translate-y-0' : 'translate-y-full',
+          isOpen ? 'translate-y-0' : 'translate-y-full',
         )}
       >
         <section className='flex items-center justify-between px-2 mb-10'>
@@ -92,7 +108,8 @@ const HistoryDetailPage = () => {
           <div className='flex items-center gap-2'>
             <button
               type='button'
-              className='bg-white rounded-full p-2 hover:brightness-90 transition'
+              onClick={() => setIsModalOpen((prev) => !prev)}
+              className='bg-white rounded-full p-2 hover:brightness-90 transition outline-none'
             >
               <FaRegTrashAlt size={16} className='text-[#FB2C36]' />
             </button>
@@ -132,6 +149,15 @@ const HistoryDetailPage = () => {
           </div>
         </section>
       </main>
+
+      {isModalOpen && (
+        <Modal
+          title='해당 히스토리를 삭제하시겠습니까?'
+          content='이 작업은 되돌릴 수 없습니다. 모든 면접 답변 기록이 영구적으로 삭제됩니다.'
+          onCancel={() => setIsModalOpen((prev) => !prev)}
+          onConfirm={handleDelete}
+        />
+      )}
     </div>
   );
 };
