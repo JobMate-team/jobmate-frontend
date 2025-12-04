@@ -12,6 +12,7 @@ import HistoryPage from './pages/HistoryPage';
 import HistoryDetailPage from './pages/HistoryDetailPage';
 import ReviewPage from './pages/ReviewPage';
 import MyPage from './pages/MyPage';
+import ReviewAddPage from './pages/ReviewAddPage';
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'history',
-            element: <HistoryPage />, // 부모로 이동
+            element: <HistoryPage />,
             children: [
               {
                 path: ':id',
@@ -43,6 +44,12 @@ const router = createBrowserRouter([
           {
             path: 'review',
             element: <ReviewPage />,
+            children: [
+              {
+                path: 'create',
+                element: <ReviewAddPage />,
+              },
+            ],
           },
           {
             path: 'my',

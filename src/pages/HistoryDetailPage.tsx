@@ -91,7 +91,7 @@ const HistoryDetailPage = () => {
       <main
         onClick={(e) => e.stopPropagation()}
         className={clsx(
-          'fixed bottom-0 left-1/2 transform -translate-x-1/2 h-[80vh] bg-white rounded-t-2xl shadow-xl transition-transform duration-300 overflow-y-auto hide-scrollbar',
+          'fixed bottom-0 left-1/2 transform -translate-x-1/2 h-[90vh] bg-white rounded-t-2xl shadow-xl transition-transform duration-300 overflow-y-auto hide-scrollbar',
           'w-full max-w-4xl p-8',
           isOpen ? 'translate-y-0' : 'translate-y-full',
         )}
