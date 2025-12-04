@@ -16,7 +16,8 @@ const MobileFooter = () => {
       <div className='flex justify-around py-3'>
         {menuItems.map((item) => {
           const Icon = item.icon;
-          const isActive = location.pathname === item.path;
+          const isActive =
+            item.path === '/' ? location.pathname === '/' : location.pathname.startsWith(item.path);
 
           return (
             <button

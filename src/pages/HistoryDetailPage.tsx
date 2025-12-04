@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
+import { FaRegTrashAlt } from 'react-icons/fa';
 import { FiCalendar } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -42,9 +43,23 @@ const HistoryDetailPage = () => {
     setTimeout(() => setOpen(true), 10); // mount 후 transition 트리거
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   const handleClose = () => {
     setOpen(false);
-    setTimeout(() => navigate(-1), 200); // 애니메이션 끝난 뒤 닫기
+    setTimeout(() => navigate('/history'), 200); // 애니메이션 끝난 뒤 닫기
   };
 
   if (!item) return null;
@@ -52,18 +67,19 @@ const HistoryDetailPage = () => {
   return (
     <div
       className={clsx(
-        'fixed inset-0 bg-black/40 transition-opacity duration-200 ',
+        'fixed inset-0 bg-black/40 transition-opacity duration-300 ',
         open ? 'opacity-100' : 'opacity-0',
       )}
       onClick={handleClose}
     >
-      <div
+      <main
+        onClick={(e) => e.stopPropagation()}
         className={clsx(
-          'fixed bottom-0 left-0 right-0 h-[80vh] bg-white rounded-t-2xl shadow-xl p-8 transition-transform duration-300',
+          'fixed bottom-0 left-0 right-0 h-[80vh] bg-white rounded-t-2xl shadow-xl p-8 transition-transform duration-300 overflow-y-auto hide-scrollbar',
           open ? 'translate-y-0' : 'translate-y-full',
         )}
       >
-        <div className='flex items-center justify-between px-2 mb-10'>
+        <section className='flex items-center justify-between px-2 mb-10'>
           <div className='flex flex-row items-center justify-center gap-5'>
             <div className='bg-black text-white text-xs font-medium p-1 px-4 border border-[#E5E5E5] rounded-lg'>
               {item.category}
@@ -73,19 +89,49 @@ const HistoryDetailPage = () => {
               {item.date}
             </p>
           </div>
-          <button
-            onClick={handleClose}
-            className='text-[#0A0A0A] bg-white rounded-full hover:brightness-90 transition'
-          >
-            <IoIosClose size={30} />
-          </button>
-        </div>
+          <div className='flex items-center gap-2'>
+            <button
+              type='button'
+              className='bg-white rounded-full p-2 hover:brightness-90 transition'
+            >
+              <FaRegTrashAlt size={16} className='text-[#FB2C36]' />
+            </button>
+            <button
+              onClick={handleClose}
+              className='text-[#0A0A0A] bg-white rounded-full hover:brightness-90 transition'
+            >
+              <IoIosClose size={30} />
+            </button>
+          </div>
+        </section>
 
-        <div className='mt-4 p-4 bg-white rounded-xl border border-gray-200'>
-          <p className='font-medium text-lg mb-2'>{item.question}</p>
-          <p className='text-gray-700'>{item.answer}</p>
-        </div>
-      </div>
+        <section className='space-y-5 mb-20'>
+          <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white'>
+            <p className='font-semibold'>질문</p>
+            <p>{item.question}</p>
+          </div>
+
+          <div className='bg-white rounded-xl p-6 flex flex-col gap-4 border border-[#E5E5E5]'>
+            <p className='font-semibold'>내 답변</p>
+            <p>{item.answer}</p>
+          </div>
+
+          <div className='bg-white rounded-xl p-6  border border-[#E5E5E5] flex flex-col gap-4'>
+            <p className='font-semibold'>AI 피드백</p>
+            <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>
+              넌 안돼 망할거라 우우~ 넌 안돼 망할거라 우우~ 넌 안돼 망할거라 우우~ 넌 안돼 망할거라
+              우우~
+            </div>
+          </div>
+
+          <div className='bg-white rounded-xl px-6 py-4  border border-[#E5E5E5] flex flex-col gap-4'>
+            <p className='font-semibold'>📝 모범 답변 예시</p>
+            <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>
+              피드백피드백피드백피드백피드백 피드백 피드백 피드백 피드백 피드백 피드백 피드백
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 };

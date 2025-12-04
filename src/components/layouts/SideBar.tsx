@@ -61,7 +61,8 @@ const SideBar = () => {
       <nav className='flex-1 p-4'>
         {menuItems.map((item) => {
           const Icon = item.icon;
-          const isActive = location.pathname === item.path;
+          const isActive =
+            item.path === '/' ? location.pathname === '/' : location.pathname.startsWith(item.path);
 
           return (
             <button
