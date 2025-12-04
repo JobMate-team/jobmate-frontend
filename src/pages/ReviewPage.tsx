@@ -128,7 +128,7 @@ const ReviewPage = () => {
             <p className='text-[#364153] leading-[22px] line-clamp-4'>{data.review}</p>
 
             {isOpen && (
-              <div className='bg-[#F3F3F5] rounded-xl p-6 flex flex-col gap-4'>
+              <div className='bg-[#F3F3F5] rounded-xl p-6 flex flex-col gap-4 mt-3'>
                 <p className='font-semibold'>💡 면접 준비 팁</p>
                 <p className='text-[#364153] leading-5'>{data.tip}</p>
               </div>

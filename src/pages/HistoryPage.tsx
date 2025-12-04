@@ -73,7 +73,7 @@ const HistoryPage = () => {
           <button
             type='button'
             onClick={() => navigate(`/history/${item.id}`)}
-            className='flex flex-row items-center gap-1 mt-1 cursor-pointer justify-between outline-none'
+            className='flex flex-row items-center gap-2 mt-1 cursor-pointer justify-between outline-none'
           >
             <p className='line-clamp-1 text-[#99A1AF]'>{item.answer}</p>
             <RightIcon className='h-4 min-w-4' />

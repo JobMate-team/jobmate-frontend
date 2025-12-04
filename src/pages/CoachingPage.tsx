@@ -100,7 +100,7 @@ const CoachingPage = () => {
             <TextareaAutosize
               minRows={3}
               placeholder='면접 질문을 직접 입력하세요'
-              className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2 border border-transparent focus:border-gray-300 focus:outline-none'
+              className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 border border-transparent focus:border-gray-300 focus:outline-none'
               value={customQuestion}
               onChange={(e) => setCustomQuestion(e.target.value)}
             />
@@ -128,7 +128,7 @@ const CoachingPage = () => {
             <TextareaAutosize
               minRows={7}
               placeholder='면접 질문에 대한 답변을 작성해주세요'
-              className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2 border border-transparent focus:border-gray-300 focus:outline-none'
+              className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 border border-transparent focus:border-gray-300 focus:outline-none'
               value={customAnswer}
               onChange={(e) => setCustomAnswer(e.target.value)}
             />
@@ -168,7 +168,9 @@ const CoachingPage = () => {
 
           <div className='bg-white rounded-xl p-6  border border-[#E5E5E5] flex flex-col gap-4'>
             <p className='font-semibold'>AI 피드백</p>
-            <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>넌 안돼 망할거라 우우~</div>
+            <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2'>
+              넌 안돼 망할거라 우우~
+            </div>
           </div>
 
           <div className='flex max-sm:flex-col items-center gap-5 sm:max-w-[80%] sm:mx-auto mt-10'>
@@ -206,7 +208,7 @@ const CoachingPage = () => {
                   저장
                 </Button>
               </div>
-              <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>{feedback}</div>
+              <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2'>{feedback}</div>
             </div>
           )}
         </>
