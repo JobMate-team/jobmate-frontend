@@ -1,5 +1,4 @@
 import Button from '@/components/common/Button';
-import Modal from '@/components/common/Modal';
 import { showToast } from '@/utils/toast';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
@@ -119,7 +118,7 @@ const ReviewAddPage = () => {
           </form>
         </section>
 
-        <section className='flex items-center gap-3 mb-5'>
+        <section className='flex items-center gap-3 sm:mb-5 mb-20'>
           <Button
             type='submit'
             onClick={handleCreate}

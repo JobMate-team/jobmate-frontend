@@ -1,6 +1,6 @@
 import { LogoIcon } from '@/assets';
 import { features } from '@/data/homeFeatures';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -56,6 +56,8 @@ const Homepage = () => {
           </p>
         </div>
       </div>
+
+      <Outlet />
     </>
   );
 };

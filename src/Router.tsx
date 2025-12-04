@@ -24,12 +24,24 @@ const router = createBrowserRouter([
         element: <AppLayout />,
         children: [
           {
-            index: true,
+            path: '/',
             element: <Homepage />,
+            children: [
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
+            ],
           },
           {
             path: 'coaching',
             element: <CoachingPage />,
+            children: [
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
+            ],
           },
           {
             path: 'history',
@@ -38,6 +50,10 @@ const router = createBrowserRouter([
               {
                 path: ':id',
                 element: <HistoryDetailPage />,
+              },
+              {
+                path: 'my',
+                element: <MyPage />,
               },
             ],
           },
@@ -49,11 +65,11 @@ const router = createBrowserRouter([
                 path: 'create',
                 element: <ReviewAddPage />,
               },
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
             ],
-          },
-          {
-            path: 'my',
-            element: <MyPage />,
           },
         ],
       },

@@ -11,6 +11,7 @@ import { basicItems, coachStep, jobItems } from '@/data/coachItems';
 import { useAtom } from 'jotai';
 import { pageAtom } from '@/atoms';
 import clsx from 'clsx';
+import { Outlet } from 'react-router-dom';
 
 const CoachingPage = () => {
   const [page, setPage] = useAtom(pageAtom);
@@ -210,6 +211,8 @@ const CoachingPage = () => {
           )}
         </>
       )}
+
+      <Outlet />
     </div>
   );
 };

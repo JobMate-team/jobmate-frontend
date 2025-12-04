@@ -1,5 +1,6 @@
 import { pageAtom } from '@/atoms';
 import { menuItems } from '@/data/menuItems';
+import type { MenuItem } from '@/types/MenuItem';
 import clsx from 'clsx';
 import { useSetAtom } from 'jotai';
 import { Menu, PanelLeft } from 'lucide-react';
@@ -25,6 +26,23 @@ const SideBar = () => {
 
     return () => mediaQuery.removeEventListener('change', handleResize); // cleanUp
   }, []);
+
+  const handleMenuClick = (item: MenuItem) => {
+    const segments = location.pathname.split('/').filter(Boolean);
+
+    if (item.path === '/coaching') {
+      setPage(1);
+    }
+
+    if (item.path === '/my') {
+      const topLevel = '/' + (segments[0] || '');
+      const target = topLevel === '/' ? '/my' : `${topLevel}/my`;
+      navigate(target);
+      return;
+    }
+
+    navigate(item.path);
+  };
 
   return (
     <aside
@@ -61,18 +79,15 @@ const SideBar = () => {
       <nav className='flex-1 p-4'>
         {menuItems.map((item) => {
           const Icon = item.icon;
-          const isActive =
-            item.path === '/' ? location.pathname === '/' : location.pathname.startsWith(item.path);
+          const segments = location.pathname.split('/').filter(Boolean);
+          const last = segments[segments.length - 1];
+          const currentPathForActive = last === 'my' ? '/my' : `/${segments[0] || ''}`;
+          const isActive = item.path === currentPathForActive;
 
           return (
             <button
               key={item.id}
-              onClick={() => {
-                if (item.path === '/coaching') {
-                  setPage(1);
-                }
-                navigate(item.path);
-              }}
+              onClick={() => handleMenuClick(item)}
               className={clsx(
                 'w-full flex items-center mb-2 rounded-lg py-3 transition-colors px-3.5 gap-3',
                 isActive ? 'bg-black text-white' : 'hover:bg-gray-200',
