@@ -18,6 +18,7 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
+  // --- 드롭다운 위치 계산 ---
   let dropdownStyle: React.CSSProperties = {};
 
   if (buttonRef.current) {
@@ -30,17 +31,47 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
     };
   }
 
+  // --- 화면 중앙 체크 ---
+  const isDropDownCentered = () => {
+    if (!buttonRef.current) return true;
+    const rect = buttonRef.current.getBoundingClientRect();
+    const elementCenter = rect.top + rect.height / 2;
+    const viewportCenter = window.innerHeight / 2;
+
+    // 중앙 기준 ±80px 범위 안이면 OK
+    return Math.abs(elementCenter - viewportCenter) <= 80;
+  };
+
+  // --- 버튼 클릭 시 스크롤 후 드롭다운 연동 ---
+  const handleToggle = () => {
+    if (!open) {
+      const isCenter = isDropDownCentered();
+
+      if (isCenter) {
+        setOpen(true);
+      } else {
+        buttonRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+
+        setTimeout(() => {
+          setOpen(true);
+        }, 150);
+      }
+    } else {
+      setOpen(false);
+    }
+  };
+
   const handleSelect = (item: string) => {
     onSelect(item);
     setOpen(false);
   };
 
   useEffect(() => {
-    if (open) {
-      requestAnimationFrame(() => setAnimate(true));
-    } else {
-      setAnimate(false);
-    }
+    if (open) requestAnimationFrame(() => setAnimate(true));
+    else setAnimate(false);
   }, [open]);
 
   useEffect(() => {
@@ -51,6 +82,7 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
 
       if (buttonRef.current?.contains(target)) return;
       if (dropdownRef.current?.contains(target)) return;
+
       setOpen(false);
     };
 
@@ -73,7 +105,7 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
       <button
         type='button'
         ref={buttonRef}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={handleToggle}
         className={clsx(
           'bg-[#F3F3F5] rounded-lg py-2.5 sm:py-3 px-4 max-sm:text-sm flex justify-between items-center outline-none',
           open ? 'border border-gray-300' : 'border border-transparent',
@@ -93,7 +125,7 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
           <div
             ref={dropdownRef}
             className={clsx(
-              ' bg-white shadow-lg rounded-lg border border-[#E5E5E5] p-3 transition-all duration-150 ease-out',
+              'bg-white shadow-lg rounded-lg border border-[#E5E5E5] p-3 transition-all duration-150 ease-out',
               animate ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2',
             )}
             style={dropdownStyle}
