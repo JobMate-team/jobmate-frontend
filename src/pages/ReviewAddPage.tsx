@@ -137,19 +137,18 @@ const ReviewAddPage = () => {
 
         <section className='flex items-center gap-3 sm:mb-5 mb-20'>
           <Button
-            type='submit'
-            onClick={handleCreate}
-            className='bg-black text-white px-4 py-3 w-[70%]'
-          >
-            등록하기
-          </Button>
-
-          <Button
             type='button'
             onClick={() => setISOpen(false)}
             className='bg-white border border-[#DADADA] px-4 py-3 w-[30%]'
           >
             취소
+          </Button>
+          <Button
+            type='submit'
+            onClick={handleCreate}
+            className='bg-black text-white px-4 py-3 w-[70%]'
+          >
+            등록하기
           </Button>
         </section>
       </main>

@@ -166,8 +166,14 @@ const CoachingPage = () => {
             <p>{customAnswer}</p>
           </div>
 
-          <div className='bg-white rounded-xl p-6  border border-[#E5E5E5] flex flex-col gap-4'>
-            <p className='font-semibold'>AI 피드백</p>
+          <div className='bg-white rounded-xl p-4 px-6 border border-[#E5E5E5] flex flex-col gap-4'>
+            <div className='flex flex-row items-center gap-3'>
+              <p className='font-semibold'>AI 피드백</p>
+              <div className='rounded-lg max-sm:text-sm font-medium px-2 sm:px-3 py-1 sm:py-2 bg-black text-white'>
+                75점
+              </div>
+              <p className='text-[#717182]'>양호</p>
+            </div>
             <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2'>
               넌 안돼 망할거라 우우~
             </div>

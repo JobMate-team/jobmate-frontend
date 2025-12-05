@@ -36,7 +36,7 @@ const MyPage = () => {
             <h2 className='text-xl text-white'>마이페이지</h2>
             <button
               onClick={() => navigate(-1)}
-              className='text-white rounded-full hover:text-gray-300 transition'
+              className='max-sm:hidden text-white rounded-full hover:text-gray-300 transition'
             >
               <IoIosClose size={35} />
             </button>

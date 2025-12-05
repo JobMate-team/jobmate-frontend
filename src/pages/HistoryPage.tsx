@@ -10,6 +10,7 @@ const historyItems = [
   {
     id: 1,
     category: '경험',
+    score: 75,
     date: '오늘',
     question: '코드 리뷰에서 가장 중요하게 생각하는 것은?',
     answer:
@@ -18,6 +19,7 @@ const historyItems = [
   {
     id: 2,
     category: '인성',
+    score: 100,
     date: '25.10.27',
     question: '인성 문제있어요?',
     answer: '없는데요? 왜 물어보세요 그런거',
@@ -25,6 +27,7 @@ const historyItems = [
   {
     id: 3,
     category: '개발',
+    score: 60,
     date: '24.9.10',
     question: '개발이 좋으세요? 아니면 고양이발이 좋으세요?',
     answer:
@@ -36,12 +39,18 @@ const HistoryPage = () => {
   const setIsModalOpen = useSetAtom(isModalOpenAtom);
   const navigate = useNavigate();
 
+  // 총 연습 횟수
+  const totalPractice = historyItems.length;
+
+  // 평균 점수 계산
+  const averageScore = historyItems.reduce((acc, item) => acc + item.score, 0) / totalPractice;
+
   return (
     <div className='space-y-5 relative pb-30 '>
-      <div className='hidden sm:flex items-center justify-between'>
+      <section className='hidden sm:flex items-center justify-between'>
         <div className='flex flex-col mt-10'>
           <h3 className='text-2xl font-semibold mb-2'>히스토리</h3>
-          <p className='text-[#717182] mb-6'>과거 연습 기록을 확인하고 발전 과정을 추적하세요</p>
+          <p className='text-[#717182]'>과거 연습 기록을 확인하고 발전 과정을 추적하세요</p>
         </div>
         <Button
           type='button'
@@ -51,7 +60,17 @@ const HistoryPage = () => {
           <FaRegTrashAlt size={16} />
           전체 삭제
         </Button>
-      </div>
+      </section>
+
+      <section className='flex gap-5 mb-10'>
+        <div className='bg-[#F3F3F5] border border-[#E5E5E5] rounded-lg p-4'>
+          총 연습 횟수
+          <p>{totalPractice}회</p>
+        </div>
+        <div className='bg-[#F3F3F5] border border-[#E5E5E5] rounded-lg p-4'>
+          평균 점수<p>{averageScore.toFixed(0)}점</p>
+        </div>
+      </section>
 
       {historyItems.map((item) => (
         <div
@@ -59,9 +78,15 @@ const HistoryPage = () => {
           className='bg-white rounded-xl px-6 py-5 border border-[#E5E5E5] flex flex-col gap-4'
         >
           <div className='flex items-center justify-between mb-2'>
-            <div className='bg-black text-white text-xs font-medium p-1 px-4 border border-[#E5E5E5] rounded-lg'>
-              {item.category}
+            <div className='flex flex-row items-center gap-3'>
+              <div className='bg-black text-white text-xs font-medium p-1 px-4 border border-[#E5E5E5] rounded-lg'>
+                {item.category}
+              </div>
+              <div className='bg-[#ECEEF2] text-xs font-medium p-1 px-4 border border-[#E5E5E5] rounded-lg'>
+                {item.score}점
+              </div>
             </div>
+
             <p className='text-[#6A7282] flex items-center gap-1'>
               <FiCalendar size={18} />
               {item.date}
