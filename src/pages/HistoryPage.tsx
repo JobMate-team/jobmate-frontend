@@ -5,6 +5,7 @@ import { useSetAtom } from 'jotai';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { FiCalendar } from 'react-icons/fi';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { TrendingUp } from 'lucide-react';
 
 const historyItems = [
   {
@@ -52,24 +53,34 @@ const HistoryPage = () => {
           <h3 className='text-2xl font-semibold mb-2'>히스토리</h3>
           <p className='text-[#717182]'>과거 연습 기록을 확인하고 발전 과정을 추적하세요</p>
         </div>
+      </section>
+
+      <section className='flex justify-between items-center mb-5'>
+        <div className='flex gap-5 max-sm:w-full'>
+          <div className='bg-white border border-[#E5E5E5] rounded-lg p-4 w-40 max-sm:flex-1'>
+            <div className='flex items-center justify-between font-medium'>
+              총 연습 횟수
+              <TrendingUp size={20} className='text-[#717182]' />
+            </div>
+            <p className='text-2xl mt-5'>{totalPractice}회</p>
+          </div>
+          <div className='bg-white border border-[#E5E5E5] rounded-lg p-4 w-40 max-sm:flex-1'>
+            <div className='flex items-center justify-between font-medium'>
+              평균 점수
+              <TrendingUp size={20} className='text-[#717182]' />
+            </div>
+            <p className='text-2xl mt-5'>{averageScore.toFixed(0)}점</p>
+          </div>
+        </div>
+
         <Button
           type='button'
-          className='bg-white font-medium text-sm px-2.5 py-2 border border-[#E5E5E5] whitespace-nowrap'
+          className='bg-white font-medium text-sm px-2.5 py-2 border border-[#E5E5E5] whitespace-nowrap max-sm:hidden'
           onClick={() => setIsModalOpen((prev) => !prev)}
         >
           <FaRegTrashAlt size={16} />
           전체 삭제
         </Button>
-      </section>
-
-      <section className='flex gap-5 mb-10'>
-        <div className='bg-[#F3F3F5] border border-[#E5E5E5] rounded-lg p-4'>
-          총 연습 횟수
-          <p>{totalPractice}회</p>
-        </div>
-        <div className='bg-[#F3F3F5] border border-[#E5E5E5] rounded-lg p-4'>
-          평균 점수<p>{averageScore.toFixed(0)}점</p>
-        </div>
       </section>
 
       {historyItems.map((item) => (
