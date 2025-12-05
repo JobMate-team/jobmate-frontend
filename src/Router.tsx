@@ -12,6 +12,7 @@ import HistoryDetailPage from './pages/HistoryDetailPage';
 import ReviewPage from './pages/ReviewPage';
 import MyPage from './pages/MyPage';
 import ReviewAddPage from './pages/ReviewAddPage';
+import ReviewEditPage from './pages/ReviewEditPage';
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
               {
                 path: 'create',
                 element: <ReviewAddPage />,
+              },
+              {
+                path: 'edit',
+                element: <ReviewEditPage />,
               },
               {
                 path: 'my',

@@ -8,7 +8,7 @@ import { IoIosClose } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 
-const ReviewAddPage = () => {
+const ReviewEditPage = () => {
   const [isOpen, setISOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ const ReviewAddPage = () => {
       >
         <section className='flex flex-col mb-10'>
           <div className='flex items-center justify-between mb-3'>
-            <h3 className='text-lg font-semibold'>면접 후기 작성</h3>
+            <h3 className='text-lg font-semibold'>면접 후기 수정</h3>
             <button
               onClick={handleClose}
               className='text-[#0A0A0A] bg-white rounded-full hover:brightness-90 transition'
@@ -148,7 +148,7 @@ const ReviewAddPage = () => {
             onClick={handleCreate}
             className='bg-black text-white px-4 py-3 w-[70%]'
           >
-            등록하기
+            수정하기
           </Button>
         </section>
       </main>
@@ -156,4 +156,4 @@ const ReviewAddPage = () => {
   );
 };
 
-export default ReviewAddPage;
+export default ReviewEditPage;

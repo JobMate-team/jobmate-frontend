@@ -9,6 +9,9 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { ThumbsUp } from 'lucide-react';
 import UpScrollButton from '@/components/ui/UpScrollButton';
+import Modal from '@/components/common/Modal';
+import { showToast } from '@/utils/toast';
+import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa';
 
 const mockReviewData = [
   {
@@ -76,6 +79,7 @@ const mockReviewData = [
 const ReviewPage = () => {
   const [openIds, setOpenIds] = useState<number[]>([]);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   // 스크롤 감지
@@ -95,6 +99,12 @@ const ReviewPage = () => {
       return () => mainElement.removeEventListener('scroll', handleScroll);
     }
   }, []);
+
+  const handleDelete = () => {
+    setIsModalOpen((prev) => !prev);
+    showToast.success('삭제되었습니다');
+    navigate('/review');
+  };
 
   return (
     <div className='space-y-5 relative pb-30 '>
@@ -136,10 +146,26 @@ const ReviewPage = () => {
                   </p>
                 </div>
               </div>
-              <button type='button' className='flex items-center gap-1 text-[#717182]'>
-                <ThumbsUp size={20} />
-                <p>12</p>
-              </button>
+              <div className='flex items-center gap-2'>
+                <button type='button' className='flex items-center gap-1 ml-2 text-[#717182]'>
+                  <ThumbsUp size={20} />
+                  <p>12</p>
+                </button>
+                <button
+                  type='button'
+                  onClick={() => navigate('/review/edit')}
+                  className='bg-white rounded-full p-2 hover:brightness-90 transition outline-none'
+                >
+                  <FaRegEdit size={16} className='text-[#7371cc]' />
+                </button>
+                <button
+                  type='button'
+                  onClick={() => setIsModalOpen((prev) => !prev)}
+                  className='bg-white rounded-full p-2 hover:brightness-90 transition outline-none'
+                >
+                  <FaRegTrashAlt size={16} className='text-[#FB2C36]' />
+                </button>
+              </div>
             </div>
 
             <div className='flex items-center gap-2 mb-1 pl-2'>
@@ -180,6 +206,15 @@ const ReviewPage = () => {
           </div>
         );
       })}
+
+      {isModalOpen && (
+        <Modal
+          title='해당 후기를 삭제하시겠습니까?'
+          content='이 작업은 되돌릴 수 없습니다.'
+          onCancel={() => setIsModalOpen((prev) => !prev)}
+          onConfirm={handleDelete}
+        />
+      )}
 
       {showScrollTop && <UpScrollButton />}
       <Outlet />
