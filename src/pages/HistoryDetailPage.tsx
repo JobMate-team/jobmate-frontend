@@ -11,14 +11,16 @@ const mockHistoryItems = [
   {
     id: 1,
     category: '경험',
+    score: 75,
     date: '오늘',
     question: '코드 리뷰에서 가장 중요하게 생각하는 것은?',
     answer:
-      '코드 컨벤션을 지켰는지 확인하면서 리뷰를 하는 것이 가장 중요하다고 생각합니다. 왜냐하면 중요하다고 생각하기 때문입니다.',
+      '코드 컨벤션을 지켰는지 확인하면서 리뷰를 하는 것이 가장 중요하다고 생각합니다. 왜냐하면 중요하다고 생각하기 때문입니다. 코드 컨벤션을 지켰는지 확인하면서 리뷰를 하는 것이 가장 중요하다고 생각합니다. 왜냐하면 중요하다고 생각하기 때문입니다.',
   },
   {
     id: 2,
     category: '인성',
+    score: 100,
     date: '25.10.27',
     question: '인성 문제있어요?',
     answer: '없는데요? 왜 물어보세요 그런거',
@@ -26,6 +28,7 @@ const mockHistoryItems = [
   {
     id: 3,
     category: '개발',
+    score: 60,
     date: '24.9.10',
     question: '개발이 좋으세요? 아니면 고양이발이 좋으세요?',
     answer:
@@ -97,9 +100,12 @@ const HistoryDetailPage = () => {
         )}
       >
         <section className='flex items-center justify-between px-2 mb-10'>
-          <div className='flex flex-row items-center justify-center gap-5'>
+          <div className='flex flex-row items-center justify-center gap-3'>
             <div className='bg-black text-white text-xs font-medium p-1 px-4 border border-[#E5E5E5] rounded-lg'>
               {item.category}
+            </div>
+            <div className='bg-[#ECEEF2] text-xs font-medium p-1 px-4 border border-[#E5E5E5] rounded-lg'>
+              {item.score}점
             </div>
             <p className='text-[#6A7282] flex items-center gap-1'>
               <FiCalendar size={18} />
@@ -136,7 +142,7 @@ const HistoryDetailPage = () => {
 
           <div className='bg-white rounded-xl p-6  border border-[#E5E5E5] flex flex-col gap-4'>
             <p className='font-semibold'>AI 피드백</p>
-            <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>
+            <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2'>
               넌 안돼 망할거라 우우~ 넌 안돼 망할거라 우우~ 넌 안돼 망할거라 우우~ 넌 안돼 망할거라
               우우~
             </div>
@@ -144,7 +150,7 @@ const HistoryDetailPage = () => {
 
           <div className='bg-white rounded-xl px-6 py-4  border border-[#E5E5E5] flex flex-col gap-4'>
             <p className='font-semibold'>📝 모범 답변 예시</p>
-            <div className='bg-[#F3F3F5] rounded-lg p-4 text-sm mb-2'>
+            <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2'>
               피드백피드백피드백피드백피드백 피드백 피드백 피드백 피드백 피드백 피드백 피드백
             </div>
           </div>

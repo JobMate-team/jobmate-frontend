@@ -1,6 +1,7 @@
+import type { MenuItem } from '@/types/MenuItem';
 import { Home, MessageSquare, History, FileText, User } from 'lucide-react';
 
-export const menuItems = [
+export const menuItems: MenuItem[] = [
   { id: '1', icon: Home, label: '홈', path: '/' },
   { id: '2', icon: MessageSquare, label: '코칭', path: '/coaching' },
   { id: '3', icon: History, label: '히스토리', path: '/history' },

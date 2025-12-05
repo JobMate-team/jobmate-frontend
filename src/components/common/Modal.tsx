@@ -9,14 +9,14 @@ interface ModalProps {
 
 const Modal = ({ title, content, onConfirm, onCancel }: ModalProps) => {
   return (
-    <div className='fixed inset-0 bg-black/50 flex justify-center items-center'>
+    <div className='fixed inset-0 bg-black/40 flex justify-center items-center'>
       <div className='bg-white rounded-[10px] flex flex-col overflow-hidden px-5 py-8 space-y-3 w-[360px]'>
         <p className='text-center font-extrabold text-xl'>{title}</p>
         <p className='text-center font-normal text-sm text-[#717182] px-8'>{content}</p>
         <Button
           type='button'
           onClick={onConfirm}
-          className='bg-black text-white text-sm font-semibold mt-1 p-2.5'
+          className='bg-black text-white text-sm font-semibold mt-3 p-2.5'
         >
           삭제
         </Button>

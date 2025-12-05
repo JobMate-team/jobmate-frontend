@@ -1,5 +1,6 @@
 import Button from '@/components/common/Button';
-import Modal from '@/components/common/Modal';
+import DropDown from '@/components/ui/Dropdown';
+import { jobItems } from '@/data/coachItems';
 import { showToast } from '@/utils/toast';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
@@ -9,6 +10,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 const ReviewAddPage = () => {
   const [isOpen, setISOpen] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -76,8 +78,9 @@ const ReviewAddPage = () => {
                 </label>
                 <input
                   type='text'
-                  placeholder='정찬원'
-                  className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg outline-none'
+                  placeholder='예: 정찬원'
+                  value='정찬원'
+                  className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none'
                 />
               </div>
               <div className='flex flex-col gap-2'>
@@ -88,7 +91,7 @@ const ReviewAddPage = () => {
                 <input
                   type='text'
                   placeholder='예: 잡메이트'
-                  className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg outline-none'
+                  className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none'
                 />
               </div>
             </div>
@@ -98,10 +101,11 @@ const ReviewAddPage = () => {
                 지원 직무 <span className='text-red-500'>*</span>
               </label>
 
-              <input
-                type='text'
-                placeholder='예: 서비스 기획'
-                className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg outline-none'
+              <DropDown
+                items={jobItems}
+                selected={selectedJob}
+                placeholder='직무 선택'
+                onSelect={(question) => setSelectedJob(question)}
               />
             </div>
 
@@ -113,27 +117,38 @@ const ReviewAddPage = () => {
               <TextareaAutosize
                 minRows={20}
                 placeholder='면접 과정, 질문 내용, 분위기 등 자유롭게 작성해주세요'
-                className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg outline-none resize-none'
+                className='w-full bg-[#F3F3F5] px-4 py-3 rounded-b-lg border border-transparent focus:border-gray-300 focus:outline-none'
+              />
+            </div>
+
+            <div className='flex flex-col gap-2'>
+              <label className='font-medium'>
+                💡 면접 준비 팁 <span className='text-red-500'>*</span>
+              </label>
+
+              <TextareaAutosize
+                minRows={20}
+                placeholder='면접 과정, 질문 내용, 분위기 등 자유롭게 작성해주세요'
+                className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none'
               />
             </div>
           </form>
         </section>
 
-        <section className='flex items-center gap-3 mb-5'>
-          <Button
-            type='submit'
-            onClick={handleCreate}
-            className='bg-black text-white px-4 py-3 w-[70%]'
-          >
-            등록하기
-          </Button>
-
+        <section className='flex items-center gap-3 sm:mb-5 mb-20'>
           <Button
             type='button'
             onClick={() => setISOpen(false)}
             className='bg-white border border-[#DADADA] px-4 py-3 w-[30%]'
           >
             취소
+          </Button>
+          <Button
+            type='submit'
+            onClick={handleCreate}
+            className='bg-black text-white px-4 py-3 w-[70%]'
+          >
+            등록하기
           </Button>
         </section>
       </main>

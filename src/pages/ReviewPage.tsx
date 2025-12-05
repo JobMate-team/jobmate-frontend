@@ -5,8 +5,10 @@ import { FaPlus } from 'react-icons/fa6';
 import { IoBusinessSharp } from 'react-icons/io5';
 import { LuBriefcaseBusiness } from 'react-icons/lu';
 import { ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
+import { ThumbsUp } from 'lucide-react';
+import UpScrollButton from '@/components/ui/UpScrollButton';
 
 const mockReviewData = [
   {
@@ -39,11 +41,60 @@ const mockReviewData = [
       '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
     tip: '면접관들의 눈을 보면서 하면 압박감이 더 심해질 수 있으니 인중을 보는 것이 좋습니다. 우리가 인중을 볼 때 상대방은 눈을 마주보는 듯한 느낌을 받습니다.',
   },
+  {
+    id: 4,
+    user: '이지수',
+    date: '24.9.10',
+    company: '라인',
+    job: 'AI',
+    review:
+      '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
+    tip: '면접관들의 눈을 보면서 하면 압박감이 더 심해질 수 있으니 인중을 보는 것이 좋습니다. 우리가 인중을 볼 때 상대방은 눈을 마주보는 듯한 느낌을 받습니다.',
+  },
+  {
+    id: 5,
+    user: '박은혜',
+    date: '24.9.10',
+    company: '배달의 민족',
+    job: '데이터 분석',
+    review:
+      '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
+    tip: '면접관들의 눈을 보면서 하면 압박감이 더 심해질 수 있으니 인중을 보는 것이 좋습니다. 우리가 인중을 볼 때 상대방은 눈을 마주보는 듯한 느낌을 받습니다.',
+  },
+  {
+    id: 6,
+    user: '김주원',
+    date: '24.9.10',
+    company: '구글',
+    job: '백엔드',
+    review:
+      '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
+    tip: '면접관들의 눈을 보면서 하면 압박감이 더 심해질 수 있으니 인중을 보는 것이 좋습니다. 우리가 인중을 볼 때 상대방은 눈을 마주보는 듯한 느낌을 받습니다.',
+  },
 ];
 
 const ReviewPage = () => {
   const [openIds, setOpenIds] = useState<number[]>([]);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const navigate = useNavigate();
+
+  // 스크롤 감지
+  useEffect(() => {
+    const mainElement = document.querySelector('main');
+
+    const handleScroll = () => {
+      if (mainElement && mainElement.scrollTop > 200) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    if (mainElement) {
+      mainElement.addEventListener('scroll', handleScroll);
+      return () => mainElement.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
 
   return (
     <div className='space-y-5 relative pb-30 '>
@@ -72,17 +123,23 @@ const ReviewPage = () => {
             key={data.id}
             className='bg-white rounded-xl px-6 py-5 border border-[#E5E5E5] flex flex-col gap-4'
           >
-            <div className='flex items-center gap-3 pl-2'>
-              <div className='w-10 h-10 rounded-full bg-black flex items-center justify-center font-medium text-lg text-white'>
-                {data.user.charAt(0)}
+            <div className='flex items-center justify-between pl-2'>
+              <div className='flex items-center gap-3'>
+                <div className='w-10 h-10 rounded-full bg-black flex items-center justify-center font-medium text-lg text-white'>
+                  {data.user.charAt(0)}
+                </div>
+                <div>
+                  <p className='text-lg font-medium'>{data.user}</p>
+                  <p className='text-[#6A7282] text-sm flex items-center gap-1'>
+                    <FiCalendar size={16} />
+                    {data.date}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className='text-lg font-medium'>{data.user}</p>
-                <p className='text-[#6A7282] text-sm flex items-center gap-1'>
-                  <FiCalendar size={16} />
-                  {data.date}
-                </p>
-              </div>
+              <button type='button' className='flex items-center gap-1 text-[#717182]'>
+                <ThumbsUp size={20} />
+                <p>12</p>
+              </button>
             </div>
 
             <div className='flex items-center gap-2 mb-1 pl-2'>
@@ -98,7 +155,7 @@ const ReviewPage = () => {
             <p className='text-[#364153] leading-[22px] line-clamp-4'>{data.review}</p>
 
             {isOpen && (
-              <div className='bg-[#F3F3F5] rounded-xl p-6 flex flex-col gap-4'>
+              <div className='bg-[#F3F3F5] rounded-xl p-6 flex flex-col gap-4 mt-3'>
                 <p className='font-semibold'>💡 면접 준비 팁</p>
                 <p className='text-[#364153] leading-5'>{data.tip}</p>
               </div>
@@ -124,6 +181,7 @@ const ReviewPage = () => {
         );
       })}
 
+      {showScrollTop && <UpScrollButton />}
       <Outlet />
     </div>
   );

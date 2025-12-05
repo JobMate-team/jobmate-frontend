@@ -1,6 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import Example from './components/Example';
 import Homepage from './pages/HomePage';
 import OnboardingPage from './pages/OnboardingPage';
 import LoginPage from './pages/LoginPage';
@@ -24,12 +23,24 @@ const router = createBrowserRouter([
         element: <AppLayout />,
         children: [
           {
-            index: true,
+            path: '/',
             element: <Homepage />,
+            children: [
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
+            ],
           },
           {
             path: 'coaching',
             element: <CoachingPage />,
+            children: [
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
+            ],
           },
           {
             path: 'history',
@@ -38,6 +49,10 @@ const router = createBrowserRouter([
               {
                 path: ':id',
                 element: <HistoryDetailPage />,
+              },
+              {
+                path: 'my',
+                element: <MyPage />,
               },
             ],
           },
@@ -49,18 +64,15 @@ const router = createBrowserRouter([
                 path: 'create',
                 element: <ReviewAddPage />,
               },
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
             ],
-          },
-          {
-            path: 'my',
-            element: <MyPage />,
           },
         ],
       },
-      {
-        path: 'example',
-        element: <Example />,
-      },
+
       {
         path: 'onboarding',
         element: <OnboardingPage />,

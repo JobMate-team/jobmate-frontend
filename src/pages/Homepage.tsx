@@ -1,6 +1,6 @@
 import { LogoIcon } from '@/assets';
 import { features } from '@/data/homeFeatures';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -42,20 +42,20 @@ const Homepage = () => {
         ))}
       </div>
 
-      <div>
-        <h3 className='font-bold text-[22px] text-gray-900 mb-3'>오늘의 팁 💡</h3>
-        <div className='bg-white rounded-lg p-6 mb-20 sm:mb-6 border border-[#E5E5E5]'>
-          <h4 className='font-semibold text-xl'>STAR 기법을 활용하세요</h4>
-          <p className='text-gray-900 leading-relaxed mb-6 my-6'>
-            면접 답변 시 Situation(상황), Task(과제), Action(행동), Result(결과) 순서로 구조화하면
-            더 명확하고 설득력있는 답변이 됩니다.
-          </p>
-          <p className='text-gray-600 leading-relaxed'>
-            예: "프로젝트 기한이 촉박했던 상황에서(S), 효율적인 업무 분담이 필요했고(T), 팀원들과
-            협의하여 우선순위를 정했으며(A), 결과적으로 기한 내 성공적으로 완료했습니다(R)."
-          </p>
-        </div>
+      <h3 className='font-bold text-[22px] text-gray-900 mb-3'>오늘의 팁 💡</h3>
+      <div className='bg-white rounded-lg p-6 mb-20 sm:mb-6 border border-[#E5E5E5]'>
+        <h4 className='font-semibold text-xl'>STAR 기법을 활용하세요</h4>
+        <p className='text-gray-900 leading-relaxed mb-6 my-6'>
+          면접 답변 시 Situation(상황), Task(과제), Action(행동), Result(결과) 순서로 구조화하면 더
+          명확하고 설득력있는 답변이 됩니다.
+        </p>
+        <p className='text-gray-600 leading-relaxed'>
+          예: "프로젝트 기한이 촉박했던 상황에서(S), 효율적인 업무 분담이 필요했고(T), 팀원들과
+          협의하여 우선순위를 정했으며(A), 결과적으로 기한 내 성공적으로 완료했습니다(R)."
+        </p>
       </div>
+
+      <Outlet />
     </>
   );
 };
