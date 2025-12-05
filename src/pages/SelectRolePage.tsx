@@ -15,7 +15,7 @@ import { showToast } from '@/utils/toast';
 
 const roleList = [
   { id: 1, icon: <IoMdPaper size={28} />, name: '기획' },
-  { id: 2, icon: <IoMdDesktop size={28} />, name: '개발' },
+  { id: 2, icon: <IoMdDesktop size={28} />, name: 'IT' },
   { id: 3, icon: <IoMdStats size={28} />, name: '마케팅' },
   { id: 4, icon: <IoIosBrush size={28} />, name: '디자인' },
   { id: 5, icon: <IoMdBriefcase size={28} />, name: '영업' },

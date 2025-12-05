@@ -171,13 +171,13 @@ const SideBar = () => {
           </div>
           <div className='h-px w-full my-3 bg-gray-200' />
           <button
-            className='w-full text-left px-3 py-2 rounded-lg hover:bg-red-50 mt-2 flex items-center font-medium gap-2 text-red-600'
+            className='w-full text-left text-sm px-3 py-2 rounded-lg hover:bg-red-50 mt-2 flex items-center font-medium gap-2 text-red-600'
             onClick={() => {
               setIsLogoutModalOpen(true);
               setIsProfileMenuOpen(false);
             }}
           >
-            <LogOut size={20} />
+            <LogOut size={16} />
             로그아웃
           </button>
         </div>

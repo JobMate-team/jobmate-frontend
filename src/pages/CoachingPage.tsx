@@ -100,7 +100,7 @@ const CoachingPage = () => {
             <TextareaAutosize
               minRows={3}
               placeholder='면접 질문을 직접 입력하세요'
-              className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 border border-transparent focus:border-gray-300 focus:outline-none'
+              className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 border border-transparent focus:border-gray-300 focus:outline-none leading-6'
               value={customQuestion}
               onChange={(e) => setCustomQuestion(e.target.value)}
             />
@@ -118,7 +118,7 @@ const CoachingPage = () => {
 
       {page === 2 && (
         <>
-          <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white'>
+          <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white leading-5'>
             <p className='font-semibold'>선택된 질문</p>
             <p>{customQuestion || selectedQuestion}</p>
           </div>
@@ -128,7 +128,7 @@ const CoachingPage = () => {
             <TextareaAutosize
               minRows={7}
               placeholder='면접 질문에 대한 답변을 작성해주세요'
-              className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 border border-transparent focus:border-gray-300 focus:outline-none'
+              className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 border border-transparent focus:border-gray-300 focus:outline-none leading-6'
               value={customAnswer}
               onChange={(e) => setCustomAnswer(e.target.value)}
             />
@@ -156,14 +156,14 @@ const CoachingPage = () => {
 
       {page === 3 && (
         <>
-          <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white'>
+          <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white leading-5'>
             <p className='font-semibold'>선택된 질문</p>
             <p>{customQuestion || selectedQuestion}</p>
           </div>
 
           <div className='bg-white rounded-xl p-6 flex flex-col gap-4 border border-[#E5E5E5]'>
             <p className='font-semibold'>내 답변</p>
-            <p>{customAnswer}</p>
+            <p className='leading-6'>{customAnswer}</p>
           </div>
 
           <div className='bg-white rounded-xl p-4 px-6 border border-[#E5E5E5] flex flex-col gap-4'>
@@ -174,7 +174,7 @@ const CoachingPage = () => {
               </div>
               <p className='text-[#717182]'>양호</p>
             </div>
-            <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2'>
+            <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 leading-5'>
               넌 안돼 망할거라 우우~
             </div>
           </div>
@@ -214,7 +214,9 @@ const CoachingPage = () => {
                   저장
                 </Button>
               </div>
-              <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2'>{feedback}</div>
+              <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 leading-5'>
+                {feedback}
+              </div>
             </div>
           )}
         </>

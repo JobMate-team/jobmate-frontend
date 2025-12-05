@@ -115,9 +115,9 @@ const ReviewAddPage = () => {
               </label>
 
               <TextareaAutosize
-                minRows={20}
+                minRows={10}
                 placeholder='면접 과정, 질문 내용, 분위기 등 자유롭게 작성해주세요'
-                className='w-full bg-[#F3F3F5] px-4 py-3 rounded-b-lg border border-transparent focus:border-gray-300 focus:outline-none'
+                className='w-full bg-[#F3F3F5] px-4 py-3 rounded-b-lg border border-transparent focus:border-gray-300 focus:outline-none leading-6'
               />
             </div>
 
@@ -127,9 +127,9 @@ const ReviewAddPage = () => {
               </label>
 
               <TextareaAutosize
-                minRows={20}
+                minRows={10}
                 placeholder='면접 과정, 질문 내용, 분위기 등 자유롭게 작성해주세요'
-                className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none'
+                className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none leading-6'
               />
             </div>
           </form>
