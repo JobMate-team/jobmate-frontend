@@ -36,7 +36,7 @@ const ReviewEditPage = () => {
   };
 
   const handleCreate = () => {
-    showToast.success('등록되었습니다');
+    showToast.success('수정되었습니다');
     navigate('/review');
   };
 
