@@ -22,7 +22,7 @@ const AppLayout = () => {
 
   const handleLogout = () => {
     setIsLogoutModalOpen(false);
-    navigate(-1);
+    navigate('/');
     showToast.success('로그아웃에 성공했습니다');
   };
 
