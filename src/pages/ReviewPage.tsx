@@ -5,9 +5,10 @@ import { FaPlus } from 'react-icons/fa6';
 import { IoBusinessSharp } from 'react-icons/io5';
 import { LuBriefcaseBusiness } from 'react-icons/lu';
 import { ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { ThumbsUp } from 'lucide-react';
+import UpScrollButton from '@/components/ui/UpScrollButton';
 
 const mockReviewData = [
   {
@@ -74,7 +75,26 @@ const mockReviewData = [
 
 const ReviewPage = () => {
   const [openIds, setOpenIds] = useState<number[]>([]);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const navigate = useNavigate();
+
+  // 스크롤 감지
+  useEffect(() => {
+    const mainElement = document.querySelector('main');
+
+    const handleScroll = () => {
+      if (mainElement && mainElement.scrollTop > 200) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    if (mainElement) {
+      mainElement.addEventListener('scroll', handleScroll);
+      return () => mainElement.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
 
   return (
     <div className='space-y-5 relative pb-30 '>
@@ -161,6 +181,7 @@ const ReviewPage = () => {
         );
       })}
 
+      {showScrollTop && <UpScrollButton />}
       <Outlet />
     </div>
   );
