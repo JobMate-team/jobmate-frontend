@@ -67,7 +67,7 @@ const MyPage = () => {
               <div className='flex items-center gap-2'>
                 <p className='font-semibold text-lg'>정찬원</p>
                 <div className='bg-black text-white items-center px-3 py-1 text-sm rounded-lg'>
-                  개발
+                  IT
                 </div>
               </div>
               <p className='mt-2'>example.example.com</p>

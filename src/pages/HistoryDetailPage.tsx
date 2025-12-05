@@ -11,7 +11,6 @@ const mockHistoryItems = [
   {
     id: 1,
     category: '경험',
-    score: 75,
     date: '오늘',
     question: '코드 리뷰에서 가장 중요하게 생각하는 것은?',
     answer:
@@ -20,15 +19,13 @@ const mockHistoryItems = [
   {
     id: 2,
     category: '인성',
-    score: 100,
     date: '25.10.27',
     question: '인성 문제있어요?',
     answer: '없는데요? 왜 물어보세요 그런거',
   },
   {
     id: 3,
-    category: '개발',
-    score: 60,
+    category: 'IT',
     date: '24.9.10',
     question: '개발이 좋으세요? 아니면 고양이발이 좋으세요?',
     answer:
@@ -103,9 +100,6 @@ const HistoryDetailPage = () => {
           <div className='flex flex-row items-center justify-center gap-3'>
             <div className='bg-black text-white text-xs font-medium p-1 px-4 border border-[#E5E5E5] rounded-lg'>
               {item.category}
-            </div>
-            <div className='bg-[#ECEEF2] text-xs font-medium p-1 px-4 border border-[#E5E5E5] rounded-lg'>
-              {item.score}점
             </div>
             <p className='text-[#6A7282] flex items-center gap-1'>
               <FiCalendar size={18} />
