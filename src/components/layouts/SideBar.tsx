@@ -2,7 +2,7 @@ import { isLogoutModalAtom, pageAtom } from '@/atoms';
 import { menuItems } from '@/data/menuItems';
 import type { MenuItem } from '@/types/MenuItem';
 import clsx from 'clsx';
-import { useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { LogOut, Menu, PanelLeft } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -11,7 +11,7 @@ const SideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const setPage = useSetAtom(pageAtom);
-  const setIsLogoutModalOpen = useSetAtom(isLogoutModalAtom);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useAtom(isLogoutModalAtom);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,6 +41,23 @@ const SideBar = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isProfileMenuOpen]);
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsLogoutModalOpen(false);
+      }
+    };
+
+    if (isLogoutModalOpen) {
+      document.addEventListener('keydown', handleEsc);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEsc);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogoutModalOpen]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 768px)');

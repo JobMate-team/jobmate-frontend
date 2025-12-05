@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { LogOut } from 'lucide-react';
-import { useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { isLogoutModalAtom } from '@/atoms';
 
 const HomeHeader = () => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const setIsLogoutModalOpen = useSetAtom(isLogoutModalAtom);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useAtom(isLogoutModalAtom);
 
   // ref 생성
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -31,6 +31,23 @@ const HomeHeader = () => {
 
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isProfileMenuOpen]);
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsLogoutModalOpen(false);
+      }
+    };
+
+    if (isLogoutModalOpen) {
+      document.addEventListener('keydown', handleEsc);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEsc);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogoutModalOpen]);
 
   return (
     <div className='relative flex justify-between items-center p-4 bg-black'>
