@@ -20,6 +20,7 @@ const mockReviewData = [
     date: '오늘',
     company: '네이버',
     job: '서비스 기획',
+    owner: true,
     review:
       '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
     tip: '코드 컨벤션을 지켰는지 확인하면서 리뷰를 하는 것이 가장 중요하다고 생각합니다. 왜냐하면 중요하다고 생각하기 때문입니다. 코드 컨벤션을 지켰는지 확인하면서 리뷰를 하는 것이 가장 중요하다고 생각합니다. 왜냐하면 중요하다고 생각하기 때문입니다.',
@@ -30,46 +31,62 @@ const mockReviewData = [
     date: '25.10.27',
     company: '카카오',
     job: '프론트엔드 개발',
+    owner: false,
     review:
       '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
     tip: '없는데요? 왜 물어보세요 그런거',
   },
   {
     id: 3,
+    user: '정찬원',
+    date: '25.10.24',
+    company: '정승 네트워크',
+    job: '프론트엔드 개발',
+    owner: true,
+    review:
+      '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
+    tip: '코드 컨벤션을 지켰는지 확인하면서 리뷰를 하는 것이 가장 중요하다고 생각합니다. 왜냐하면 중요하다고 생각하기 때문입니다. 코드 컨벤션을 지켰는지 확인하면서 리뷰를 하는 것이 가장 중요하다고 생각합니다. 왜냐하면 중요하다고 생각하기 때문입니다.',
+  },
+  {
+    id: 4,
     user: '김서진',
     date: '24.9.10',
     company: '쿠팡',
     job: 'PM',
-    review:
-      '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
-    tip: '면접관들의 눈을 보면서 하면 압박감이 더 심해질 수 있으니 인중을 보는 것이 좋습니다. 우리가 인중을 볼 때 상대방은 눈을 마주보는 듯한 느낌을 받습니다.',
-  },
-  {
-    id: 4,
-    user: '이지수',
-    date: '24.9.10',
-    company: '라인',
-    job: 'AI',
+    owner: false,
     review:
       '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
     tip: '면접관들의 눈을 보면서 하면 압박감이 더 심해질 수 있으니 인중을 보는 것이 좋습니다. 우리가 인중을 볼 때 상대방은 눈을 마주보는 듯한 느낌을 받습니다.',
   },
   {
     id: 5,
-    user: '박은혜',
+    user: '이지수',
     date: '24.9.10',
-    company: '배달의 민족',
-    job: '데이터 분석',
+    company: '라인',
+    job: 'AI',
+    owner: false,
     review:
       '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
     tip: '면접관들의 눈을 보면서 하면 압박감이 더 심해질 수 있으니 인중을 보는 것이 좋습니다. 우리가 인중을 볼 때 상대방은 눈을 마주보는 듯한 느낌을 받습니다.',
   },
   {
     id: 6,
+    user: '박은혜',
+    date: '24.9.10',
+    company: '배달의 민족',
+    job: '데이터 분석',
+    owner: false,
+    review:
+      '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
+    tip: '면접관들의 눈을 보면서 하면 압박감이 더 심해질 수 있으니 인중을 보는 것이 좋습니다. 우리가 인중을 볼 때 상대방은 눈을 마주보는 듯한 느낌을 받습니다.',
+  },
+  {
+    id: 7,
     user: '김주원',
     date: '24.9.10',
     company: '구글',
     job: '백엔드',
+    owner: false,
     review:
       '1차 인성면접, 2차 직무면접, 3차 임원면접으로 진행되었습니다. 인성면접에서는 자기소개와 지원동기를 중점적으로 물어보셨고, 직무면접에서는 포트폴리오 기반 질문이 많았습니다.',
     tip: '면접관들의 눈을 보면서 하면 압박감이 더 심해질 수 있으니 인중을 보는 것이 좋습니다. 우리가 인중을 볼 때 상대방은 눈을 마주보는 듯한 느낌을 받습니다.',
@@ -151,20 +168,25 @@ const ReviewPage = () => {
                   <ThumbsUp size={20} />
                   <p>12</p>
                 </button>
-                <button
-                  type='button'
-                  onClick={() => navigate('/review/edit')}
-                  className='bg-white rounded-full p-2 hover:brightness-90 transition outline-none'
-                >
-                  <FaRegEdit size={16} className='text-[#7371cc]' />
-                </button>
-                <button
-                  type='button'
-                  onClick={() => setIsModalOpen((prev) => !prev)}
-                  className='bg-white rounded-full p-2 hover:brightness-90 transition outline-none'
-                >
-                  <FaRegTrashAlt size={16} className='text-[#FB2C36]' />
-                </button>
+                {data.owner && (
+                  <>
+                    <button
+                      type='button'
+                      onClick={() => navigate('/review/edit')}
+                      className='bg-white rounded-full p-2 hover:brightness-90 transition outline-none'
+                    >
+                      <FaRegEdit size={16} className='text-[#7371cc]' />
+                    </button>
+
+                    <button
+                      type='button'
+                      onClick={() => setIsModalOpen((prev) => !prev)}
+                      className='bg-white rounded-full p-2 hover:brightness-90 transition outline-none'
+                    >
+                      <FaRegTrashAlt size={16} className='text-[#FB2C36]' />
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 
