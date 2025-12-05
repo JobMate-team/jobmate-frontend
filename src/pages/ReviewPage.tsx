@@ -7,6 +7,7 @@ import { LuBriefcaseBusiness } from 'react-icons/lu';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import clsx from 'clsx';
+import { ThumbsUp } from 'lucide-react';
 
 const mockReviewData = [
   {
@@ -102,17 +103,23 @@ const ReviewPage = () => {
             key={data.id}
             className='bg-white rounded-xl px-6 py-5 border border-[#E5E5E5] flex flex-col gap-4'
           >
-            <div className='flex items-center gap-3 pl-2'>
-              <div className='w-10 h-10 rounded-full bg-black flex items-center justify-center font-medium text-lg text-white'>
-                {data.user.charAt(0)}
+            <div className='flex items-center justify-between pl-2'>
+              <div className='flex items-center gap-3'>
+                <div className='w-10 h-10 rounded-full bg-black flex items-center justify-center font-medium text-lg text-white'>
+                  {data.user.charAt(0)}
+                </div>
+                <div>
+                  <p className='text-lg font-medium'>{data.user}</p>
+                  <p className='text-[#6A7282] text-sm flex items-center gap-1'>
+                    <FiCalendar size={16} />
+                    {data.date}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className='text-lg font-medium'>{data.user}</p>
-                <p className='text-[#6A7282] text-sm flex items-center gap-1'>
-                  <FiCalendar size={16} />
-                  {data.date}
-                </p>
-              </div>
+              <button type='button' className='flex items-center gap-1 text-[#717182]'>
+                <ThumbsUp size={20} />
+                <p>12</p>
+              </button>
             </div>
 
             <div className='flex items-center gap-2 mb-1 pl-2'>

@@ -1,6 +1,6 @@
 const HomeHeader = () => {
   return (
-    <div className='flex justify-between items-center px-4 py-3'>
+    <div className='flex justify-between items-center p-4'>
       <h3 className='text-white text-2xl font-semibold'>JobMate.AI</h3>
       <button
         type='button'

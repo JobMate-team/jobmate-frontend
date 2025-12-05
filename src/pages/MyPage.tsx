@@ -8,6 +8,8 @@ import { jobItems } from '@/data/coachItems';
 import DropDown from '@/components/ui/Dropdown';
 import { useSetAtom } from 'jotai';
 import { isLogoutModalAtom } from '@/atoms';
+import Button from '@/components/common/Button';
+import { showToast } from '@/utils/toast';
 
 const MyPage = () => {
   const [isDark, setIsDark] = useState(false);
@@ -17,6 +19,21 @@ const MyPage = () => {
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
 
   const navigate = useNavigate();
+
+  const handleProfileSave = () => {
+    setIsEditOpen(false);
+    showToast.success('저장되었습니다');
+  };
+
+  const handleJobSave = () => {
+    if (!selectedJob) {
+      showToast.error('직무를 선택해주세요');
+      return;
+    }
+    setIsChangeJob(false);
+    setSelectedJob(null);
+    showToast.success('저장되었습니다');
+  };
 
   return (
     <div
@@ -79,7 +96,7 @@ const MyPage = () => {
               </div>
 
               {isEditOpen && (
-                <form className='space-y-6 mt-2'>
+                <form className='space-y-4 mt-2'>
                   <label className='font-medium'>이름</label>
                   <input
                     type='text'
@@ -88,8 +105,18 @@ const MyPage = () => {
                     className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none mt-2'
                   />
 
-                  <label className='font-medium mb-1'>이메일</label>
+                  <p className='font-medium mt-2'>이메일</p>
                   <div className='w-full bg-[#F3F3F5] p-4 rounded-lg mt-2'>example.example.com</div>
+
+                  <div className='flex justify-end'>
+                    <Button
+                      type='submit'
+                      onClick={handleProfileSave}
+                      className='bg-black text-white p-3 w-20'
+                    >
+                      저장
+                    </Button>
+                  </div>
                 </form>
               )}
             </article>
@@ -117,12 +144,23 @@ const MyPage = () => {
               </div>
 
               {isChangeJob && (
-                <DropDown
-                  items={jobItems}
-                  selected={selectedJob}
-                  placeholder='직무 선택'
-                  onSelect={(question) => setSelectedJob(question)}
-                />
+                <div className='flex flex-col gap-4 mt-2'>
+                  <DropDown
+                    items={jobItems}
+                    selected={selectedJob}
+                    placeholder='직무 선택'
+                    onSelect={(question) => setSelectedJob(question)}
+                  />
+                  <div className='flex justify-end'>
+                    <Button
+                      type='submit'
+                      onClick={handleJobSave}
+                      className='bg-black text-white p-3 w-20'
+                    >
+                      저장
+                    </Button>
+                  </div>
+                </div>
               )}
             </article>
           </section>
