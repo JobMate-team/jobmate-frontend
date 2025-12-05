@@ -1,18 +1,46 @@
-import { pageAtom } from '@/atoms';
+import { isLogoutModalAtom, pageAtom } from '@/atoms';
 import { menuItems } from '@/data/menuItems';
 import type { MenuItem } from '@/types/MenuItem';
 import clsx from 'clsx';
 import { useSetAtom } from 'jotai';
-import { Menu, PanelLeft } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { LogOut, Menu, PanelLeft } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const SideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const setPage = useSetAtom(pageAtom);
+  const setIsLogoutModalOpen = useSetAtom(isLogoutModalAtom);
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  // --- ref 생성 ---
+  const profileButtonRef = useRef<HTMLDivElement>(null);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
+
+  // --- 외부 클릭 시 메뉴 닫기 ---
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        profileMenuRef.current &&
+        !profileMenuRef.current.contains(e.target as Node) &&
+        profileButtonRef.current &&
+        !profileButtonRef.current.contains(e.target as Node)
+      ) {
+        setIsProfileMenuOpen(false);
+      }
+    };
+
+    if (isProfileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isProfileMenuOpen]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 768px)');
@@ -21,10 +49,10 @@ const SideBar = () => {
       setIsSidebarOpen(mediaQuery.matches);
     };
 
-    handleResize(); // 초기 실행
+    handleResize();
     mediaQuery.addEventListener('change', handleResize);
 
-    return () => mediaQuery.removeEventListener('change', handleResize); // cleanUp
+    return () => mediaQuery.removeEventListener('change', handleResize);
   }, []);
 
   const handleMenuClick = (item: MenuItem) => {
@@ -47,10 +75,11 @@ const SideBar = () => {
   return (
     <aside
       className={clsx(
-        'hidden sm:flex bg-white border-r border-gray-200 flex-col transition-all duration-150',
+        'relative hidden sm:flex bg-white border-r border-gray-200 flex-col transition-all duration-150',
         isSidebarOpen ? 'w-64' : 'w-20',
       )}
     >
+      {/* 헤더 */}
       {isSidebarOpen ? (
         <div className='p-4 border-b border-gray-200 flex flex-col space-y-2'>
           <div className='flex flex-row justify-between items-center'>
@@ -76,6 +105,7 @@ const SideBar = () => {
         </div>
       )}
 
+      {/* 메뉴 */}
       <nav className='flex-1 p-4'>
         {menuItems.map((item) => {
           const Icon = item.icon;
@@ -100,9 +130,14 @@ const SideBar = () => {
         })}
       </nav>
 
+      {/* 프로필 버튼 */}
       {isSidebarOpen && (
         <div className='p-4 border-t border-gray-200'>
-          <div className='flex items-center gap-3 p-2 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-150'>
+          <div
+            ref={profileButtonRef}
+            onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+            className='flex items-center gap-3 p-2 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-150'
+          >
             <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
               정
             </div>
@@ -116,6 +151,35 @@ const SideBar = () => {
               <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* 프로필 메뉴 */}
+      {isProfileMenuOpen && isSidebarOpen && (
+        <div
+          ref={profileMenuRef}
+          className='absolute bottom-20 left-4 right-4 bg-white shadow-lg rounded-lg border border-[#DADADA] p-3 '
+        >
+          <div className='flex items-center gap-3 p-2'>
+            <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
+              정
+            </div>
+            <div className='flex flex-col'>
+              <span className='text-sm font-medium whitespace-nowrap'>정찬원</span>
+              <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
+            </div>
+          </div>
+          <div className='h-px w-full my-3 bg-gray-200' />
+          <button
+            className='w-full text-left px-3 py-2 rounded-lg hover:bg-red-50 mt-2 flex items-center font-medium gap-2 text-red-600'
+            onClick={() => {
+              setIsLogoutModalOpen(true);
+              setIsProfileMenuOpen(false);
+            }}
+          >
+            <LogOut size={20} />
+            로그아웃
+          </button>
         </div>
       )}
     </aside>

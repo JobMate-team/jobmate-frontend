@@ -46,7 +46,7 @@ const MyPage = () => {
         onClick={(e) => e.stopPropagation()}
         className='relative bg-white sm:rounded-xl flex flex-col overflow-y-auto px-5 py-8 sm:w-140 w-full sm:h-[80%] h-full hide-scrollbar'
       >
-        <div className='absolute top-0 left-0 w-full h-[40%] bg-black sm:rounded-t-xl' />
+        <div className='absolute top-0 left-0 w-full h-[40%] bg-black sm:rounded-t-xl sm:border max-sm:border-none border-[#3b3b3b]' />
 
         <div className='relative z-10 space-y-10 max-sm:mb-20'>
           <section className='flex items-center justify-between mb-10'>

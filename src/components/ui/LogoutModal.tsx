@@ -7,8 +7,11 @@ interface ModalProps {
 
 const LogoutModal = ({ onConfirm, onCancel }: ModalProps) => {
   return (
-    <div className='fixed inset-0 bg-black/40 flex justify-center items-center'>
-      <div className='bg-white rounded-[10px] flex flex-col overflow-hidden px-5 py-10 space-y-3 w-80'>
+    <div onClick={onCancel} className='fixed inset-0 bg-black/40 flex justify-center items-center'>
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className='bg-white rounded-[10px] flex flex-col overflow-hidden px-5 py-10 space-y-3 w-80'
+      >
         <p className='text-center font-semibold text-xl'>로그아웃 하시겠습니까?</p>
         <div className='flex items-center justify-center gap-3 mt-3'>
           <Button
