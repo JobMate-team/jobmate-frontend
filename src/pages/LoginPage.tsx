@@ -1,10 +1,14 @@
 import { KakaoIcon, LogoIcon } from '@/assets';
+import { isAdminLoginModalAtom } from '@/atoms';
 import Button from '@/components/common/Button';
+import AdminLoginModal from '@/components/ui/AdminLoginModal';
 import { showToast } from '@/utils/toast';
+import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useAtom(isAdminLoginModalAtom);
 
   return (
     <main className='relative bg-gray-50 min-h-dvh flex justify-center items-center p-4'>
@@ -39,12 +43,21 @@ const LoginPage = () => {
         <p className='text-center text-[13px] text-[#6A7282] mt-4'>
           카카오 계정으로 간편하게 시작하세요
         </p>
+
+        <p
+          className='text-center text-[13px] text-gray-500 hover:underline mt-6 cursor-pointer transition'
+          onClick={() => setIsAdminLoginModalOpen(true)}
+        >
+          관리자 모드로 로그인
+        </p>
       </section>
 
       <p className='absolute bottom-6 text-center w-full text-xs text-[#6A7282]'>
         로그인 시 서비스 이용약관 및 <br />
         개인정보 처리방침에 동의하게 됩니다
       </p>
+
+      {isAdminLoginModalOpen && <AdminLoginModal />}
     </main>
   );
 };

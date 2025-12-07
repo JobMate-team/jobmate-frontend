@@ -153,7 +153,7 @@ const ReviewPage = () => {
             <DropDown
               items={jobItems}
               selected={selectedJob}
-              placeholder='직무'
+              placeholder='직군'
               onSelect={(job) => setSelectedJob(job)}
               bgColor='bg-white'
               borderColor='border-transparent'

@@ -98,13 +98,13 @@ const ReviewEditPage = () => {
 
             <div className='flex flex-col gap-2'>
               <label className='font-medium'>
-                지원 직무 <span className='text-red-500'>*</span>
+                지원 직군 <span className='text-red-500'>*</span>
               </label>
 
               <DropDown
                 items={jobItems}
                 selected={selectedJob}
-                placeholder='직무 선택'
+                placeholder='직군 선택'
                 onSelect={(question) => setSelectedJob(question)}
               />
             </div>

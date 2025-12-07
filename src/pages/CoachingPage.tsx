@@ -78,11 +78,11 @@ const CoachingPage = () => {
       {page === 1 && (
         <>
           <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
-            <p className='font-semibold'>직무 선택</p>
+            <p className='font-semibold'>직군 선택</p>
             <DropDown
               items={jobItems}
               selected={selectedJob}
-              placeholder='직무 선택'
+              placeholder='직군 선택'
               onSelect={(job) => setSelectedJob(job)}
             />
           </div>

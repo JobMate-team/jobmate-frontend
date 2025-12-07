@@ -8,7 +8,7 @@ export const features = [
   },
   {
     icon: <SecondHomeIcon />,
-    title: '직무별 맞춤 코칭',
+    title: '직군별 맞춤 코칭',
     description: '각 직무에 특화된 질문과 피드백을 제공합니다',
   },
   {

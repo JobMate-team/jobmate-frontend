@@ -69,7 +69,7 @@ const MyPage = () => {
             <div className='flex flex-col'>
               <div className='flex items-center gap-2'>
                 <p className='font-semibold text-lg'>정찬원</p>
-                <div className='bg-black text-white items-center px-3 py-1 text-sm rounded-lg'>
+                <div className='bg-[#F3F3F5] items-center px-3 py-1 text-sm font-medium rounded-xl border border-gray-300'>
                   IT
                 </div>
               </div>
@@ -132,7 +132,7 @@ const MyPage = () => {
                   <Briefcase className='text-[#9810FA]' />
                 </div>
                 <div className='sm:text-lg flex items-center justify-between w-full'>
-                  <p>지원 직무 변경</p>
+                  <p>지원 직군 변경</p>
                   <button
                     type='button'
                     onClick={() => setIsChangeJob((prev) => !prev)}
@@ -151,7 +151,7 @@ const MyPage = () => {
                   <DropDown
                     items={jobItems}
                     selected={selectedJob}
-                    placeholder='직무 선택'
+                    placeholder='직군 선택'
                     onSelect={(question) => setSelectedJob(question)}
                   />
                   <div className='flex justify-end'>
