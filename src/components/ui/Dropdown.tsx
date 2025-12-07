@@ -28,10 +28,11 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
       top: rect.bottom + 8,
       left: rect.left,
       width: buttonRef.current.offsetWidth,
+      zIndex: 100,
     };
   }
 
-  // --- 화면 중앙 체크 ---
+  // 화면 중앙 체크
   const isDropDownCentered = () => {
     if (!buttonRef.current) return true;
     const rect = buttonRef.current.getBoundingClientRect();
@@ -42,38 +43,56 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
     return Math.abs(elementCenter - viewportCenter) <= 80;
   };
 
-  // --- 버튼 클릭 시 스크롤 후 드롭다운 연동 ---
+  // --- 스크롤 이동 후 OPEN ---
   const handleToggle = () => {
     if (!open) {
       const isCenter = isDropDownCentered();
 
-      if (isCenter) {
-        setOpen(true);
-      } else {
+      if (isCenter) setOpen(true);
+      else {
         buttonRef.current?.scrollIntoView({
           behavior: 'smooth',
           block: 'center',
         });
-
-        setTimeout(() => {
-          setOpen(true);
-        }, 150);
+        setTimeout(() => setOpen(true), 150);
       }
     } else {
       setOpen(false);
     }
   };
 
-  const handleSelect = (item: string) => {
-    onSelect(item);
+  // --- 스크롤 잠금 + 모바일 touchmove 방지 ---
+  useEffect(() => {
+    if (open) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+
+      const preventScroll = (e: TouchEvent) => e.preventDefault();
+      document.addEventListener('touchmove', preventScroll, { passive: false });
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.removeEventListener('touchmove', preventScroll);
+      };
+    }
+  }, [open]);
+
+  const closeDropdown = () => {
     setOpen(false);
   };
 
+  const handleSelect = (item: string) => {
+    onSelect(item);
+    closeDropdown();
+  };
+
+  // 애니메이션 처리
   useEffect(() => {
     if (open) requestAnimationFrame(() => setAnimate(true));
     else setAnimate(false);
   }, [open]);
 
+  // 외부 클릭/ESC 감지
   useEffect(() => {
     if (!open) return;
 
@@ -83,11 +102,11 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
       if (buttonRef.current?.contains(target)) return;
       if (dropdownRef.current?.contains(target)) return;
 
-      setOpen(false);
+      closeDropdown();
     };
 
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') closeDropdown();
     };
 
     window.addEventListener('mousedown', handleClickOutside);
@@ -101,7 +120,7 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
 
   return (
     <>
-      {/* Trigger Button */}
+      {/* Trigger */}
       <button
         type='button'
         ref={buttonRef}
@@ -119,27 +138,33 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
         </div>
       </button>
 
-      {/* Portal dropdown */}
+      {/* Portal + overlay */}
       {open &&
         createPortal(
-          <div
-            ref={dropdownRef}
-            className={clsx(
-              'bg-white shadow-lg rounded-lg border border-[#E5E5E5] p-3 transition-all duration-150 ease-out',
-              animate ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2',
-            )}
-            style={dropdownStyle}
-          >
-            {items.map((item) => (
-              <div
-                key={item}
-                className='cursor-pointer rounded-lg sm:p-4 p-2.5 hover:bg-gray-100 max-sm:text-sm'
-                onClick={() => handleSelect(item)}
-              >
-                {item}
-              </div>
-            ))}
-          </div>,
+          <>
+            {/* Overlay (스크린 전체 클릭/스크롤 차단) */}
+            <div className='fixed inset-0 z-50 bg-transparent' onClick={closeDropdown} />
+
+            {/* 실제 드롭다운 */}
+            <div
+              ref={dropdownRef}
+              className={clsx(
+                'bg-white shadow-lg rounded-lg border border-[#E5E5E5] p-3 transition-all duration-150 ease-out z-50 max-h-80 overflow-y-auto thin-scrollbar',
+                animate ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2',
+              )}
+              style={dropdownStyle}
+            >
+              {items.map((item) => (
+                <div
+                  key={item}
+                  className='cursor-pointer rounded-lg sm:p-4 p-2.5 hover:bg-gray-100 max-sm:text-sm'
+                  onClick={() => handleSelect(item)}
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          </>,
           document.body,
         )}
     </>

@@ -118,9 +118,9 @@ const CoachingPage = () => {
 
       {page === 2 && (
         <>
-          <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white leading-5'>
+          <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white'>
             <p className='font-semibold'>선택된 질문</p>
-            <p>{customQuestion || selectedQuestion}</p>
+            <p className='leading-5 whitespace-pre-wrap'>{customQuestion || selectedQuestion}</p>
           </div>
 
           <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
@@ -156,19 +156,19 @@ const CoachingPage = () => {
 
       {page === 3 && (
         <>
-          <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white leading-5'>
+          <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white'>
             <p className='font-semibold'>선택된 질문</p>
-            <p>{customQuestion || selectedQuestion}</p>
+            <p className='leading-5 whitespace-pre-wrap'>{customQuestion || selectedQuestion}</p>
           </div>
 
           <div className='bg-white rounded-xl p-6 flex flex-col gap-4 border border-[#E5E5E5]'>
             <p className='font-semibold'>내 답변</p>
-            <p className='leading-6'>{customAnswer}</p>
+            <p className='leading-5 whitespace-pre-wrap'>{customAnswer}</p>
           </div>
 
           <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
             <p className='font-semibold py-2'>AI 피드백</p>
-            <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 leading-5'>
+            <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 leading-5 whitespace-pre-wrap'>
               넌 안돼 망할거라 우우~
             </div>
           </div>
@@ -208,7 +208,7 @@ const CoachingPage = () => {
                   저장
                 </Button>
               </div>
-              <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 leading-5'>
+              <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 leading-5 whitespace-pre-wrap'>
                 {feedback}
               </div>
             </div>

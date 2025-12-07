@@ -97,6 +97,7 @@ const ReviewPage = () => {
   const [openIds, setOpenIds] = useState<number[]>([]);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSortOrder, SetIsSortOrder] = useState(false);
   const navigate = useNavigate();
 
   // 스크롤 감지
@@ -140,6 +141,16 @@ const ReviewPage = () => {
           <FaPlus size={16} />
           후기 작성
         </Button>
+      </div>
+
+      <div className='flex justify-end'>
+        <button
+          type='button'
+          onClick={() => SetIsSortOrder((prev) => !prev)}
+          className='text-sm px-3 text-gray-700'
+        >
+          {isSortOrder ? '최신순' : '오래된순'}
+        </button>
       </div>
 
       {mockReviewData.map((data) => {
