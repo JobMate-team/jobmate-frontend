@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
 import { jobItems } from '@/data/coachItems';
 import DropDown from '@/components/ui/Dropdown';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { isAdminLoginModalAtom, isAdminModeAtom, isLogoutModalAtom } from '@/atoms';
 import Button from '@/components/common/Button';
 import { showToast } from '@/utils/toast';
@@ -18,7 +18,7 @@ const MyPage = () => {
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
 
   const setIsAdminModalOpen = useSetAtom(isAdminLoginModalAtom);
-  const isAdminMode = useAtomValue(isAdminModeAtom);
+  const [isAdminMode] = useAtom(isAdminModeAtom);
   const setIsModalOpen = useSetAtom(isLogoutModalAtom);
 
   const navigate = useNavigate();
@@ -36,6 +36,14 @@ const MyPage = () => {
     setIsChangeJob(false);
     setSelectedJob(null);
     showToast.success('저장되었습니다');
+  };
+
+  const handleChangeMode = () => {
+    if (isAdminMode) {
+      setIsModalOpen(true);
+    } else {
+      setIsAdminModalOpen(true);
+    }
   };
 
   return (
@@ -80,7 +88,7 @@ const MyPage = () => {
           <section className='bg-white rounded-xl p-5 shadow-md border border-black/10'>
             <article className='flex flex-col gap-4'>
               <div className='flex gap-4'>
-                <div className='bg-[#DBEAFE] text-white rounded-[10px] p-3 flex items-center justify-center font-semibold'>
+                <div className='bg-[#DBEAFE] rounded-[10px] p-3 flex items-center justify-center font-semibold'>
                   <User className='text-[#155DFC]' />
                 </div>
                 <div className='sm:text-lg flex items-center justify-between w-full'>
@@ -128,7 +136,7 @@ const MyPage = () => {
 
             <article className='flex flex-col gap-4'>
               <div className='flex items-center gap-4'>
-                <div className='bg-[#F3E8FF] text-white rounded-[10px] p-3 flex items-center justify-center font-semibold'>
+                <div className='bg-[#F3E8FF] rounded-[10px] p-3 flex items-center justify-center font-semibold'>
                   <Briefcase className='text-[#9810FA]' />
                 </div>
                 <div className='sm:text-lg flex items-center justify-between w-full'>
@@ -170,7 +178,7 @@ const MyPage = () => {
 
           <section className='bg-white rounded-xl p-5 shadow-md border border-black/10'>
             <article className='flex items-center gap-4'>
-              <div className='bg-[#F3F4F6] text-white rounded-[10px] p-3 flex items-center justify-center font-semibold'>
+              <div className='bg-[#F3F4F6] rounded-[10px] p-3 flex items-center justify-center font-semibold'>
                 <Moon className='text-[#4A5565]' />
               </div>
               <div className='sm:text-lg flex items-center justify-between w-full'>
@@ -198,14 +206,19 @@ const MyPage = () => {
             <div className='h-px w-full my-5 bg-gray-200' />
 
             <article className='flex items-center gap-4'>
-              <div className='bg-[#FFE2E2] text-white rounded-[10px] p-3 flex items-center justify-center font-semibold'>
-                <Shield className='text-[#E7000B]' />
+              <div
+                className={clsx(
+                  'rounded-[10px] p-3 flex items-center justify-center font-semibold',
+                  isAdminMode ? 'bg-[#DBEAFE]' : 'bg-[#FFE2E2]',
+                )}
+              >
+                <Shield className={clsx(isAdminMode ? 'text-[#155DFC]' : 'text-[#E7000B]')} />
               </div>
               <div className='sm:text-lg flex items-center justify-between w-full'>
                 <p>{isAdminMode ? '일반 사용자 모드' : '관리자 모드'}</p>
                 <button
                   type='button'
-                  onClick={() => setIsAdminModalOpen(true)}
+                  onClick={handleChangeMode}
                   className='hover:brightness-80 rounded-full p-1 transition cursor-pointer outline-none'
                 >
                   <RightIcon className='h-4 w-4' />

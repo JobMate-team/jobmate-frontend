@@ -1,4 +1,6 @@
+import { useAtomValue } from 'jotai';
 import Button from '../common/Button';
+import { isAdminModeAtom } from '@/atoms';
 
 interface ModalProps {
   onConfirm: () => void;
@@ -6,13 +8,16 @@ interface ModalProps {
 }
 
 const LogoutModal = ({ onConfirm, onCancel }: ModalProps) => {
+  const isAdminMode = useAtomValue(isAdminModeAtom);
   return (
     <div onClick={onCancel} className='fixed inset-0 bg-black/40 flex justify-center items-center'>
       <div
         onClick={(e) => e.stopPropagation()}
         className='bg-white rounded-[10px] flex flex-col overflow-hidden px-5 py-10 space-y-3 w-80'
       >
-        <p className='text-center font-semibold text-xl'>로그아웃 하시겠습니까?</p>
+        <p className='text-center font-semibold text-xl'>
+          {isAdminMode ? '관리자 모드를 종료합니다' : '로그아웃 하시겠습니까?'}
+        </p>
         <div className='flex items-center justify-center gap-3 mt-3'>
           <Button
             type='button'
@@ -26,7 +31,7 @@ const LogoutModal = ({ onConfirm, onCancel }: ModalProps) => {
             onClick={onConfirm}
             className='bg-black text-white font-medium p-3 flex-1'
           >
-            로그아웃
+            {isAdminMode ? '확인' : '로그아웃'}
           </Button>
         </div>
       </div>

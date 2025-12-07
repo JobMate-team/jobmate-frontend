@@ -4,7 +4,12 @@ import MobileHeader from '@/components/layouts/MobileHeader';
 import MobileFooter from '@/components/layouts/MobileFooter';
 import Modal from '@/components/common/Modal';
 import { useAtom } from 'jotai';
-import { isAdminLoginModalAtom, isLogoutModalAtom, isModalOpenAtom } from '@/atoms';
+import {
+  isAdminLoginModalAtom,
+  isAdminModeAtom,
+  isLogoutModalAtom,
+  isModalOpenAtom,
+} from '@/atoms';
 import { showToast } from '@/utils/toast';
 import { useEffect } from 'react';
 import LogoutModal from '@/components/ui/LogoutModal';
@@ -14,6 +19,7 @@ const AppLayout = () => {
   const [isModalOpen, setIsModalOpen] = useAtom(isModalOpenAtom);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useAtom(isLogoutModalAtom);
   const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useAtom(isAdminLoginModalAtom);
+  const [isAdminMode, setIsAdminMode] = useAtom(isAdminModeAtom);
 
   const navigate = useNavigate();
 
@@ -23,8 +29,14 @@ const AppLayout = () => {
   };
 
   const handleLogout = () => {
-    setIsLogoutModalOpen(false);
-    navigate('/');
+    if (isAdminMode) {
+      setIsLogoutModalOpen(false);
+      setIsAdminMode(false);
+      navigate('/');
+    } else {
+      setIsLogoutModalOpen(false);
+      navigate('/signin');
+    }
     showToast.success('로그아웃에 성공했습니다');
   };
 

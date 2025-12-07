@@ -20,7 +20,7 @@ const Toast = () => {
             lineHeight: '16px',
             whiteSpace: 'nowrap',
             wordBreak: 'keep-all',
-            minWidth: '250px',
+            minWidth: '300px',
           },
         },
         error: {

@@ -1,9 +1,9 @@
-import { isLogoutModalAtom, pageAtom } from '@/atoms';
+import { isAdminModeAtom, isLogoutModalAtom, pageAtom } from '@/atoms';
 import { menuItems } from '@/data/menuItems';
 import type { MenuItem } from '@/types/MenuItem';
 import clsx from 'clsx';
-import { useAtom, useSetAtom } from 'jotai';
-import { LogOut, Menu, PanelLeft } from 'lucide-react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { LogOut, Menu, PanelLeft, Shield } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ const SideBar = () => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const setPage = useSetAtom(pageAtom);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useAtom(isLogoutModalAtom);
+  const isAdminMode = useAtomValue(isAdminModeAtom);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -150,24 +151,37 @@ const SideBar = () => {
       {/* 프로필 버튼 */}
       {isSidebarOpen && (
         <div className='p-4 border-t border-gray-200'>
-          <div
-            ref={profileButtonRef}
-            onClick={() => setIsProfileMenuOpen((prev) => !prev)}
-            className='flex items-center gap-3 p-2 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-150'
-          >
-            <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
-              정
-            </div>
+          {!isAdminMode ? (
             <div
-              className={clsx(
-                'flex flex-col overflow-hidden transition-all duration-200',
-                isSidebarOpen ? 'opacity-100 translate-x-0 w-32' : 'opacity-0 -translate-x-2 w-0',
-              )}
+              ref={profileButtonRef}
+              onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+              className='flex items-center gap-3 p-2 rounded-lg hover:bg-gray-200 cursor-pointer transition'
             >
-              <span className='text-sm font-medium whitespace-nowrap'>정찬원</span>
-              <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
+              <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
+                정
+              </div>
+              <div
+                className={clsx(
+                  'flex flex-col overflow-hidden transition-all duration-200',
+                  isSidebarOpen ? 'opacity-100 translate-x-0 w-32' : 'opacity-0 -translate-x-2 w-0',
+                )}
+              >
+                <span className='text-sm font-medium whitespace-nowrap'>정찬원</span>
+                <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div
+              ref={profileButtonRef}
+              onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+              className='flex items-center gap-3 p-2 rounded-lg hover:bg-gray-200 cursor-pointer transition'
+            >
+              <div className='bg-[#FFE2E2] text-white w-8 h-8 rounded-full p-2 flex items-center justify-center font-semibold'>
+                <Shield className='text-[#E7000B]' />
+              </div>
+              <p>관리자 모드</p>
+            </div>
+          )}
         </div>
       )}
 
@@ -177,17 +191,27 @@ const SideBar = () => {
           ref={profileMenuRef}
           className='absolute bottom-20 left-4 right-4 bg-white shadow-lg rounded-lg border border-[#DADADA] p-3 '
         >
-          <div className='flex items-center gap-3 p-2'>
-            <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
-              정
+          {!isAdminMode ? (
+            <div className='flex items-center gap-3 p-2'>
+              <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
+                정
+              </div>
+              <div className='flex flex-col'>
+                <span className='text-sm font-medium whitespace-nowrap'>정찬원</span>
+                <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
+              </div>
             </div>
-            <div className='flex flex-col'>
-              <span className='text-sm font-medium whitespace-nowrap'>정찬원</span>
-              <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
+          ) : (
+            <div className='flex items-center gap-3 p-2'>
+              <div className='bg-[#FFE2E2] text-white w-8 h-8 rounded-full p-2 flex items-center justify-center font-semibold'>
+                <Shield className='text-[#E7000B]' />
+              </div>
+              <p>관리자 모드</p>
             </div>
-          </div>
+          )}
           <div className='h-px w-full my-3 bg-gray-200' />
           <button
+            type='button'
             className='w-full text-left text-sm px-3 py-2 rounded-lg hover:bg-red-50 mt-2 flex items-center font-medium gap-2 text-red-600'
             onClick={() => {
               setIsLogoutModalOpen(true);
