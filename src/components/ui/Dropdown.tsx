@@ -51,7 +51,7 @@ const DropDown = ({
     const viewportCenter = window.innerHeight / 2;
 
     // 중앙 기준 ±80px 범위 안이면 OK
-    return Math.abs(elementCenter - viewportCenter) <= 80;
+    return Math.abs(elementCenter - viewportCenter) <= 40;
   };
 
   // --- 스크롤 이동 후 OPEN ---
