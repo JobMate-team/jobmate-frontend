@@ -206,7 +206,7 @@ const MyPage = () => {
                 <button
                   type='button'
                   onClick={() => setIsAdminModalOpen(true)}
-                  className='hover:brightness-80 rounded-full p-1 transition cursor-pointer'
+                  className='hover:brightness-80 rounded-full p-1 transition cursor-pointer outline-none'
                 >
                   <RightIcon className='h-4 w-4' />
                 </button>
@@ -224,7 +224,7 @@ const MyPage = () => {
                 <button
                   type='button'
                   onClick={() => setIsModalOpen(true)}
-                  className='hover:brightness-80 rounded-full p-1 transition cursor-pointer'
+                  className='hover:brightness-80 rounded-full p-1 transition cursor-pointer outline-none'
                 >
                   <RightIcon className='h-4 w-4' />
                 </button>

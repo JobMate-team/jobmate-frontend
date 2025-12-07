@@ -28,24 +28,30 @@ const AppLayout = () => {
     showToast.success('로그아웃에 성공했습니다');
   };
 
-  const handleLogin = () => {
-    setIsAdminLoginModalOpen(false);
-    navigate('/');
-    showToast.success('관리자 로그인에 성공했습니다.');
-  };
-
   useEffect(() => {
-    if (!isModalOpen) return;
+    // 모달 3종 중 하나라도 열려있으면 ESC 감지 작동
+    const isAnyModalOpen = isModalOpen || isLogoutModalOpen || isAdminLoginModalOpen;
+
+    if (!isAnyModalOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsModalOpen(false);
+        setIsLogoutModalOpen(false);
+        setIsAdminLoginModalOpen(false);
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isModalOpen, setIsModalOpen]);
+  }, [
+    isModalOpen,
+    isLogoutModalOpen,
+    isAdminLoginModalOpen,
+    setIsModalOpen,
+    setIsLogoutModalOpen,
+    setIsAdminLoginModalOpen,
+  ]);
 
   return (
     <div className='flex h-screen bg-gray-50'>
@@ -74,9 +80,7 @@ const AppLayout = () => {
         <LogoutModal onCancel={() => setIsLogoutModalOpen(false)} onConfirm={handleLogout} />
       )}
 
-      {isAdminLoginModalOpen && (
-        <AdminLoginModal onCancel={() => setIsAdminLoginModalOpen(false)} onConfirm={handleLogin} />
-      )}
+      {isAdminLoginModalOpen && <AdminLoginModal />}
     </div>
   );
 };
