@@ -92,7 +92,7 @@ const CoachingPage = () => {
             <DropDown
               items={basicItems}
               selected={selectedQuestion}
-              placeholder='기본 질문 선택'
+              placeholder='기본 질문 예시'
               onSelect={(question) => setSelectedQuestion(question)}
             />
 

@@ -9,9 +9,20 @@ interface DropDownProps {
   placeholder?: string;
   // eslint-disable-next-line no-unused-vars
   onSelect: (item: string) => void;
+  bgColor?: string;
+  borderColor?: string;
+  SmPadding?: string;
 }
 
-const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => {
+const DropDown = ({
+  items,
+  selected,
+  placeholder,
+  onSelect,
+  bgColor = 'bg-[#F3F3F5]',
+  borderColor = 'border-gray-300',
+  SmPadding = 'py-2.5 sm:py-3',
+}: DropDownProps) => {
   const [open, setOpen] = useState(false);
   const [animate, setAnimate] = useState(false);
 
@@ -126,8 +137,10 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
         ref={buttonRef}
         onClick={handleToggle}
         className={clsx(
-          'bg-[#F3F3F5] rounded-lg py-2.5 sm:py-3 px-4 max-sm:text-sm flex justify-between items-center outline-none',
-          open ? 'border border-gray-300' : 'border border-transparent',
+          bgColor,
+          SmPadding,
+          'rounded-lg pr-2 pl-4 max-sm:text-sm flex justify-between items-center outline-none gap-2 border whitespace-nowrap',
+          open ? borderColor : 'border-transparent',
         )}
       >
         <p className={clsx(selected ? 'text-black' : 'text-[#717182]')}>
@@ -149,7 +162,7 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
             <div
               ref={dropdownRef}
               className={clsx(
-                'bg-white shadow-lg rounded-lg border border-[#E5E5E5] p-3 transition-all duration-150 ease-out z-50 max-h-80 overflow-y-auto thin-scrollbar',
+                'bg-white shadow-lg rounded-lg border border-[#E5E5E5] p-3 transition-all duration-150 ease-out z-50 max-h-80 overflow-y-auto thin-scrollbar min-w-50',
                 animate ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2',
               )}
               style={dropdownStyle}
@@ -157,7 +170,7 @@ const DropDown = ({ items, selected, placeholder, onSelect }: DropDownProps) => 
               {items.map((item) => (
                 <div
                   key={item}
-                  className='cursor-pointer rounded-lg sm:p-4 p-2.5 hover:bg-gray-100 max-sm:text-sm'
+                  className='cursor-pointer rounded-lg sm:p-4 p-2.5 hover:bg-gray-100 max-sm:text-sm whitespace-nowrap'
                   onClick={() => handleSelect(item)}
                 >
                   {item}

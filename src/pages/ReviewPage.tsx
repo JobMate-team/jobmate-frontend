@@ -12,6 +12,8 @@ import UpScrollButton from '@/components/ui/UpScrollButton';
 import Modal from '@/components/common/Modal';
 import { showToast } from '@/utils/toast';
 import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa';
+import DropDown from '@/components/ui/Dropdown';
+import { jobItems } from '@/data/coachItems';
 
 const mockReviewData = [
   {
@@ -98,6 +100,8 @@ const ReviewPage = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSortOrder, SetIsSortOrder] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<string | null>(null);
+  const [isPopular, setIsPopular] = useState(false);
   const navigate = useNavigate();
 
   // 스크롤 감지
@@ -143,14 +147,39 @@ const ReviewPage = () => {
         </Button>
       </div>
 
-      <div className='flex justify-end'>
-        <button
+      <div className='flex justify-between items-center'>
+        <div className='flex gap-3'>
+          <div className='border border-gray-300 rounded-lg sm:h-10 h-9 flex items-center'>
+            <DropDown
+              items={jobItems}
+              selected={selectedJob}
+              placeholder='직무'
+              onSelect={(job) => setSelectedJob(job)}
+              bgColor='bg-white'
+              borderColor='border-transparent'
+              SmPadding='sm:py-[8px] py-[6px]'
+            />
+          </div>
+
+          <Button
+            type='button'
+            onClick={() => setIsPopular((prev) => !prev)}
+            className={clsx(
+              'px-4 max-sm:text-sm sm:h-10 h-9 flex items-center border',
+              isPopular ? 'bg-black text-white' : 'bg-white border-gray-300 hover:bg-gray-200',
+            )}
+          >
+            인기순
+          </Button>
+        </div>
+
+        <Button
           type='button'
           onClick={() => SetIsSortOrder((prev) => !prev)}
-          className='text-sm px-3 text-gray-700'
+          className='text-sm px-3 text-gray-700 h-10 flex items-center hover:text-gray-900'
         >
           {isSortOrder ? '최신순' : '오래된순'}
-        </button>
+        </Button>
       </div>
 
       {mockReviewData.map((data) => {
@@ -211,12 +240,14 @@ const ReviewPage = () => {
                 {data.job}
               </div>
             </div>
-            <p className='text-[#364153] leading-[22px] line-clamp-4'>{data.review}</p>
+            <p className='text-[#364153] leading-[22px] line-clamp-4 whitespace-pre-wrap'>
+              {data.review}
+            </p>
 
             {isOpen && (
               <div className='bg-[#F3F3F5] rounded-xl p-6 flex flex-col gap-4 mt-3'>
                 <p className='font-semibold'>💡 면접 준비 팁</p>
-                <p className='text-[#364153] leading-5'>{data.tip}</p>
+                <p className='text-[#364153] leading-5 whitespace-pre-wrap'>{data.tip}</p>
               </div>
             )}
 
