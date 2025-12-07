@@ -14,6 +14,8 @@ import { showToast } from '@/utils/toast';
 import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa';
 import DropDown from '@/components/ui/Dropdown';
 import { jobItems } from '@/data/coachItems';
+import { useAtomValue } from 'jotai';
+import { isAdminModeAtom } from '@/atoms';
 
 const mockReviewData = [
   {
@@ -103,6 +105,8 @@ const ReviewPage = () => {
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [isPopular, setIsPopular] = useState(false);
   const navigate = useNavigate();
+
+  const isAdminMode = useAtomValue(isAdminModeAtom);
 
   // 스크롤 감지
   useEffect(() => {
@@ -208,7 +212,7 @@ const ReviewPage = () => {
                   <ThumbsUp size={20} />
                   <p>12</p>
                 </button>
-                {data.owner && (
+                {(data.owner || isAdminMode) && (
                   <>
                     <button
                       type='button'

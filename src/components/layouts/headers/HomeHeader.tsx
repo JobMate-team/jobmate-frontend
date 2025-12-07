@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { LogOut } from 'lucide-react';
-import { useAtom } from 'jotai';
-import { isLogoutModalAtom } from '@/atoms';
+import { LogOut, Shield } from 'lucide-react';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { isAdminModeAtom, isLogoutModalAtom } from '@/atoms';
 
 const HomeHeader = () => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useAtom(isLogoutModalAtom);
+  const setIsLogoutModalOpen = useSetAtom(isLogoutModalAtom);
+  const isAdminMode = useAtomValue(isAdminModeAtom);
 
   // ref 생성
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -32,36 +33,28 @@ const HomeHeader = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isProfileMenuOpen]);
 
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setIsLogoutModalOpen(false);
-      }
-    };
-
-    if (isLogoutModalOpen) {
-      document.addEventListener('keydown', handleEsc);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEsc);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLogoutModalOpen]);
-
   return (
     <div className='relative flex justify-between items-center p-4 bg-black'>
       <h3 className='text-white text-2xl font-semibold'>JobMate.AI</h3>
 
-      {/* 프로필 버튼 */}
-      <button
-        ref={buttonRef}
-        type='button'
-        className='w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-lg text-gray-500'
-        onClick={() => setIsProfileMenuOpen((prev) => !prev)}
-      >
-        정
-      </button>
+      {!isAdminMode ? (
+        <button
+          ref={buttonRef}
+          type='button'
+          className='w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-lg text-gray-500'
+          onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+        >
+          정
+        </button>
+      ) : (
+        <button
+          ref={buttonRef}
+          onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+          className='bg-[#FFE2E2] text-white w-10 h-10 rounded-full p-2 flex items-center justify-center font-semibold'
+        >
+          <Shield className='text-[#E7000B]' />
+        </button>
+      )}
 
       {/* 프로필 메뉴 */}
       {isProfileMenuOpen && (
@@ -69,15 +62,24 @@ const HomeHeader = () => {
           ref={menuRef}
           className='absolute top-15 right-2 mt-2 w-56 bg-white shadow-lg rounded-lg border border-[#DADADA] p-3'
         >
-          <div className='flex items-center gap-3 p-2'>
-            <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
-              정
+          {!isAdminMode ? (
+            <div className='flex items-center gap-3 p-2'>
+              <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
+                정
+              </div>
+              <div className='flex flex-col'>
+                <span className='text-sm font-medium whitespace-nowrap'>정찬원</span>
+                <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
+              </div>
             </div>
-            <div className='flex flex-col'>
-              <span className='text-sm font-medium whitespace-nowrap'>정찬원</span>
-              <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
+          ) : (
+            <div className='flex items-center gap-3 p-2'>
+              <div className='bg-[#FFE2E2] text-white w-8 h-8 rounded-full p-2 flex items-center justify-center font-semibold'>
+                <Shield className='text-[#E7000B]' />
+              </div>
+              <p>관리자 모드</p>
             </div>
-          </div>
+          )}
 
           <div className='h-px w-full my-3 bg-gray-200' />
           <button
