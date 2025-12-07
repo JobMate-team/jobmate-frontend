@@ -6,17 +6,20 @@ import { useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
 import { jobItems } from '@/data/coachItems';
 import DropDown from '@/components/ui/Dropdown';
-import { useSetAtom } from 'jotai';
-import { isLogoutModalAtom } from '@/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { isAdminLoginModalAtom, isAdminModeAtom, isLogoutModalAtom } from '@/atoms';
 import Button from '@/components/common/Button';
 import { showToast } from '@/utils/toast';
 
 const MyPage = () => {
   const [isDark, setIsDark] = useState(false);
-  const setIsModalOpen = useSetAtom(isLogoutModalAtom);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isChangeJob, setIsChangeJob] = useState(false);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
+
+  const setIsAdminModalOpen = useSetAtom(isAdminLoginModalAtom);
+  const isAdminMode = useAtomValue(isAdminModeAtom);
+  const setIsModalOpen = useSetAtom(isLogoutModalAtom);
 
   const navigate = useNavigate();
 
@@ -199,9 +202,10 @@ const MyPage = () => {
                 <Shield className='text-[#E7000B]' />
               </div>
               <div className='sm:text-lg flex items-center justify-between w-full'>
-                <p>관리자 모드</p>
+                <p>{isAdminMode ? '일반 사용자 모드' : '관리자 모드'}</p>
                 <button
                   type='button'
+                  onClick={() => setIsAdminModalOpen(true)}
                   className='hover:brightness-80 rounded-full p-1 transition cursor-pointer'
                 >
                   <RightIcon className='h-4 w-4' />

@@ -4,14 +4,16 @@ import MobileHeader from '@/components/layouts/MobileHeader';
 import MobileFooter from '@/components/layouts/MobileFooter';
 import Modal from '@/components/common/Modal';
 import { useAtom } from 'jotai';
-import { isLogoutModalAtom, isModalOpenAtom } from '@/atoms';
+import { isAdminLoginModalAtom, isLogoutModalAtom, isModalOpenAtom } from '@/atoms';
 import { showToast } from '@/utils/toast';
 import { useEffect } from 'react';
 import LogoutModal from '@/components/ui/LogoutModal';
+import AdminLoginModal from '@/components/ui/AdminLoginModal';
 
 const AppLayout = () => {
   const [isModalOpen, setIsModalOpen] = useAtom(isModalOpenAtom);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useAtom(isLogoutModalAtom);
+  const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useAtom(isAdminLoginModalAtom);
 
   const navigate = useNavigate();
 
@@ -24,6 +26,12 @@ const AppLayout = () => {
     setIsLogoutModalOpen(false);
     navigate('/');
     showToast.success('로그아웃에 성공했습니다');
+  };
+
+  const handleLogin = () => {
+    setIsAdminLoginModalOpen(false);
+    navigate('/');
+    showToast.success('관리자 로그인에 성공했습니다.');
   };
 
   useEffect(() => {
@@ -64,6 +72,10 @@ const AppLayout = () => {
 
       {isLogoutModalOpen && (
         <LogoutModal onCancel={() => setIsLogoutModalOpen(false)} onConfirm={handleLogout} />
+      )}
+
+      {isAdminLoginModalOpen && (
+        <AdminLoginModal onCancel={() => setIsAdminLoginModalOpen(false)} onConfirm={handleLogin} />
       )}
     </div>
   );
