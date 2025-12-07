@@ -207,8 +207,8 @@ const ReviewPage = () => {
                   </p>
                 </div>
               </div>
-              <div className='flex items-center gap-2'>
-                <button type='button' className='flex items-center gap-1 ml-2 text-[#717182]'>
+              <div className='flex items-center'>
+                <button type='button' className='flex items-center gap-1 mr-4 text-[#717182]'>
                   <ThumbsUp size={20} />
                   <p>12</p>
                 </button>
