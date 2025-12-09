@@ -62,7 +62,7 @@ const UserManagementPage = () => {
                 {filteredUsers.length > 0 ? (
                     <UserTable users={filteredUsers} />
                 ) : (
-                    <div className='flex-1 flex flex-col items-center justify-center bg-white border border-gray-200 rounded-xl min-h-[400px] text-gray-500'>
+                    <div className='flex-1 w-full flex flex-col items-center justify-center bg-white border border-gray-200 rounded-xl min-h-[400px] text-gray-500'>
                         <p className='mt-4 text-lg font-medium'>검색 결과가 없습니다</p>
                         <p className='text-sm text-gray-400 mt-2'>
                             다른 검색어나 필터를 시도해보세요.
