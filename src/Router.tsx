@@ -13,6 +13,7 @@ import ReviewPage from './pages/ReviewPage';
 import MyPage from './pages/MyPage';
 import ReviewAddPage from './pages/ReviewAddPage';
 import ReviewEditPage from './pages/ReviewEditPage';
+import UserManagementPage from './pages/UserManagementPage';
 
 const router = createBrowserRouter([
   {
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: 'user-management',
+            element: <UserManagementPage />,
+          },
         ],
       },
 
@@ -92,6 +97,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+
 ]);
 
 export default router;
