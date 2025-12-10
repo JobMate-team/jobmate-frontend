@@ -8,7 +8,9 @@ import {
   IoIosBrush,
   IoMdBriefcase,
   IoMdPeople,
+  IoIosFlask,
 } from 'react-icons/io';
+import { HiSpeakerphone } from 'react-icons/hi';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { showToast } from '@/utils/toast';
@@ -16,10 +18,12 @@ import { showToast } from '@/utils/toast';
 const roleList = [
   { id: 1, icon: <IoMdPaper size={28} />, name: '기획' },
   { id: 2, icon: <IoMdDesktop size={28} />, name: 'IT' },
-  { id: 3, icon: <IoMdStats size={28} />, name: '마케팅' },
+  { id: 3, icon: <HiSpeakerphone size={28} />, name: '마케팅' },
   { id: 4, icon: <IoIosBrush size={28} />, name: '디자인' },
   { id: 5, icon: <IoMdBriefcase size={28} />, name: '영업' },
   { id: 6, icon: <IoMdPeople size={28} />, name: '인사' },
+  { id: 7, icon: <IoMdStats size={28} />, name: '재무' },
+  { id: 8, icon: <IoIosFlask size={28} />, name: '연구' },
 ];
 
 const SelectRolePage = () => {
@@ -50,7 +54,7 @@ const SelectRolePage = () => {
                 key={role.id}
                 onClick={() => setSelectedRole(role.id)}
                 className={clsx(
-                  'flex flex-col justify-center items-center gap-1 h-36 rounded-2xl bg-white cursor-pointer active:scale-95 transition',
+                  'flex flex-col justify-center items-center gap-1 h-30 rounded-2xl bg-white cursor-pointer active:scale-95 transition',
                   isSelected
                     ? 'border-2 border-gray-500'
                     : 'border border-[#DADADA] hover:border-2 hover:border-gray-400',
