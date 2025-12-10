@@ -14,6 +14,7 @@ import MyPage from './pages/MyPage';
 import ReviewAddPage from './pages/ReviewAddPage';
 import ReviewEditPage from './pages/ReviewEditPage';
 import UserManagementPage from './pages/UserManagementPage';
+import QuestionManagementPage from './pages/QuestionManagementPage';
 
 const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
           {
             path: 'user-management',
             element: <UserManagementPage />,
+          },
+          {
+            path: 'question',
+            element: <QuestionManagementPage />,
           },
         ],
       },
