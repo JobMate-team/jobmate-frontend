@@ -15,6 +15,7 @@ import ReviewAddPage from './pages/ReviewAddPage';
 import ReviewEditPage from './pages/ReviewEditPage';
 import UserManagementPage from './pages/UserManagementPage';
 import QuestionManagementPage from './pages/QuestionManagementPage';
+import StatisticsPage from './pages/StatisticsPage';
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
           {
             path: 'question',
             element: <QuestionManagementPage />,
+          },
+          {
+            path: 'statistics',
+            element: <StatisticsPage />,
           },
         ],
       },
