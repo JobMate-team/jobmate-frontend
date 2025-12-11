@@ -31,7 +31,7 @@ const getJobGroupIcon = (jobGroup: string) => {
 const QuestionItem = ({ category, jobGroup, question, onEdit, onDelete }: QuestionItemProps) => {
   return (
     <div className='flex items-center justify-between p-4 bg-gray-50 rounded-lg group hover:bg-gray-100 transition-colors'>
-      <div className='flex flex-col gap-2 flex-1'>
+      <div className='flex flex-col gap-2 flex-1 min-w-0'>
         <div className='flex items-center gap-3'>
           <span className='text-xs font-medium text-gray-900 border border-gray-300 px-2 py-0.5 rounded-[8px]'>
             {category}
@@ -41,7 +41,9 @@ const QuestionItem = ({ category, jobGroup, question, onEdit, onDelete }: Questi
             <span>{jobGroup}</span>
           </span>
         </div>
-        <p className='text-gray-900 text-sm font-medium truncate'>{question}</p>
+        <p className='text-gray-900 text-sm font-medium break-words whitespace-pre-wrap'>
+          {question}
+        </p>
       </div>
 
       <div className='flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity ml-4'>
