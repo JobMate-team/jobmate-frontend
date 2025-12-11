@@ -13,7 +13,7 @@ const OnboardingPage = () => {
 
   const goNext = () => {
     if (page === onboardingDatas.length - 1) {
-      navigate('/signin');
+      navigate('/login');
       return;
     }
 

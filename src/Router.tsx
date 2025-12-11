@@ -16,7 +16,7 @@ import ReviewEditPage from './pages/ReviewEditPage';
 import UserManagementPage from './pages/UserManagementPage';
 import QuestionManagementPage from './pages/QuestionManagementPage';
 import StatisticsPage from './pages/StatisticsPage';
-import KakaoSuccessPage from './pages/KakaoSuccessPage';
+import KakaoSuccessPage from './pages/kakaoSuccessPage';
 
 const router = createBrowserRouter([
   {

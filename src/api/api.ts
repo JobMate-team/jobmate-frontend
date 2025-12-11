@@ -4,7 +4,7 @@ interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
-let refreshPromise: Promise<string> | null = null;
+let refreshPromise: Promise<void> | null = null;
 
 export const baseURL = import.meta.env.VITE_API_URL;
 
@@ -19,22 +19,6 @@ export const axiosInstance = axios.create({
   baseURL,
   withCredentials: true, // 쿠키 허용
 });
-
-// 요청 인터셉터 : 모든 요청 전에 accessToken을 Authozation 헤더에 추가
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const accessToken = localStorage.getItem('accessToken');
-
-    if (accessToken && config.headers) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => {
-    console.error('request 실패', error);
-    return Promise.reject(error);
-  },
-);
 
 // 응답 인터셉터 : 401에러 발생 -> refresh토큰을 통한 토큰 갱신
 axiosInstance.interceptors.response.use(
@@ -54,45 +38,28 @@ axiosInstance.interceptors.response.use(
       if (!refreshPromise) {
         refreshPromise = (async () => {
           try {
-            const refreshToken = localStorage.getItem('refreshToken');
-
-            const { data } = await axiosInstance.post('/auth/refresh', {
-              refresh: refreshToken,
-            });
-
-            const newAccessToken = data.data.accessToken;
-            const newRefreshToken = data.data.refreshToken;
-
-            // 저장
-            localStorage.setItem('accessToken', newAccessToken);
-            localStorage.setItem('refreshToken', newRefreshToken);
-
-            console.log('엑세스 토큰 요청 성공');
-
-            return data.data.accessToken;
-          } catch (error) {
-            console.error('refreshToken 갱신 실패', error);
-
-            // 토큰 삭제
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-
+            // ✅ 여기서 refreshToken은 body로 보내지 않는다.
+            //    쿠키에 있는 refreshToken을 서버가 읽게 하는 것.
+            await axiosInstance.post('/auth/refresh');
+            // 성공하면 쿠키에 새 accessToken/refreshToken 이 심어짐
+          } catch (err) {
+            // 리프레시 실패 → 로그인 페이지로 이동
+            console.error('토큰 리프레시 실패', err);
             window.location.href = '/login';
+            throw err;
           } finally {
+            // 다음 401 때를 위해 초기화
             refreshPromise = null;
           }
         })();
       }
 
-      return refreshPromise.then((newAccessToken) => {
-        if (!newAccessToken) return Promise.reject(error);
-
-        request.headers = request.headers ?? {};
-        request.headers.Authorization = `Bearer ${newAccessToken}`;
-
-        request.headers.Authorization = `Bearer ${newAccessToken}`;
-        return axiosInstance.request(request);
-      });
+      try {
+        await refreshPromise;
+        return axiosInstance(request);
+      } catch (err) {
+        return Promise.reject(err);
+      }
     }
     return Promise.reject(error);
   },

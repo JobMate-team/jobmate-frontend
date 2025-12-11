@@ -7,7 +7,7 @@ import { showToast } from '@/utils/toast';
 import { FeedbackIcon } from '@/assets';
 import { FiSave } from 'react-icons/fi';
 import { LuLightbulb, LuRotateCcw } from 'react-icons/lu';
-import { basicItems, coachStep, jobItems } from '@/data/coachItems';
+import { basicItems, coachStep } from '@/data/coachItems';
 import { useAtom } from 'jotai';
 import { pageAtom } from '@/atoms';
 import clsx from 'clsx';
@@ -27,6 +27,8 @@ const CoachingPage = () => {
   const { data } = useQuery({
     queryKey: ['jobCategories'],
     queryFn: getCategories,
+    gcTime: 10 * 60 * 1000,
+    staleTime: 5 * 60 * 1000,
   });
 
   const jobCategories = data?.success.jobCategories || [];

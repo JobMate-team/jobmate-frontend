@@ -14,7 +14,7 @@ import { showToast } from '@/utils/toast';
 import { useEffect } from 'react';
 import LogoutModal from '@/components/ui/LogoutModal';
 import AdminLoginModal from '@/components/ui/AdminLoginModal';
-import { useAuth } from '@/context/AuthContext';
+import { postLogout } from '@/api/auth';
 
 const AppLayout = () => {
   const [isModalOpen, setIsModalOpen] = useAtom(isModalOpenAtom);
@@ -22,7 +22,6 @@ const AppLayout = () => {
   const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useAtom(isAdminLoginModalAtom);
   const [isAdminMode, setIsAdminMode] = useAtom(isAdminModeAtom);
 
-  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const handleDelete = () => {
@@ -36,7 +35,7 @@ const AppLayout = () => {
       setIsAdminMode(false);
       navigate('/');
     } else {
-      logout();
+      postLogout();
       setIsLogoutModalOpen(false);
     }
     showToast.success('로그아웃에 성공했습니다');
