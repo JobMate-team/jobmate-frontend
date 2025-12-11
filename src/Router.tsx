@@ -82,14 +82,32 @@ const router = createBrowserRouter([
           {
             path: 'user-management',
             element: <UserManagementPage />,
+            children: [
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
+            ],
           },
           {
             path: 'question',
             element: <QuestionManagementPage />,
+            children: [
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
+            ],
           },
           {
             path: 'statistics',
             element: <StatisticsPage />,
+            children: [
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
+            ],
           },
         ],
       },

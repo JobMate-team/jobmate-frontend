@@ -1,5 +1,5 @@
 import { isAdminModeAtom, isLogoutModalAtom, pageAtom } from '@/atoms';
-import { menuItems } from '@/data/menuItems';
+import { adminMenuItems, menuItems } from '@/data/menuItems';
 import type { MenuItem } from '@/types/MenuItem';
 import clsx from 'clsx';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
@@ -16,6 +16,8 @@ const SideBar = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const itemsToRender = isAdminMode ? adminMenuItems : menuItems;
 
   // --- ref 생성 ---
   const profileButtonRef = useRef<HTMLDivElement>(null);
@@ -125,7 +127,7 @@ const SideBar = () => {
 
       {/* 메뉴 */}
       <nav className='flex-1 p-4'>
-        {menuItems.map((item) => {
+        {itemsToRender.map((item) => {
           const Icon = item.icon;
           const segments = location.pathname.split('/').filter(Boolean);
           const last = segments[segments.length - 1];

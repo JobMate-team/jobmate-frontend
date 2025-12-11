@@ -1,13 +1,16 @@
-import { pageAtom } from '@/atoms';
-import { menuItems } from '@/data/menuItems';
+import { isAdminModeAtom, pageAtom } from '@/atoms';
+import { adminMenuItems, menuItems } from '@/data/menuItems';
 import type { MenuItem } from '@/types/MenuItem';
 import clsx from 'clsx';
-import { useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const MobileFooter = () => {
   const setPage = useSetAtom(pageAtom);
+  const isAdminMode = useAtomValue(isAdminModeAtom);
+
+  const itemsToRender = isAdminMode ? adminMenuItems : menuItems;
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,7 +35,7 @@ const MobileFooter = () => {
   return (
     <nav className='fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 sm:hidden'>
       <div className='flex justify-around py-3'>
-        {menuItems.map((item) => {
+        {itemsToRender.map((item) => {
           const Icon = item.icon;
           const segments = location.pathname.split('/').filter(Boolean);
           const last = segments[segments.length - 1];

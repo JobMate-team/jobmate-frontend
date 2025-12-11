@@ -13,18 +13,33 @@ const KakaoSuccessPage = () => {
   });
 
   useEffect(() => {
-    if (!isLoading) {
-      if (data?.success.job_category_id == null) {
-        navigate('/role'); // 최초 로그인 시 직무 선택 페이지 이동
-        showToast.success('직무를 선택해주세요.');
-      } else if (data) {
-        navigate('/'); // 로그인 성공 & role 있음 -> 홈 이동
-        showToast.success('로그인에 성공하였습니다.');
-      } else if (isError) {
-        navigate('/login'); // 로그인 실패 -> 로그인 페이지
-        showToast.error('로그인에 실패하였습니다.');
-      }
+    if (isLoading) return;
+
+    // 1) 에러 → 로그인 이동
+    if (isError) {
+      navigate('/login', { replace: true });
+      showToast.error('로그인에 실패하였습니다.');
+      return;
     }
+
+    // data.success가 없는 경우도 에러로 취급
+    const user = data?.success;
+    if (!user) {
+      navigate('/login', { replace: true });
+      showToast.error('로그인에 실패하였습니다.');
+      return;
+    }
+
+    // 2) 직무 선택 필요 → /role
+    if (user.job_category_id == null) {
+      navigate('/role', { replace: true });
+      showToast.success('직무를 선택해주세요.');
+      return;
+    }
+
+    // 3) 정상 로그인 → 홈 이동
+    navigate('/', { replace: true });
+    showToast.success('로그인에 성공하였습니다.');
   }, [data, isError, isLoading, navigate]);
 
   return (
