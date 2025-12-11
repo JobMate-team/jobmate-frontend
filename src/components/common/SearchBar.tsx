@@ -17,7 +17,7 @@ const SearchBar = ({ value, onChange, placeholder = '검색...' }: SearchBarProp
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className='w-full bg-[#F3F3F5] rounded-xl py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-gray-200 transition-all text-sm'
+        className='w-full bg-[#F3F3F5] rounded-xl py-3 pl-12 pr-4 outline-none border border-gray-200 focus:ring-1 focus:ring-gray-200 transition-all text-sm'
       />
     </div>
   );

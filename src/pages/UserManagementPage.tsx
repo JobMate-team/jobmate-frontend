@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchBar from '@/components/common/SearchBar';
 import DropDown from '@/components/ui/Dropdown';
 import UserTable from '@/components/user-management/UserTable';
@@ -8,12 +8,14 @@ import { jobItems } from '@/data/coachItems';
 
 import { MOCK_USERS } from '@/data/mockUsers';
 import { Outlet } from 'react-router-dom';
+import UpScrollButton from '@/components/ui/UpScrollButton';
 
 const jobOptions = ['전체 직군', ...jobItems];
 
 const UserManagementPage = () => {
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const filteredUsers = MOCK_USERS.filter((user) => {
     // 직군 필터
@@ -28,10 +30,28 @@ const UserManagementPage = () => {
     return isJobMatch && isSearchMatch;
   });
 
+  // 스크롤 감지
+  useEffect(() => {
+    const mainElement = document.querySelector('main');
+
+    const handleScroll = () => {
+      if (mainElement && mainElement.scrollTop > 200) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    if (mainElement) {
+      mainElement.addEventListener('scroll', handleScroll);
+      return () => mainElement.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
   return (
-    <div className='flex flex-col gap-8 h-full'>
-      <div className='flex flex-col gap-2'>
-        <h1 className='text-2xl font-bold'>사용자 관리</h1>
+    <div className='space-y-8 pb-30'>
+      <div className='flex flex-col gap-2 mt-10'>
+        <h1 className='text-2xl font-semibold'>사용자 관리</h1>
         <p className='text-gray-500'>서비스 사용자 정보를 관리합니다</p>
       </div>
 
@@ -71,6 +91,7 @@ const UserManagementPage = () => {
         <UserStats />
       </div>
 
+      {showScrollTop && <UpScrollButton />}
       <Outlet />
     </div>
   );
