@@ -1,4 +1,4 @@
-export const jobItems = ['기획', 'IT', '마케팅', '디자인', '영업', '인사'];
+export const jobItems = ['기획', 'IT', '마케팅', '디자인', '영업', '인사', '재무', '연구'];
 
 export const basicItems = [
   '자기소개 부탁드립니다.',

@@ -16,6 +16,7 @@ import ReviewEditPage from './pages/ReviewEditPage';
 import UserManagementPage from './pages/UserManagementPage';
 import QuestionManagementPage from './pages/QuestionManagementPage';
 import StatisticsPage from './pages/StatisticsPage';
+import KakaoSuccessPage from './pages/kakaoSuccessPage';
 import ReviewManagementPage from './pages/ReviewManagementPage';
 import HistoryManagementPage from './pages/HistoryManagementPage';
 
@@ -83,14 +84,32 @@ const router = createBrowserRouter([
           {
             path: 'user-management',
             element: <UserManagementPage />,
+            children: [
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
+            ],
           },
           {
             path: 'question',
             element: <QuestionManagementPage />,
+            children: [
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
+            ],
           },
           {
             path: 'statistics',
             element: <StatisticsPage />,
+            children: [
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
+            ],
           },
           {
             path: 'review-management',
@@ -102,18 +121,21 @@ const router = createBrowserRouter([
           },
         ],
       },
-
       {
         path: 'onboarding',
         element: <OnboardingPage />,
       },
       {
-        path: 'signin',
+        path: 'login',
         element: <LoginPage />,
       },
       {
         path: 'role',
         element: <SelectRolePage />,
+      },
+      {
+        path: '/kakao/success',
+        element: <KakaoSuccessPage />,
       },
     ],
   },

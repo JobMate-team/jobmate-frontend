@@ -7,11 +7,13 @@ import { showToast } from '@/utils/toast';
 import { FeedbackIcon } from '@/assets';
 import { FiSave } from 'react-icons/fi';
 import { LuLightbulb, LuRotateCcw } from 'react-icons/lu';
-import { basicItems, coachStep, jobItems } from '@/data/coachItems';
+import { basicItems, coachStep } from '@/data/coachItems';
 import { useAtom } from 'jotai';
 import { pageAtom } from '@/atoms';
 import clsx from 'clsx';
 import { Outlet } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getCategories } from '@/api/coaching';
 
 const CoachingPage = () => {
   const [page, setPage] = useAtom(pageAtom);
@@ -21,6 +23,15 @@ const CoachingPage = () => {
   const [customAnswer, setCustomAnswer] = useState<string>('');
   const [feedback, setFeedback] = useState<string>('');
   const [showExampleAnswer, setShowExampleAnswer] = useState<boolean>(false);
+
+  const { data } = useQuery({
+    queryKey: ['jobCategories'],
+    queryFn: getCategories,
+    gcTime: 10 * 60 * 1000,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const jobCategories = data?.success.jobCategories || [];
 
   const handleNextStep = () => {
     if (page === 1) {
@@ -80,7 +91,7 @@ const CoachingPage = () => {
           <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
             <p className='font-semibold'>직군 선택</p>
             <DropDown
-              items={jobItems}
+              items={jobCategories.map((c) => c.name)}
               selected={selectedJob}
               placeholder='직군 선택'
               onSelect={(job) => setSelectedJob(job)}
