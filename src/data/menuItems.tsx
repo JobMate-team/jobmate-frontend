@@ -11,8 +11,8 @@ export const menuItems: MenuItem[] = [
 
 export const adminMenuItems: MenuItem[] = [
   { id: '1', icon: Home, label: '홈', path: '/' },
-  { id: '2', icon: History, label: '히스토리', path: '/history' },
-  { id: '3', icon: FileText, label: '후기 관리', path: '/review' },
+  { id: '2', icon: History, label: '히스토리', path: '/history-management' },
+  { id: '3', icon: FileText, label: '후기 관리', path: '/review-management' },
   { id: '4', icon: MessageSquare, label: '질문 관리', path: '/question' },
   { id: '5', icon: Users, label: '사용자 관리', path: '/user-management' },
   { id: '6', icon: ChartPie, label: '통계', path: '/statistics' },

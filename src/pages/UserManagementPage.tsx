@@ -50,7 +50,7 @@ const UserManagementPage = () => {
 
   return (
     <div className='space-y-8 pb-30'>
-      <div className='flex flex-col gap-2 mt-10'>
+      <div className='hidden sm:flex flex-col gap-2 mt-10'>
         <h1 className='text-2xl font-semibold'>사용자 관리</h1>
         <p className='text-gray-500'>서비스 사용자 정보를 관리합니다</p>
       </div>
@@ -70,7 +70,7 @@ const UserManagementPage = () => {
             selected={selectedJob}
             placeholder='전체 직군'
             onSelect={setSelectedJob}
-            bgColor='bg-[#F3F3F5] w-full'
+            bgColor='bg-gray-200/50 w-full'
             SmPadding='py-3'
           />
         </div>

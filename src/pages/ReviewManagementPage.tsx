@@ -76,10 +76,10 @@ export default function ReviewManagementPage() {
   };
 
   return (
-    <div className='p-4 sm:p-8 max-w-7xl mx-auto'>
-      <div className='mb-8'>
+    <div className='px-4 sm:px-8 max-w-7xl mx-auto mt-10'>
+      <div className='max-sm:hidden mb-8'>
         <h1 className='text-2xl font-bold text-gray-900 mb-2'>면접 후기</h1>
-        <p className='text-gray-500'>사용자가 작성한 면접 후기를 관리합니다</p>
+        <p className='text-[#717182]'>사용자가 작성한 면접 후기를 관리합니다</p>
       </div>
 
       <ReviewCategory

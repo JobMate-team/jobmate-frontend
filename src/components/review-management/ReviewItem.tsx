@@ -13,7 +13,7 @@ export default function ReviewItem({ review, onView, onEdit, onDelete }: ReviewI
   const formattedDate = new Date(review.created_at).toISOString().split('T')[0];
 
   return (
-    <div className='bg-white border border-gray-100 rounded-xl p-5 mb-4 hover:shadow-sm transition-shadow'>
+    <div className='bg-white border border-gray-200 rounded-xl p-5 mb-4 hover:shadow-sm transition-shadow'>
       <div className='flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-0'>
         <div className='flex-1 w-full'>
           <div className='flex space-x-2 mb-2'>
@@ -27,7 +27,7 @@ export default function ReviewItem({ review, onView, onEdit, onDelete }: ReviewI
             </span>
           </div>
           {/* 제목으로 사용할 내용 미리보기 */}
-          <h3 className='text-lg font-semibold text-gray-800 mb-2 leading-snug break-words'>
+          <h3 className='text-lg font-semibold text-gray-800 mb-2 leading-snug wrap-break-word'>
             {review.content_preview}
           </h3>
           <div className='flex flex-wrap items-center text-sm text-gray-500 gap-y-1 gap-x-3 mb-3'>
@@ -46,7 +46,7 @@ export default function ReviewItem({ review, onView, onEdit, onDelete }: ReviewI
           </div>
         </div>
 
-        <div className='flex flex-row sm:flex-col space-x-2 sm:space-x-0 sm:space-y-2 w-full sm:w-auto sm:ml-4 sm:self-start sm:min-w-[80px]'>
+        <div className='flex flex-row sm:flex-col space-x-2 sm:space-x-0 sm:space-y-2 w-full sm:w-auto sm:ml-4 sm:self-start sm:min-w-20'>
           <button
             onClick={onView}
             className='flex items-center justify-center flex-1 sm:flex-none px-3 py-2 sm:py-1.5 border border-gray-200 rounded-lg text-xs text-gray-600 hover:bg-gray-50 transition-colors'

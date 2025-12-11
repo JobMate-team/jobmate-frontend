@@ -64,12 +64,12 @@ const UserTable = ({ users }: UserTableProps) => {
                   <div className='inline-flex items-center gap-1.5'>{user.joinDate}</div>
                 </td>
                 <td className='py-4 px-6 text-center'>
-                  <span className='inline-flex items-center justify-center min-w-[32px] h-7 px-2 rounded-lg bg-blue-50 text-blue-600 text-sm font-semibold'>
+                  <span className='inline-flex items-center justify-center min-w-8 h-7 px-2 rounded-lg bg-blue-50 text-blue-600 text-sm font-semibold'>
                     {user.coachingCount}
                   </span>
                 </td>
                 <td className='py-4 px-6 text-center'>
-                  <span className='inline-flex items-center justify-center min-w-[32px] h-7 px-2 rounded-lg bg-purple-50 text-purple-600 text-sm font-semibold'>
+                  <span className='inline-flex items-center justify-center min-w-8 h-7 px-2 rounded-lg bg-purple-50 text-purple-600 text-sm font-semibold'>
                     {user.reviewCount}
                   </span>
                 </td>

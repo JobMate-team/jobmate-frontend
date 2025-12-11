@@ -28,19 +28,19 @@ const HistoryManagementPage = () => {
   };
 
   return (
-    <div className='flex flex-col gap-6 max-w-5xl'>
-      <div className='flex flex-col gap-2'>
-        <h1 className='text-xl font-bold text-gray-900'>히스토리</h1>
-        <p className='text-sm text-gray-500'>사용자들의 면접 연습 기록을 관리합니다</p>
+    <div className='space-y-5 max-w-5xl mx-auto pb-30'>
+      <div className='hidden sm:flex flex-col gap-2 mt-10'>
+        <h1 className='text-2xl font-bold text-gray-900'>히스토리</h1>
+        <p className='text-[#717182]'>사용자들의 면접 연습 기록을 관리합니다</p>
       </div>
 
       {/* 검색 섹션 */}
-      <div className='bg-white p-6 rounded-lg border border-gray-200 shadow-sm'>
+      <div className='bg-white p-6 rounded-lg border border-gray-200'>
         <HistorySearch value={searchTerm} onChange={setSearchTerm} />
       </div>
 
       {/* 목록 섹션 */}
-      <div className='bg-white p-6 rounded-lg border border-gray-200 shadow-sm min-h-[500px]'>
+      <div className='bg-white p-6 rounded-lg border border-gray-200 min-h-[500px]'>
         <div className='mb-6'>
           <h2 className='text-lg font-bold text-gray-900'>연습 기록</h2>
           <p className='text-sm text-gray-500'>최근 면접 연습 기록을 확인하세요</p>

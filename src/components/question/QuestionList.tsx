@@ -19,7 +19,7 @@ const QuestionList = ({ selectedJob, questions, onEdit, onDelete }: QuestionList
   );
 
   return (
-    <div className='bg-white p-6 rounded-lg border border-gray-100 flex flex-col gap-4 h-full'>
+    <div className='bg-white p-6 rounded-lg border border-gray-200 flex flex-col gap-4 h-full'>
       <div className='flex items-center justify-between mb-2'>
         <h3 className='font-bold text-gray-900 text-lg'>질문 목록</h3>
         <span className='bg-black text-white text-xs font-bold px-2 py-1 rounded-lg'>
