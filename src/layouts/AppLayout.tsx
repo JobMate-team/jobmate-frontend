@@ -14,7 +14,8 @@ import { showToast } from '@/utils/toast';
 import { useEffect } from 'react';
 import LogoutModal from '@/components/ui/LogoutModal';
 import AdminLoginModal from '@/components/ui/AdminLoginModal';
-import { postLogout } from '@/api/auth';
+import { getUserInfo, postLogout } from '@/api/auth';
+import { useQuery } from '@tanstack/react-query';
 
 const AppLayout = () => {
   const [isModalOpen, setIsModalOpen] = useAtom(isModalOpenAtom);
@@ -23,6 +24,13 @@ const AppLayout = () => {
   const [isAdminMode, setIsAdminMode] = useAtom(isAdminModeAtom);
 
   const navigate = useNavigate();
+
+  const { data } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: getUserInfo,
+  });
+
+  console.log(data);
 
   const handleDelete = () => {
     setIsModalOpen((prev) => !prev);
@@ -37,6 +45,7 @@ const AppLayout = () => {
     } else {
       postLogout();
       setIsLogoutModalOpen(false);
+      navigate('/login');
     }
     showToast.success('로그아웃에 성공했습니다');
   };

@@ -15,3 +15,11 @@ export type ResPonseUserInfo = CommonResponse<{
 export type ResPonseJobCate = CommonResponse<{
   message: string;
 }>;
+
+export type ResponseAdminLogin = CommonResponse<{
+  admin: {
+    id: number;
+    email: string;
+    role: string;
+  };
+}>;

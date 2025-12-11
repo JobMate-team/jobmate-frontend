@@ -1,4 +1,9 @@
-import type { ResPonseJobCate, ResPonseLogout, ResPonseUserInfo } from '@/types/auth';
+import type {
+  ResponseAdminLogin,
+  ResPonseJobCate,
+  ResPonseLogout,
+  ResPonseUserInfo,
+} from '@/types/auth';
 import { axiosInstance } from './api';
 
 export const postLogout = async (): Promise<ResPonseLogout> => {
@@ -15,5 +20,13 @@ export const patchJobCate = async (job_category_id: number): Promise<ResPonseJob
   const { data } = await axiosInstance.patch('/auth/me/job-category', {
     job_category_id,
   });
+  return data;
+};
+
+export const postAdminLogin = async (body: {
+  email: string;
+  password: string;
+}): Promise<ResponseAdminLogin> => {
+  const { data } = await axiosInstance.post('/admin/login', body);
   return data;
 };

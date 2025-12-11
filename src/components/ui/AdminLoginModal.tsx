@@ -10,6 +10,8 @@ import { showToast } from '@/utils/toast';
 import { useState } from 'react';
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 import clsx from 'clsx';
+import { useMutation } from '@tanstack/react-query';
+import { postAdminLogin } from '@/api/auth';
 
 const AdminLoginModal = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +19,19 @@ const AdminLoginModal = () => {
   const setIsAdminLoginModalOpen = useSetAtom(isAdminLoginModalAtom);
 
   const navigate = useNavigate();
+
+  const adminLoginMutation = useMutation({
+    mutationFn: postAdminLogin,
+    onSuccess: () => {
+      showToast.success('관리자 로그인에 성공했습니다.');
+      setIsAdminLoginModalOpen(false);
+      setIsAdminMode(true);
+      navigate('/', { replace: true });
+    },
+    onError: () => {
+      showToast.error('관리자 로그인에 실패했습니다.');
+    },
+  });
 
   const {
     register,
@@ -28,11 +43,7 @@ const AdminLoginModal = () => {
   });
 
   const onSubmit: SubmitHandler<adminLoginType> = async (data) => {
-    console.log(data);
-    setIsAdminLoginModalOpen(false);
-    setIsAdminMode(true);
-    navigate('/');
-    showToast.success('관리자 로그인에 성공했습니다.');
+    adminLoginMutation.mutate(data);
   };
 
   return (

@@ -32,7 +32,7 @@ const SelectRolePage = () => {
   const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState<number | null>(null);
 
-  const mutation = useMutation({
+  const selectJobMutation = useMutation({
     mutationFn: (selectedRole: number) => patchJobCate(selectedRole),
     onSuccess: () => {
       showToast.success('환영합니다!');
@@ -48,7 +48,7 @@ const SelectRolePage = () => {
       showToast.error('직군을 선택해주세요.');
       return;
     }
-    mutation.mutate(selectedRole); // 선택된 id 전달
+    selectJobMutation.mutate(selectedRole); // 선택된 id 전달
   };
 
   return (
