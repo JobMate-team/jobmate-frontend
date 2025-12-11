@@ -17,6 +17,7 @@ import UserManagementPage from './pages/UserManagementPage';
 import QuestionManagementPage from './pages/QuestionManagementPage';
 import StatisticsPage from './pages/StatisticsPage';
 import ReviewManagementPage from './pages/ReviewManagementPage';
+import HistoryManagementPage from './pages/HistoryManagementPage';
 
 const router = createBrowserRouter([
   {
@@ -94,6 +95,10 @@ const router = createBrowserRouter([
           {
             path: 'review-management',
             element: <ReviewManagementPage />,
+          },
+          {
+            path: 'history-management',
+            element: <HistoryManagementPage />
           },
         ],
       },
