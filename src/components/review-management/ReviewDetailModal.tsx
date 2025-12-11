@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { Review } from '../../data/mockReviews';
+import type { Review } from '../../api/review';
 import { FiX, FiSave } from 'react-icons/fi';
 
 interface ReviewDetailModalProps {
@@ -36,7 +36,7 @@ export default function ReviewDetailModal({
 
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4'>
-      <div className='bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto relative animate-fade-in'>
+      <div className='bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto hide-scrollbar relative animate-fade-in'>
         {/* 닫기 버튼 */}
         <button
           onClick={onClose}
