@@ -2,12 +2,9 @@ import { KakaoIcon, LogoIcon } from '@/assets';
 import { isAdminLoginModalAtom } from '@/atoms';
 import Button from '@/components/common/Button';
 import AdminLoginModal from '@/components/ui/AdminLoginModal';
-import { showToast } from '@/utils/toast';
 import { useAtom } from 'jotai';
-import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const navigate = useNavigate();
   const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useAtom(isAdminLoginModalAtom);
 
   return (
@@ -29,11 +26,11 @@ const LoginPage = () => {
 
         <div className='flex items-center gap-5 mx-5'>
           <Button
-            type='submit'
+            type='button'
             className='w-full bg-[#FEE500] font-medium px-4 py-3 gap-2'
             onClick={() => {
-              navigate('/role');
-              showToast.success('카카오 로그인 성공!');
+              // 백엔드 로그인 endpoint로 이동
+              window.location.href = `${import.meta.env.VITE_API_URL}/auth/kakao/login`;
             }}
           >
             <KakaoIcon /> 카카오로 로그인

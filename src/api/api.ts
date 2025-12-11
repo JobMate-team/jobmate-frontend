@@ -6,7 +6,7 @@ interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
 
 let refreshPromise: Promise<string> | null = null;
 
-const baseURL = import.meta.env.VITE_API_URL;
+export const baseURL = import.meta.env.VITE_API_URL;
 
 if (!baseURL) {
   console.error(
@@ -14,7 +14,10 @@ if (!baseURL) {
   );
 }
 
-export const axiosInstance = axios.create({ baseURL });
+export const axiosInstance = axios.create({
+  baseURL,
+  withCredentials: true, // 쿠키 허용
+});
 
 axiosInstance.interceptors.request.use(
   (config) => {

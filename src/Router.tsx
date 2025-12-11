@@ -98,7 +98,7 @@ const router = createBrowserRouter([
         element: <OnboardingPage />,
       },
       {
-        path: 'signin',
+        path: 'login',
         element: <LoginPage />,
       },
       {

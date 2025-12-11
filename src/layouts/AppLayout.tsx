@@ -35,7 +35,7 @@ const AppLayout = () => {
       navigate('/');
     } else {
       setIsLogoutModalOpen(false);
-      navigate('/signin');
+      navigate('/login');
     }
     showToast.success('로그아웃에 성공했습니다');
   };
