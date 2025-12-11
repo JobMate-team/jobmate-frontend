@@ -14,6 +14,8 @@ import { HiSpeakerphone } from 'react-icons/hi';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { showToast } from '@/utils/toast';
+import { useMutation } from '@tanstack/react-query';
+import { patchJobCate } from '@/api/auth';
 
 const roleList = [
   { id: 1, icon: <IoMdPaper size={28} />, name: '기획' },
@@ -29,6 +31,25 @@ const roleList = [
 const SelectRolePage = () => {
   const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState<number | null>(null);
+
+  const mutation = useMutation({
+    mutationFn: (selectedRole: number) => patchJobCate(selectedRole),
+    onSuccess: () => {
+      showToast.success('환영합니다!');
+      navigate('/', { replace: true });
+    },
+    onError: () => {
+      showToast.error('직군 선택에 실패했습니다.');
+    },
+  });
+
+  const handleSubmit = () => {
+    if (!selectedRole) {
+      showToast.error('직군을 선택해주세요.');
+      return;
+    }
+    mutation.mutate(selectedRole); // 선택된 id 전달
+  };
 
   return (
     <main className='bg-gray-50 min-h-dvh flex justify-center items-center p-4'>
@@ -71,10 +92,7 @@ const SelectRolePage = () => {
           <Button
             type='submit'
             className='w-full bg-black text-white font-medium px-4 py-3'
-            onClick={() => {
-              navigate('/');
-              showToast.success('환영합니다!');
-            }}
+            onClick={handleSubmit}
           >
             시작하기
           </Button>
