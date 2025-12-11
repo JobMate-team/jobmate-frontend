@@ -73,7 +73,7 @@ const QuestionManagementPage = () => {
 
   return (
     <div className='space-y-6 pb-30'>
-      <div className='flex items-center justify-between mt-10'>
+      <div className='hidden sm:flex items-center justify-between mt-10'>
         <div className='flex flex-col'>
           <h1 className='text-2xl font-semibold mb-2'>질문 템플릿 관리</h1>
           <p className='text-[#717182] mb-6'>직무별 면접 질문 템플릿을 관리합니다</p>

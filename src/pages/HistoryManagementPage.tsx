@@ -29,7 +29,7 @@ const HistoryManagementPage = () => {
 
   return (
     <div className='space-y-5 max-w-5xl mx-auto pb-30'>
-      <div className='hidden sm:flex flex-col gap-2 mt-10'>
+      <div className='hidden sm:flex flex-col gap-2 my-10'>
         <h1 className='text-2xl font-bold text-gray-900'>히스토리</h1>
         <p className='text-[#717182]'>사용자들의 면접 연습 기록을 관리합니다</p>
       </div>
