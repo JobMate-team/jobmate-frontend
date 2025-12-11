@@ -1,5 +1,5 @@
 import ReviewItem from './ReviewItem';
-import type { Review } from '../../data/mockReviews';
+import type { Review } from '../../api/review';
 
 interface ReviewListProps {
   reviews: Review[];

@@ -1,4 +1,4 @@
-import type { Review } from '../../data/mockReviews';
+import type { Review } from '../../api/review';
 import { FiThumbsUp, FiEye, FiEdit2, FiTrash2 } from 'react-icons/fi';
 
 interface ReviewItemProps {
