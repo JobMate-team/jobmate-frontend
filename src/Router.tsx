@@ -98,7 +98,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'history-management',
-            element: <HistoryManagementPage />
+            element: <HistoryManagementPage />,
           },
         ],
       },
@@ -117,7 +117,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-
 ]);
 
 export default router;

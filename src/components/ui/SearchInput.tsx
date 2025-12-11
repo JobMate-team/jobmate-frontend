@@ -2,12 +2,17 @@ import { Search } from 'lucide-react';
 
 interface SearchInputProps {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: string) => void; // eslint-disable-line no-unused-vars
   placeholder?: string;
   className?: string;
 }
 
-const SearchInput = ({ value, onChange, placeholder = '검색...', className = '' }: SearchInputProps) => {
+const SearchInput = ({
+  value,
+  onChange,
+  placeholder = '검색...',
+  className = '',
+}: SearchInputProps) => {
   return (
     <div className={`relative ${className}`}>
       <div className='absolute left-4 top-1/2 -translate-y-1/2 text-gray-400'>
