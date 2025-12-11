@@ -13,14 +13,14 @@ interface UserTableProps {
 }
 
 const JOB_EMOJI: Record<string, string> = {
-  '기획': '📋',
-  'IT': '💻',
-  '마케팅': '📢',
-  '디자인': '🎨',
-  '영업': '💼',
-  '인사': '👥',
-  '재무': '📊',
-  '연구': '🧪',
+  기획: '📋',
+  IT: '💻',
+  마케팅: '📢',
+  디자인: '🎨',
+  영업: '💼',
+  인사: '👥',
+  재무: '📊',
+  연구: '🧪',
 };
 
 const UserTable = ({ users }: UserTableProps) => {
@@ -61,9 +61,7 @@ const UserTable = ({ users }: UserTableProps) => {
                   </div>
                 </td>
                 <td className='py-4 px-6 text-center text-sm text-gray-600'>
-                  <div className='inline-flex items-center gap-1.5'>
-                    {user.joinDate}
-                  </div>
+                  <div className='inline-flex items-center gap-1.5'>{user.joinDate}</div>
                 </td>
                 <td className='py-4 px-6 text-center'>
                   <span className='inline-flex items-center justify-center min-w-[32px] h-7 px-2 rounded-lg bg-blue-50 text-blue-600 text-sm font-semibold'>

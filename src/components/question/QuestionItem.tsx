@@ -2,59 +2,66 @@ import { SquarePen, Trash2 } from 'lucide-react';
 import Button from '@/components/common/Button';
 
 interface QuestionItemProps {
-    category: string;
-    jobGroup: string;
-    question: string;
-    onEdit: () => void;
-    onDelete: () => void;
+  category: string;
+  jobGroup: string;
+  question: string;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
 const getJobGroupIcon = (jobGroup: string) => {
-    switch (jobGroup) {
-        case '기획': return '📋';
-        case 'IT': return '💻';
-        case '마케팅': return '📊';
-        case '디자인': return '🎨';
-        case '영업': return '💼';
-        case '인사': return '👥';
-        default: return '📄';
-    }
+  switch (jobGroup) {
+    case '기획':
+      return '📋';
+    case 'IT':
+      return '💻';
+    case '마케팅':
+      return '📊';
+    case '디자인':
+      return '🎨';
+    case '영업':
+      return '💼';
+    case '인사':
+      return '👥';
+    default:
+      return '📄';
+  }
 };
 
 const QuestionItem = ({ category, jobGroup, question, onEdit, onDelete }: QuestionItemProps) => {
-    return (
-        <div className='flex items-center justify-between p-4 bg-gray-50 rounded-lg group hover:bg-gray-100 transition-colors'>
-            <div className='flex flex-col gap-2 flex-1'>
-                <div className='flex items-center gap-3'>
-                    <span className='text-xs font-medium text-gray-900 border border-gray-300 px-2 py-0.5 rounded-[8px]'>
-                        {category}
-                    </span>
-                    <span className='text-xs font-medium text-gray-500 flex items-center gap-1'>
-                        <span>{getJobGroupIcon(jobGroup)}</span>
-                        <span>{jobGroup}</span>
-                    </span>
-                </div>
-                <p className='text-gray-900 text-sm font-medium truncate'>{question}</p>
-            </div>
-
-            <div className='flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity ml-4'>
-                <Button
-                    type='button'
-                    onClick={onEdit}
-                    className='w-8 h-8 !p-0 bg-white border border-gray-200 text-gray-400 hover:text-blue-500 hover:border-blue-500 !rounded-md'
-                >
-                    <SquarePen size={16} />
-                </Button>
-                <Button
-                    type='button'
-                    onClick={onDelete}
-                    className='w-8 h-8 !p-0 bg-white border border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-500 !rounded-md'
-                >
-                    <Trash2 size={16} />
-                </Button>
-            </div>
+  return (
+    <div className='flex items-center justify-between p-4 bg-gray-50 rounded-lg group hover:bg-gray-100 transition-colors'>
+      <div className='flex flex-col gap-2 flex-1'>
+        <div className='flex items-center gap-3'>
+          <span className='text-xs font-medium text-gray-900 border border-gray-300 px-2 py-0.5 rounded-[8px]'>
+            {category}
+          </span>
+          <span className='text-xs font-medium text-gray-500 flex items-center gap-1'>
+            <span>{getJobGroupIcon(jobGroup)}</span>
+            <span>{jobGroup}</span>
+          </span>
         </div>
-    );
+        <p className='text-gray-900 text-sm font-medium truncate'>{question}</p>
+      </div>
+
+      <div className='flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity ml-4'>
+        <Button
+          type='button'
+          onClick={onEdit}
+          className='w-8 h-8 !p-0 bg-white border border-gray-200 text-gray-400 hover:text-blue-500 hover:border-blue-500 !rounded-md'
+        >
+          <SquarePen size={16} />
+        </Button>
+        <Button
+          type='button'
+          onClick={onDelete}
+          className='w-8 h-8 !p-0 bg-white border border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-500 !rounded-md'
+        >
+          <Trash2 size={16} />
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default QuestionItem;
