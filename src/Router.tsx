@@ -16,6 +16,7 @@ import ReviewEditPage from './pages/ReviewEditPage';
 import UserManagementPage from './pages/UserManagementPage';
 import QuestionManagementPage from './pages/QuestionManagementPage';
 import StatisticsPage from './pages/StatisticsPage';
+import KakaoSuccessPage from './pages/KakaoSuccessPage';
 
 const router = createBrowserRouter([
   {
@@ -92,7 +93,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-
       {
         path: 'onboarding',
         element: <OnboardingPage />,
@@ -104,6 +104,10 @@ const router = createBrowserRouter([
       {
         path: 'role',
         element: <SelectRolePage />,
+      },
+      {
+        path: '/kakao/success',
+        element: <KakaoSuccessPage />,
       },
     ],
   },

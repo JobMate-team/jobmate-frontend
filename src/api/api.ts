@@ -14,11 +14,13 @@ if (!baseURL) {
   );
 }
 
+// 인스턴스 정의
 export const axiosInstance = axios.create({
   baseURL,
   withCredentials: true, // 쿠키 허용
 });
 
+// 요청 인터셉터 : 모든 요청 전에 accessToken을 Authozation 헤더에 추가
 axiosInstance.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem('accessToken');
@@ -54,7 +56,7 @@ axiosInstance.interceptors.response.use(
           try {
             const refreshToken = localStorage.getItem('refreshToken');
 
-            const { data } = await axiosInstance.post('/v1/auth/refresh', {
+            const { data } = await axiosInstance.post('/auth/refresh', {
               refresh: refreshToken,
             });
 
