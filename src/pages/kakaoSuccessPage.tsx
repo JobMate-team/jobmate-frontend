@@ -1,29 +1,25 @@
+import { useAuth } from '@/context/AuthContext';
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const KakaoSuccessPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { login } = useAuth();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const accessToken = params.get('accessToken');
     const refreshToken = params.get('refreshToken');
-    const id = params.get('id');
-    const nickname = params.get('nickname');
 
     if (!accessToken) {
       navigate('/login');
       return;
     }
 
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken || '');
-    localStorage.setItem('userId', id || '');
-    localStorage.setItem('userNickname', nickname || '');
-
+    login(accessToken, refreshToken || undefined);
     navigate('/'); // 메인 페이지 이동
-  }, [location.search, navigate]);
+  }, [location.search, login, navigate]);
 
   return (
     <main className='flex flex-col items-center justify-center min-h-screen gap-5'>
