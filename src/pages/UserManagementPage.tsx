@@ -1,31 +1,80 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SearchBar from '@/components/common/SearchBar';
 import DropDown from '@/components/ui/Dropdown';
-import UserTable from '@/components/user-management/UserTable';
+import UserTable, { type User as UserTableUser } from '@/components/user-management/UserTable';
 import UserStats from '@/components/user-management/UserStats';
-
 import { jobItems } from '@/data/coachItems';
-
-import { MOCK_USERS } from '@/data/mockUsers';
+import { getUsers, getUserStats, type User as ApiUser, type UserDashboardStats } from '@/api/user';
 
 const jobOptions = ['전체 직군', ...jobItems];
 
 const UserManagementPage = () => {
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [users, setUsers] = useState<UserTableUser[]>([]);
+  const [stats, setStats] = useState<UserDashboardStats | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<unknown>(null);
 
-  const filteredUsers = MOCK_USERS.filter((user) => {
-    // 직군 필터
-    const isJobMatch = !selectedJob || selectedJob === '전체 직군' || user.job === selectedJob;
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const jobCategoryIndex = selectedJob ? jobOptions.indexOf(selectedJob) : 0;
+        const jobCategoryId = jobCategoryIndex > 0 ? jobCategoryIndex : undefined;
 
-    // 검색 필터
-    const searchLower = searchQuery.toLowerCase();
-    const isSearchMatch =
-      user.name.toLowerCase().includes(searchLower) ||
-      user.email.toLowerCase().includes(searchLower);
+        const response = await getUsers(searchQuery, jobCategoryId);
 
-    return isJobMatch && isSearchMatch;
-  });
+        if (response && response.success) {
+          const adaptedUsers: UserTableUser[] = response.success.map((user: ApiUser) => ({
+            id: user.id,
+            name: user.nickname,
+            email: user.email,
+            job: user.job_category_name || '미지정', // Handle null job category
+            joinDate: new Date(user.created_at)
+              .toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+              })
+              .replace(/\. /g, '.')
+              .slice(0, -1), // Format: 2024.12.09
+            coachingCount: user.coaching_count,
+            reviewCount: user.review_count,
+          }));
+          setUsers(adaptedUsers);
+        }
+      } catch (err) {
+        setError(err);
+        console.error('Failed to fetch users:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const timer = setTimeout(() => {
+      fetchUsers();
+    }, 300); // Simple debounce
+    return () => clearTimeout(timer);
+  }, [searchQuery, selectedJob]);
+
+  // Separate effect for stats to avoid refetching on search/filter if not needed,
+  // or fetch once on mount. Usually dashboard stats might not change with search/filter unless specified.
+  // The API spec implies /admin/users/dashboard is a global stat, not filtered.
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await getUserStats();
+        if (response && response.success) {
+          setStats(response.success);
+        }
+      } catch (err) {
+        console.error('Failed to fetch user stats:', err);
+      }
+    };
+    fetchStats();
+  }, []);
 
   return (
     <div className='flex flex-col gap-8 h-full'>
@@ -57,8 +106,17 @@ const UserManagementPage = () => {
 
       {/* 사용자 목록 컴포넌트 */}
       <div className='flex gap-6 flex-col lg:flex-row items-start'>
-        {filteredUsers.length > 0 ? (
-          <UserTable users={filteredUsers} />
+        {isLoading ? (
+          <div className='flex-1 w-full flex flex-col items-center justify-center bg-white border border-gray-200 rounded-xl min-h-[400px] text-gray-500'>
+            <p className='mt-4 text-lg font-medium'>로딩 중...</p>
+          </div>
+        ) : error ? (
+          <div className='flex-1 w-full flex flex-col items-center justify-center bg-white border border-gray-200 rounded-xl min-h-[400px] text-red-500'>
+            <p className='mt-4 text-lg font-medium'>데이터를 불러오는데 실패했습니다.</p>
+            <p className='text-sm text-gray-400 mt-2'>잠시 후 다시 시도해주세요.</p>
+          </div>
+        ) : users.length > 0 ? (
+          <UserTable users={users} />
         ) : (
           <div className='flex-1 w-full flex flex-col items-center justify-center bg-white border border-gray-200 rounded-xl min-h-[400px] text-gray-500'>
             <p className='mt-4 text-lg font-medium'>검색 결과가 없습니다</p>
@@ -67,7 +125,7 @@ const UserManagementPage = () => {
         )}
 
         {/* 통계 컴포넌트 */}
-        <UserStats />
+        <UserStats stats={stats} />
       </div>
     </div>
   );

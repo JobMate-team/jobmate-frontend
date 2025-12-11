@@ -1,6 +1,8 @@
+import { type UserDashboardStats } from '@/api/user';
+
 interface StatCardProps {
   label: string;
-  value: string;
+  value: string | number;
 }
 
 const StatCard = ({ label, value }: StatCardProps) => {
@@ -12,13 +14,17 @@ const StatCard = ({ label, value }: StatCardProps) => {
   );
 };
 
-const UserStats = () => {
+interface UserStatsProps {
+  stats?: UserDashboardStats | null;
+}
+
+const UserStats = ({ stats }: UserStatsProps) => {
   return (
     <div className='w-full lg:w-72 flex flex-col gap-4'>
-      <StatCard label='전체 사용자' value='8' />
-      <StatCard label='총 코칭 횟수' value='258' />
-      <StatCard label='총 후기 수' value='60' />
-      <StatCard label='오늘 활동' value='13' />
+      <StatCard label='전체 사용자' value={stats?.total_users ?? '-'} />
+      <StatCard label='총 코칭 횟수' value={stats?.total_coaching ?? '-'} />
+      <StatCard label='총 후기 수' value={stats?.total_reviews ?? '-'} />
+      <StatCard label='오늘 활동' value={stats?.today_activity ?? '-'} />
     </div>
   );
 };
