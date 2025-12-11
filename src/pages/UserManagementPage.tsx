@@ -7,6 +7,7 @@ import UserStats from '@/components/user-management/UserStats';
 import { jobItems } from '@/data/coachItems';
 
 import { MOCK_USERS } from '@/data/mockUsers';
+import { Outlet } from 'react-router-dom';
 
 const jobOptions = ['전체 직군', ...jobItems];
 
@@ -69,6 +70,8 @@ const UserManagementPage = () => {
         {/* 통계 컴포넌트 */}
         <UserStats />
       </div>
+
+      <Outlet />
     </div>
   );
 };

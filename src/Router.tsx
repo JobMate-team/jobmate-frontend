@@ -114,10 +114,22 @@ const router = createBrowserRouter([
           {
             path: 'review-management',
             element: <ReviewManagementPage />,
+            children: [
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
+            ],
           },
           {
             path: 'history-management',
             element: <HistoryManagementPage />,
+            children: [
+              {
+                path: 'my',
+                element: <MyPage />,
+              },
+            ],
           },
         ],
       },

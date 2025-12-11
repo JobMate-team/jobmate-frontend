@@ -59,7 +59,7 @@ const HistoryPage = () => {
   }, []);
 
   return (
-    <div className='space-y-5 relative pb-30 '>
+    <div className='space-y-5 relative pb-30'>
       <section className='hidden sm:flex items-center justify-between'>
         <div className='flex flex-col mt-10'>
           <h3 className='text-2xl font-semibold mb-2'>히스토리</h3>

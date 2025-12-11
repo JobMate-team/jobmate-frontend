@@ -4,6 +4,7 @@ import QuestionStats from '@/components/question/QuestionStats';
 import QuestionList from '@/components/question/QuestionList';
 import Modal from '@/components/common/Modal'; // Import Modal
 import { mockQuestions } from '@/data/questionData';
+import { Outlet } from 'react-router-dom';
 
 const QuestionManagementPage = () => {
   const [selectedJob, setSelectedJob] = useState<string | null>('전체 보기');
@@ -110,6 +111,8 @@ const QuestionManagementPage = () => {
           onCancel={() => setDeletingQuestion(null)}
         />
       )}
+
+      <Outlet />
     </div>
   );
 };

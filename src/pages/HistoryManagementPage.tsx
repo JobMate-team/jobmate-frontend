@@ -4,6 +4,7 @@ import HistoryList from '@/components/history-management/HistoryList';
 import HistoryDetailModal from '@/components/history-management/HistoryDetailModal';
 import { MOCK_HISTORY_RESPONSE } from '@/data/mockHistoryManagement';
 import type { HistoryRecord } from '@/types/historyManagement';
+import { Outlet } from 'react-router-dom';
 
 const HistoryManagementPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -54,6 +55,8 @@ const HistoryManagementPage = () => {
       {selectedRecord && (
         <HistoryDetailModal record={selectedRecord} onClose={() => setSelectedRecord(null)} />
       )}
+
+      <Outlet />
     </div>
   );
 };

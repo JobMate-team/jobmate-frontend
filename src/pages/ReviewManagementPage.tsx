@@ -5,6 +5,7 @@ import ReviewList from '../components/review-management/ReviewList';
 import ReviewDetailModal from '../components/review-management/ReviewDetailModal';
 import ReviewDeleteModal from '../components/review-management/ReviewDeleteModal';
 import { MOCK_REVIEWS, CATEGORIES, type Review } from '../data/mockReviews';
+import { Outlet } from 'react-router-dom';
 
 export default function ReviewManagementPage() {
   const [selectedCategory, setSelectedCategory] = useState('전체');
@@ -111,6 +112,8 @@ export default function ReviewManagementPage() {
         onClose={handleCloseDeleteModal}
         onConfirm={handleConfirmDelete}
       />
+
+      <Outlet />
     </div>
   );
 }

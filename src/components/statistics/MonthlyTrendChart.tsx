@@ -85,7 +85,7 @@ const MonthlyTrendChart = ({ monthlyTrend }: MonthlyTrendChartProps) => {
   };
 
   return (
-    <div className='bg-white p-6 rounded-lg border border-gray-200 shadow-sm relative'>
+    <div className='bg-white p-6 rounded-lg border border-gray-200 relative'>
       <div className='flex justify-between items-center mb-6'>
         <h2 className='text-lg font-bold text-gray-900'>월별 사용 추이</h2>
       </div>
