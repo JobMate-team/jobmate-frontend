@@ -1,6 +1,26 @@
+import { useEffect, useState } from 'react';
 import { FaArrowUp } from 'react-icons/fa6';
 
 const UpScrollButton = () => {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const mainElement = document.querySelector('main');
+
+    const handleScroll = () => {
+      if (mainElement && mainElement.scrollTop > 200) {
+        setShow(true);
+      } else {
+        setShow(false);
+      }
+    };
+
+    if (mainElement) {
+      mainElement.addEventListener('scroll', handleScroll);
+      return () => mainElement.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
   const scrollToTop = () => {
     const mainElement = document.querySelector('main');
     if (mainElement) {
@@ -10,6 +30,8 @@ const UpScrollButton = () => {
       });
     }
   };
+
+  if (!show) return null;
 
   return (
     <button

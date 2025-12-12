@@ -5,7 +5,7 @@ import { useSetAtom } from 'jotai';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { FiCalendar } from 'react-icons/fi';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import UpScrollButton from '@/components/ui/UpScrollButton';
 
 const historyItems = [
@@ -36,27 +36,8 @@ const historyItems = [
 
 const HistoryPage = () => {
   const setIsModalOpen = useSetAtom(isModalOpenAtom);
-  const [showScrollTop, setShowScrollTop] = useState(false);
   const [isSortOrder, SetIsSortOrder] = useState(false);
   const navigate = useNavigate();
-
-  // 스크롤 감지
-  useEffect(() => {
-    const mainElement = document.querySelector('main');
-
-    const handleScroll = () => {
-      if (mainElement && mainElement.scrollTop > 200) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
-    };
-
-    if (mainElement) {
-      mainElement.addEventListener('scroll', handleScroll);
-      return () => mainElement.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
 
   return (
     <div className='space-y-5 relative pb-30'>
@@ -114,7 +95,7 @@ const HistoryPage = () => {
         </div>
       ))}
 
-      {showScrollTop && <UpScrollButton />}
+      <UpScrollButton />
       <Outlet />
     </div>
   );

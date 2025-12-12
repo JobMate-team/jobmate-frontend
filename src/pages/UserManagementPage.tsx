@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SearchBar from '@/components/common/SearchBar';
 import DropDown from '@/components/ui/Dropdown';
 import UserTable from '@/components/user-management/UserTable';
@@ -15,7 +15,6 @@ const jobOptions = ['전체 직군', ...jobItems];
 const UserManagementPage = () => {
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const filteredUsers = MOCK_USERS.filter((user) => {
     // 직군 필터
@@ -29,24 +28,6 @@ const UserManagementPage = () => {
 
     return isJobMatch && isSearchMatch;
   });
-
-  // 스크롤 감지
-  useEffect(() => {
-    const mainElement = document.querySelector('main');
-
-    const handleScroll = () => {
-      if (mainElement && mainElement.scrollTop > 200) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
-    };
-
-    if (mainElement) {
-      mainElement.addEventListener('scroll', handleScroll);
-      return () => mainElement.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
 
   return (
     <div className='space-y-8 pb-30'>
@@ -91,7 +72,7 @@ const UserManagementPage = () => {
         <UserStats />
       </div>
 
-      {showScrollTop && <UpScrollButton />}
+      <UpScrollButton />
       <Outlet />
     </div>
   );

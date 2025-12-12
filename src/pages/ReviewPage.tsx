@@ -5,7 +5,7 @@ import { FaPlus } from 'react-icons/fa6';
 import { IoBusinessSharp } from 'react-icons/io5';
 import { LuBriefcaseBusiness } from 'react-icons/lu';
 import { ChevronDown } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 import { ThumbsUp } from 'lucide-react';
 import UpScrollButton from '@/components/ui/UpScrollButton';
@@ -99,7 +99,6 @@ const mockReviewData = [
 
 const ReviewPage = () => {
   const [openIds, setOpenIds] = useState<number[]>([]);
-  const [showScrollTop, setShowScrollTop] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSortOrder, SetIsSortOrder] = useState(false);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
@@ -107,24 +106,6 @@ const ReviewPage = () => {
   const navigate = useNavigate();
 
   const isAdminMode = useAtomValue(isAdminModeAtom);
-
-  // 스크롤 감지
-  useEffect(() => {
-    const mainElement = document.querySelector('main');
-
-    const handleScroll = () => {
-      if (mainElement && mainElement.scrollTop > 200) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
-    };
-
-    if (mainElement) {
-      mainElement.addEventListener('scroll', handleScroll);
-      return () => mainElement.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
 
   const handleDelete = () => {
     setIsModalOpen((prev) => !prev);
@@ -284,7 +265,7 @@ const ReviewPage = () => {
         />
       )}
 
-      {showScrollTop && <UpScrollButton />}
+      <UpScrollButton />
       <Outlet />
     </div>
   );
