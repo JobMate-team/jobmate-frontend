@@ -3,8 +3,15 @@ import Button from '@/components/common/Button';
 import { FaAngleLeft } from 'react-icons/fa6';
 import { FeedbackIcon } from '@/assets';
 import type React from 'react';
-import { useAtomValue } from 'jotai';
-import { companyIdAtom, jobCategoryIdAtom, questionIdAtom, roleIdAtom } from '@/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
+import {
+  aiFeedbackAtom,
+  companyIdAtom,
+  feedbackLoadingAtom,
+  jobCategoryIdAtom,
+  questionIdAtom,
+  roleIdAtom,
+} from '@/atoms';
 import { showToast } from '@/utils/toast';
 import { useMutation } from '@tanstack/react-query';
 import { postHandFeedback, postTempFeedback } from '@/api/coaching';
@@ -31,6 +38,8 @@ const Step2Answer = ({
   const roleId = useAtomValue(roleIdAtom);
   const companyId = useAtomValue(companyIdAtom);
   const questionId = useAtomValue(questionIdAtom);
+  const setFeedbackLoading = useSetAtom(feedbackLoadingAtom);
+  const setAiFeedback = useSetAtom(aiFeedbackAtom);
 
   const tempFeedbackMutation = useMutation({
     mutationFn: () =>
@@ -42,10 +51,23 @@ const Step2Answer = ({
         question_source: 'template',
         user_answer: customAnswer,
       }),
-    onSuccess: () => {
+    onMutate: () => setFeedbackLoading(true),
+    onSuccess: (res) => {
+      const ai = res.success.ai_feedback;
+
+      setAiFeedback({
+        summarizedTalent: ai['요약된_인재상'] || '',
+        companyAdvice: ai['기업_맞춤_조언'] || '',
+        totalReview: ai['전체_총평'],
+        improvementPoints: ai['개선포인트'],
+        exampleAnswer: ai['모범_답변_예시'],
+      });
+
+      setFeedbackLoading(false);
       showToast.success('피드백이 생성되었습니다.');
     },
     onError: () => {
+      setFeedbackLoading(false);
       showToast.error('피드백 생성에 실패했습니다.');
     },
   });
@@ -60,10 +82,23 @@ const Step2Answer = ({
         question_source: 'input',
         user_answer: customAnswer,
       }),
-    onSuccess: () => {
+    onMutate: () => setFeedbackLoading(true),
+    onSuccess: (res) => {
+      const ai = res?.success?.ai_feedback ?? {};
+
+      setAiFeedback({
+        summarizedTalent: '',
+        companyAdvice: '',
+        totalReview: ai['전체_총평'] ?? '',
+        improvementPoints: ai['개선포인트'] ?? [],
+        exampleAnswer: ai['모범_답변_예시'] ?? '',
+      });
+
+      setFeedbackLoading(false);
       showToast.success('피드백이 생성되었습니다.');
     },
     onError: () => {
+      setFeedbackLoading(false);
       showToast.error('피드백 생성에 실패했습니다.');
     },
   });

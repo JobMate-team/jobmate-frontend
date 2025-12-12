@@ -18,7 +18,7 @@ const HistorySearch = ({
       </div>
       <input
         type='text'
-        className='block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-black focus:border-black sm:text-sm transition duration-150 ease-in-out'
+        className='block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent sm:text-sm transition duration-150 ease-in-out'
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}

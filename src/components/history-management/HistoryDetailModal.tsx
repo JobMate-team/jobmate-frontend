@@ -10,11 +10,23 @@ interface HistoryDetailModalProps {
 const HistoryDetailModal = ({ record, onClose }: HistoryDetailModalProps) => {
   // 모달 마운트 시 body 스크롤 잠금, 언마운트 시 해제
   useEffect(() => {
+    // body scroll lock
     document.body.style.overflow = 'hidden';
+
+    // ESC close
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleEsc);
+
     return () => {
       document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleEsc);
     };
-  }, []);
+  }, [onClose]);
 
   // 상세 값 결정 (목 데이터에 없는 경우 기본값 사용)
   const email = record.user_email || 'kim@example.com';

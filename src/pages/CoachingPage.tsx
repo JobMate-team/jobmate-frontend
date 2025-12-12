@@ -38,7 +38,6 @@ const CoachingPage = () => {
 
       setFeedback('모범 답변 예시입니당');
       setPage((prev) => prev + 1);
-      showToast.success('피드백이 생성되었습니다');
     }
   };
 

@@ -12,6 +12,14 @@ const jobCategoryIdAtom = atom<number | null>(null);
 const roleIdAtom = atom<number | null>(null);
 const companyIdAtom = atom<number | null>(null);
 const questionIdAtom = atom<number | null>(null);
+const feedbackLoadingAtom = atom<boolean>(false);
+const aiFeedbackAtom = atom({
+  summarizedTalent: '',
+  companyAdvice: '',
+  totalReview: '',
+  improvementPoints: [] as string[],
+  exampleAnswer: '',
+});
 
 export {
   pageAtom,
@@ -24,4 +32,6 @@ export {
   roleIdAtom,
   companyIdAtom,
   questionIdAtom,
+  feedbackLoadingAtom,
+  aiFeedbackAtom,
 };

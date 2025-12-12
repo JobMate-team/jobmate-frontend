@@ -6,6 +6,7 @@ import { getCoachingHistory, getCoachingHistoryDetail } from '@/api/coaching';
 import type { HistoryRecord } from '@/types/historyManagement';
 import { Outlet } from 'react-router-dom';
 import { showToast } from '@/utils/toast';
+import UpScrollButton from '@/components/ui/UpScrollButton';
 
 const HistoryManagementPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -113,6 +114,7 @@ const HistoryManagementPage = () => {
         <HistoryDetailModal record={selectedRecord} onClose={() => setSelectedRecord(null)} />
       )}
 
+      <UpScrollButton />
       <Outlet />
     </div>
   );
