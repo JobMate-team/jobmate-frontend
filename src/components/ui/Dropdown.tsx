@@ -12,6 +12,8 @@ interface DropDownProps {
   bgColor?: string;
   borderColor?: string;
   SmPadding?: string;
+  disabled?: boolean;
+  onDisabledClick?: () => void;
 }
 
 const DropDown = ({
@@ -22,6 +24,8 @@ const DropDown = ({
   bgColor = 'bg-[#F3F3F5]',
   borderColor = 'border-gray-300',
   SmPadding = 'py-2.5 sm:py-3',
+  disabled,
+  onDisabledClick,
 }: DropDownProps) => {
   const [open, setOpen] = useState(false);
   const [animate, setAnimate] = useState(false);
@@ -56,6 +60,11 @@ const DropDown = ({
 
   // --- 스크롤 이동 후 OPEN ---
   const handleToggle = () => {
+    if (disabled) {
+      onDisabledClick?.();
+      return;
+    }
+
     if (!open) {
       const isCenter = isDropDownCentered();
 
@@ -139,11 +148,16 @@ const DropDown = ({
         className={clsx(
           bgColor,
           SmPadding,
-          'rounded-lg pr-2 pl-4 max-sm:text-sm flex justify-between items-center outline-none gap-2 border whitespace-nowrap',
+          'rounded-lg pr-2 pl-4 max-sm:text-sm flex justify-between items-center outline-none gap-2 border',
           open ? borderColor : 'border-transparent',
         )}
       >
-        <p className={clsx(selected ? 'text-black' : 'text-[#717182]')}>
+        <p
+          className={clsx(
+            'whitespace-normal wrap-break-word flex-1 text-left leading-5',
+            selected ? 'text-black' : 'text-[#717182]',
+          )}
+        >
           {selected ?? placeholder}
         </p>
         <div className={clsx('transition-transform duration-300', open && 'rotate-180')}>
@@ -167,10 +181,10 @@ const DropDown = ({
               )}
               style={dropdownStyle}
             >
-              {items.map((item) => (
+              {items.map((item, idx) => (
                 <div
-                  key={item}
-                  className='cursor-pointer rounded-lg sm:p-4 p-2.5 hover:bg-gray-100 max-sm:text-sm whitespace-normal wrap-break-word'
+                  key={idx}
+                  className='cursor-pointer rounded-lg sm:p-4 p-2.5 hover:bg-gray-100 max-sm:text-sm whitespace-normal wrap-break-word break-keep leading-5'
                   onClick={() => handleSelect(item)}
                 >
                   {item}
