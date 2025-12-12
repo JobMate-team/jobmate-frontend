@@ -7,7 +7,7 @@ import { useAtomValue } from 'jotai';
 import { companyIdAtom, jobCategoryIdAtom, questionIdAtom, roleIdAtom } from '@/atoms';
 import { showToast } from '@/utils/toast';
 import { useMutation } from '@tanstack/react-query';
-import { postTempFeedback } from '@/api/coaching';
+import { postHandFeedback, postTempFeedback } from '@/api/coaching';
 
 interface Props {
   customQuestion: string | null;
@@ -50,9 +50,36 @@ const Step2Answer = ({
     },
   });
 
+  const handFeedbackMutation = useMutation({
+    mutationFn: () =>
+      postHandFeedback({
+        job_category_id: jobCategoryId!,
+        role_id: roleId!,
+        company_id: companyId!,
+        question: customQuestion!,
+        question_source: 'input',
+        user_answer: customAnswer,
+      }),
+    onSuccess: () => {
+      showToast.success('피드백이 생성되었습니다.');
+    },
+    onError: () => {
+      showToast.error('피드백 생성에 실패했습니다.');
+    },
+  });
+
   const handleSave = () => {
-    handleNextStep();
-    tempFeedbackMutation.mutate();
+    if (customQuestion && customQuestion.trim() !== '') {
+      handFeedbackMutation.mutate();
+      handleNextStep();
+      return;
+    }
+
+    if (selectedQuestion) {
+      tempFeedbackMutation.mutate();
+      handleNextStep();
+      return;
+    }
   };
 
   return (
