@@ -97,7 +97,7 @@ const Step1Select = ({
         <DropDown
           items={companies.map((c) => c.name)}
           selected={selectCompanies}
-          placeholder='기업 예시'
+          placeholder='기업 선택'
           onSelect={(company) => isSelectCompanies(company)}
         />
 
