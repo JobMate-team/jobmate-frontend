@@ -52,24 +52,6 @@ const ReviewPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const LIMIT = 10;
 
-  // 스크롤 감지
-  useEffect(() => {
-    const mainElement = document.querySelector('main');
-
-    const handleScroll = () => {
-      if (mainElement && mainElement.scrollTop > 200) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
-    };
-
-    if (mainElement) {
-      mainElement.addEventListener('scroll', handleScroll);
-      return () => mainElement.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
-
   const fetchReviews = useCallback(async () => {
     try {
       const jobCategoryId = selectedJob ? JOB_CATEGORY_MAP[selectedJob] : undefined;
