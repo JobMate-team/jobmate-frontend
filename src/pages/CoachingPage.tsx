@@ -14,7 +14,6 @@ const CoachingPage = () => {
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
   const [customQuestion, setCustomQuestion] = useState<string>('');
   const [customAnswer, setCustomAnswer] = useState<string>('');
-  const [feedback, setFeedback] = useState<string>('');
   const [showExampleAnswer, setShowExampleAnswer] = useState<boolean>(false);
 
   const handleNextStep = () => {
@@ -35,8 +34,6 @@ const CoachingPage = () => {
         showToast.error('답변을 작성해주세요');
         return;
       }
-
-      setFeedback('모범 답변 예시입니당');
       setPage((prev) => prev + 1);
     }
   };
@@ -86,7 +83,6 @@ const CoachingPage = () => {
           customQuestion={customQuestion}
           selectedQuestion={selectedQuestion}
           customAnswer={customAnswer}
-          feedback={feedback}
           showExampleAnswer={showExampleAnswer}
           setShowExampleAnswer={setShowExampleAnswer}
           resetCoaching={resetCoaching}
