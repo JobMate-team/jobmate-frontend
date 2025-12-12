@@ -46,7 +46,7 @@ const RecommendQuestionModal = ({ companies, onCancel }: ModalProps) => {
                   <div className='bg-white border border-gray-200 text-xs py-1 px-2 rounded-lg font-medium'>
                     인성
                   </div>
-                  <p className='text-sm'>자기소개 부탁드립니다</p>
+                  <p className='text-sm break-keep'>자기소개 부탁드립니다</p>
                 </div>
 
                 <Button type='submit' className='bg-black text-white text-sm p-3.5 px-8 rounded-xl'>

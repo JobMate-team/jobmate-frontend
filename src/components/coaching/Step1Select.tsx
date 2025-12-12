@@ -2,9 +2,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Button from '@/components/common/Button';
 import DropDown from '@/components/ui/Dropdown';
 import { FaAngleRight } from 'react-icons/fa6';
-import { basicItems } from '@/data/coachItems';
 import { useQuery } from '@tanstack/react-query';
-import { getCategories, getCompanies } from '@/api/coaching';
+import { getCategories, getCompanies, getQuestions } from '@/api/coaching';
 import { useState } from 'react';
 import { showToast } from '@/utils/toast';
 import RecommendQuestionModal from '../ui/RecommendQuestionModal';
@@ -51,6 +50,17 @@ const Step1Select = ({
   const jobCategories = jobData?.success.jobCategories || [];
   const companies = companyData?.success.companies || [];
 
+  const selectedCategoryId = jobCategories.find((c) => c.name === selectedJob)?.id;
+
+  const { data: QuestionData } = useQuery({
+    queryKey: ['questions', selectedCategoryId],
+    queryFn: () => getQuestions(selectedCategoryId!),
+    enabled: !!selectedCategoryId,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const questionItems = QuestionData?.success.questions?.map((q) => q.text) || [];
+
   const toggleCreateQuestion = () => {
     if (!selectedJob) {
       showToast.error('직군을 선택해주세요');
@@ -73,7 +83,7 @@ const Step1Select = ({
       <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
         <p className='font-semibold'>면접 질문</p>
         <DropDown
-          items={basicItems}
+          items={questionItems}
           selected={selectedQuestion}
           placeholder='기본 질문 예시'
           onSelect={(question) => setSelectedQuestion(question)}

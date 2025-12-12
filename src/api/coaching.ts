@@ -1,4 +1,9 @@
-import type { CompaniesResponse, JobCategoryResponse, QuestionResponse } from '@/types/coaching';
+import type {
+  CompaniesResponse,
+  JobCategoryResponse,
+  JobRoleResponse,
+  QuestionResponse,
+} from '@/types/coaching';
 import { axiosInstance } from './api';
 import type { HistoryResponse, HistoryDetailResponse } from '@/types/historyManagement';
 
@@ -9,12 +14,15 @@ export const getCategories = async (): Promise<JobCategoryResponse> => {
 };
 
 // 직군에 따른 질문 템플릿 조회
-export const getQuestion = async (): Promise<QuestionResponse> => {
-  const { data } = await axiosInstance.get('/coach/questions');
+export const getQuestions = async (jobCategoryId: number): Promise<QuestionResponse> => {
+  const { data } = await axiosInstance.get('/coach/questions', {
+    params: { jobCategoryId },
+  });
   return data;
 };
 
-export const getJobRole = async (): Promise<QuestionResponse> => {
+// 직군에 따른 직무 목록
+export const getJobRole = async (): Promise<JobRoleResponse> => {
   const { data } = await axiosInstance.get('/coach/job-roles');
   return data;
 };
