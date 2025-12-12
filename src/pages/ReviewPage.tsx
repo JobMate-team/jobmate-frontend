@@ -27,7 +27,6 @@ import { getUserProfile } from '@/api/user';
 
 const ReviewPage = () => {
   const [openIds, setOpenIds] = useState<number[]>([]);
-  const [showScrollTop, setShowScrollTop] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSortOrder, SetIsSortOrder] = useState(true);
   const [selectedJob, setSelectedJob] = useState<string>('전체');
@@ -374,7 +373,7 @@ const ReviewPage = () => {
         />
       )}
 
-      {showScrollTop && <UpScrollButton />}
+      <UpScrollButton />
       <Outlet />
     </div>
   );

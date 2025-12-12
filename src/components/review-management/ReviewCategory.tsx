@@ -17,7 +17,7 @@ const ReviewCategory: React.FC<ReviewCategoryProps> = ({
         <button
           key={category}
           onClick={() => onSelectCategory(category)}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0 ${
             selectedCategory === category
               ? 'bg-[#0f172a] text-white'
               : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'

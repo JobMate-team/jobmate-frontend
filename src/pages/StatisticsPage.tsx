@@ -4,6 +4,7 @@ import StatsOverview from '@/components/statistics/StatsOverview';
 import MonthlyTrendChart from '@/components/statistics/MonthlyTrendChart';
 import PopularQuestions from '@/components/statistics/PopularQuestions';
 import UserDistributionChart from '@/components/statistics/UserDistributionChart';
+import { Outlet } from 'react-router-dom';
 import { getStatistics } from '@/api/stats';
 import type { StatisticsData } from '@/types/statistics';
 
@@ -67,10 +68,10 @@ const StatisticsPage = () => {
   if (!stats) return null;
 
   return (
-    <div className='flex flex-col gap-6'>
-      <div className='flex flex-col gap-2'>
-        <h1 className='text-xl font-bold text-gray-900'>통계</h1>
-        <p className='text-sm text-gray-500'>서비스 사용 현황과 통계를 확인합니다</p>
+    <div className='space-y-5 pb-30'>
+      <div className='hidden sm:flex flex-col mt-10'>
+        <h1 className='text-2xl font-semibold mb-2'>통계</h1>
+        <p className=' text-[#717182] mb-6'>서비스 사용 현황과 통계를 확인합니다</p>
       </div>
 
       {/* 상단 카드 */}
@@ -88,6 +89,8 @@ const StatisticsPage = () => {
         <PopularQuestions popularQuestions={stats.popularQuestions} />
         <UserDistributionChart jobCategoryDist={stats.jobCategoryDist} />
       </div>
+
+      <Outlet />
     </div>
   );
 };

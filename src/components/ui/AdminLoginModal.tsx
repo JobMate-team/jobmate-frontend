@@ -26,7 +26,7 @@ const AdminLoginModal = () => {
       showToast.success('관리자 로그인에 성공했습니다.');
       setIsAdminLoginModalOpen(false);
       setIsAdminMode(true);
-      navigate('/', { replace: true });
+      navigate('/home', { replace: true });
     },
     onError: () => {
       showToast.error('관리자 로그인에 실패했습니다.');

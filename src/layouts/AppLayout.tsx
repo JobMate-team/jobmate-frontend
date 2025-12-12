@@ -15,7 +15,8 @@ import { showToast } from '@/utils/toast';
 import { useEffect } from 'react';
 import LogoutModal from '@/components/ui/LogoutModal';
 import AdminLoginModal from '@/components/ui/AdminLoginModal';
-import { postLogout } from '@/api/auth';
+import { getUserInfo, postLogout } from '@/api/auth';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { deleteAllHistory } from '@/api/history';
 
@@ -23,10 +24,25 @@ const AppLayout = () => {
   const [isModalOpen, setIsModalOpen] = useAtom(isModalOpenAtom);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useAtom(isLogoutModalAtom);
   const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useAtom(isAdminLoginModalAtom);
-  const [isAdminMode, setIsAdminMode] = useAtom(isAdminModeAtom);
+  const [, setIsAdminMode] = useAtom(isAdminModeAtom);
   const setHistoryRefresh = useSetAtom(historyRefreshAtom);
 
+
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['auth-check'],
+    queryFn: getUserInfo,
+    retry: false,
+  });
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (!data?.success) {
+      navigate('/login', { replace: true });
+    }
+  }, [data, isLoading, navigate]);
 
   const handleDelete = async () => {
     try {
@@ -48,16 +64,11 @@ const AppLayout = () => {
   };
 
   const handleLogout = () => {
-    if (isAdminMode) {
-      setIsLogoutModalOpen(false);
-      setIsAdminMode(false);
-      postLogout();
-      navigate('/login');
-    } else {
-      postLogout();
-      setIsLogoutModalOpen(false);
-      navigate('/login');
-    }
+    postLogout();
+    setIsLogoutModalOpen(false);
+    setIsAdminMode(false);
+    queryClient.clear();
+    navigate('/login');
     showToast.success('로그아웃에 성공했습니다');
   };
 

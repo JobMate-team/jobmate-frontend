@@ -3,12 +3,15 @@ import HomeHeader from './headers/HomeHeader';
 import CoachingHeader from './headers/CoachingHeader';
 import HistoryHeader from './headers/HistoryHeader';
 import ReviewHeader from './headers/ReviewHeader';
+import UserHeader from './headers/UserHeader';
+import QuestionHeader from './headers/QuestionHeader';
+import StatisticsHeader from './headers/StatisticsHeader';
 
 const MobileHeader = () => {
   const location = useLocation();
 
   const renderHeader = () => {
-    if (location.pathname === '/') return <HomeHeader />;
+    if (location.pathname === '/home') return <HomeHeader />;
     if (location.pathname.startsWith('/coaching')) return <CoachingHeader />;
     if (
       location.pathname.startsWith('/review') &&
@@ -21,6 +24,9 @@ const MobileHeader = () => {
     )
       return <HistoryHeader />;
     if (location.pathname.startsWith('/review')) return <ReviewHeader />;
+    if (location.pathname.startsWith('/user-management')) return <UserHeader />;
+    if (location.pathname.startsWith('/question')) return <QuestionHeader />;
+    if (location.pathname.startsWith('/statistics')) return <StatisticsHeader />;
   };
 
   return <header className='bg-black sm:hidden'>{renderHeader()}</header>;

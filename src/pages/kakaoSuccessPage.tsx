@@ -38,7 +38,7 @@ const KakaoSuccessPage = () => {
     }
 
     // 3) 정상 로그인 → 홈 이동
-    navigate('/', { replace: true });
+    navigate('/home', { replace: true });
     showToast.success('로그인에 성공하였습니다.');
   }, [data, isError, isLoading, navigate]);
 

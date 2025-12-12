@@ -30,7 +30,7 @@ const OnboardingPage = () => {
 
   return (
     <main className='relative bg-gray-50 min-h-dvh flex justify-center items-center p-4'>
-      <button onClick={() => navigate('/signin')} className='absolute top-4 right-4 font-medium'>
+      <button onClick={() => navigate('/login')} className='absolute top-4 right-4 font-medium'>
         건너뛰기
       </button>
       <section className='w-full max-w-sm p-4'>

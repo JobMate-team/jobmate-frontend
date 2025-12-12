@@ -45,7 +45,14 @@ axiosInstance.interceptors.response.use(
           } catch (err) {
             // 리프레시 실패 → 로그인 페이지로 이동
             console.error('토큰 리프레시 실패', err);
-            window.location.href = '/login';
+
+            const PUBLIC_ROUTES = ['/', '/login', '/role', '/kakao/success'];
+
+            const currentPath = window.location.pathname;
+
+            if (!PUBLIC_ROUTES.includes(currentPath)) {
+              window.location.href = '/login';
+            }
             throw err;
           } finally {
             // 다음 401 때를 위해 초기화
