@@ -84,7 +84,7 @@ const RecommendQuestionModal = ({
         )}
 
         {!isLoading && (!recommendedQuestions || recommendedQuestions.length === 0) && (
-          <div className='py-10 text-center text-gray-500'>
+          <div className='py-10 flex flex-col items-center justify-center text-center text-gray-500'>
             <p>추천 질문을 생성할 수 없습니다.</p>
             <Button
               type='button'
