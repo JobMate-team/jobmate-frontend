@@ -1,28 +1,82 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import HistorySearch from '@/components/history-management/HistorySearch';
 import HistoryList from '@/components/history-management/HistoryList';
 import HistoryDetailModal from '@/components/history-management/HistoryDetailModal';
-import { MOCK_HISTORY_RESPONSE } from '@/data/mockHistoryManagement';
+import { getCoachingHistory, getCoachingHistoryDetail } from '@/api/coaching';
 import type { HistoryRecord } from '@/types/historyManagement';
+import { showToast } from '@/utils/toast';
 
 const HistoryManagementPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRecord, setSelectedRecord] = useState<HistoryRecord | null>(null);
+  const [records, setRecords] = useState<HistoryRecord[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const records = MOCK_HISTORY_RESPONSE.success || [];
+  // useCallback으로 메모이제이션하여 의존성 배열 문제 해결
+  const fetchHistory = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await getCoachingHistory();
+      if (data.resultType === 'SUCCESS' && data.success) {
+        setRecords(data.success);
+      } else {
+        // API 에러 처리
+        const errorMessage = data.error?.reason || '데이터를 불러오는데 실패했습니다.';
+        showToast.error(errorMessage);
+      }
+    } catch (err: unknown) {
+      console.error('Failed to fetch history:', err);
+      const error = err as { response?: { data?: { error?: { reason?: string } } } };
+
+      if (error.response?.data?.error?.reason) {
+        showToast.error(error.response.data.error.reason);
+      } else {
+        showToast.error('히스토리 목록을 불러오는데 실패했습니다.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchHistory();
+  }, [fetchHistory]);
 
   // 검색 기능
-  const filteredRecords = records.filter(
-    (record) =>
-      record.question_title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      record.job_category_name.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const filteredRecords = records.filter((record) => {
+    const title = record.question_title?.toLowerCase() || '';
+    const category = record.job_category_name?.toLowerCase() || '';
+    const search = searchTerm.toLowerCase();
+
+    return title.includes(search) || category.includes(search);
+  });
 
   // 상세보기
-  const handleViewDetail = (id: number) => {
-    const record = records.find((r) => r.id === id);
-    if (record) {
-      setSelectedRecord(record);
+  const handleViewDetail = async (id: number) => {
+    try {
+      const data = await getCoachingHistoryDetail(id);
+      if (data.resultType === 'SUCCESS' && data.success) {
+        // 상세 조회 성공 시 모달 열기
+        const detail = data.success;
+        const mappedRecord: HistoryRecord = {
+          ...detail,
+          answer: detail.answer_text,
+          model_answer: detail.ai_model_answer,
+        };
+        setSelectedRecord(mappedRecord);
+      } else {
+        const errorMessage = data.error?.reason || '상세 정보를 불러올 수 없습니다.';
+        showToast.error(errorMessage);
+      }
+    } catch (err: unknown) {
+      console.error('Failed to fetch detail:', err);
+      const error = err as { response?: { data?: { error?: { reason?: string } } } };
+
+      if (error.response?.data?.error?.reason) {
+        showToast.error(error.response.data.error.reason);
+      } else {
+        showToast.error('상세 정보를 불러오는 중 오류가 발생했습니다.');
+      }
     }
   };
 
@@ -44,10 +98,13 @@ const HistoryManagementPage = () => {
           <h2 className='text-lg font-bold text-gray-900'>연습 기록</h2>
           <p className='text-sm text-gray-500'>최근 면접 연습 기록을 확인하세요</p>
         </div>
-        <HistoryList
-          records={filteredRecords}
-          onViewDetail={handleViewDetail} // 핸들러 전달
-        />
+        {loading ? (
+          <div className='flex items-center justify-center h-64'>
+            <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900'></div>
+          </div>
+        ) : (
+          <HistoryList records={filteredRecords} onViewDetail={handleViewDetail} />
+        )}
       </div>
 
       {/* 상세 모달 */}
