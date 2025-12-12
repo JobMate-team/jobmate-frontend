@@ -6,6 +6,7 @@ import type React from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import {
   aiFeedbackAtom,
+  coachingIdAtom,
   companyIdAtom,
   feedbackLoadingAtom,
   jobCategoryIdAtom,
@@ -40,6 +41,7 @@ const Step2Answer = ({
   const questionId = useAtomValue(questionIdAtom);
   const setFeedbackLoading = useSetAtom(feedbackLoadingAtom);
   const setAiFeedback = useSetAtom(aiFeedbackAtom);
+  const setCoachingId = useSetAtom(coachingIdAtom);
 
   const tempFeedbackMutation = useMutation({
     mutationFn: () =>
@@ -63,6 +65,7 @@ const Step2Answer = ({
         exampleAnswer: ai['모범_답변_예시'],
       });
 
+      setCoachingId(res.success.session_id);
       setFeedbackLoading(false);
       showToast.success('피드백이 생성되었습니다.');
     },
@@ -94,6 +97,7 @@ const Step2Answer = ({
         exampleAnswer: ai['모범_답변_예시'] ?? '',
       });
 
+      setCoachingId(res?.success?.session_id);
       setFeedbackLoading(false);
       showToast.success('피드백이 생성되었습니다.');
     },
