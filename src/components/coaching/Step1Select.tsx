@@ -149,6 +149,7 @@ const Step1Select = ({
           companies={companies}
           selectedJob={selectedJob}
           jobCategoryId={selectedJobCategoryId}
+          setCustomQuestion={setCustomQuestion}
           onCancel={() => setIsModalOpen(false)}
         />
       )}

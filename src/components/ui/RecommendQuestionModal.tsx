@@ -6,12 +6,14 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { getUserInfo } from '@/api/auth';
 import { showToast } from '@/utils/toast';
 import { getJobRole, postQuestion } from '@/api/coaching';
-import type { RecommendQuestionResponse } from '@/types/coaching';
+import LoadingComponent from './LoadingComponent';
 
 interface ModalProps {
   companies: CommonItem[];
   selectedJob: string | null;
   jobCategoryId: number | undefined;
+  // eslint-disable-next-line no-unused-vars
+  setCustomQuestion: (v: string) => void;
   onCancel: () => void;
 }
 
@@ -19,6 +21,7 @@ const RecommendQuestionModal = ({
   companies,
   selectedJob,
   jobCategoryId,
+  setCustomQuestion,
   onCancel,
 }: ModalProps) => {
   const [selectCompanies, isSelectCompanies] = useState<string | null>(null);
@@ -47,9 +50,8 @@ const RecommendQuestionModal = ({
       }
       return postQuestion(selectedJob, selectJob, selectCompanies);
     },
-    onSuccess: (data: RecommendQuestionResponse) => {
+    onSuccess: () => {
       showToast.success('추천 질문이 생성되었습니다.');
-      console.log(data.success.questions);
       isSetCreatePage(true);
     },
     onError: () => {
@@ -73,36 +75,15 @@ const RecommendQuestionModal = ({
     <div onClick={onCancel} className='fixed inset-0 bg-black/40 flex justify-center items-center'>
       <div
         onClick={(e) => e.stopPropagation()}
-        className='bg-white rounded-[10px] flex flex-col overflow-hidden p-6 w-[90%] sm:w-110'
+        className='bg-white rounded-[10px] flex flex-col overflow-y-auto p-6 w-[90%] sm:w-110 min-h-85 max-h-[70%] hide-scrollbar'
       >
-        {isCreatePage ? (
-          <>
-            <p className='font-medium mb-7'>{userData?.success.nickname}님을 위한 추천 질문 목록</p>
+        {RecommendQuestionMutation.isPending && (
+          <div>
+            <LoadingComponent />
+          </div>
+        )}
 
-            {isCreatePage && RecommendQuestionMutation.data?.success.questions && (
-              <div className='space-y-2'>
-                {RecommendQuestionMutation.data.success.questions.map((q, idx) => (
-                  <div key={idx} className='flex items-center gap-3'>
-                    <div className='flex-1 bg-[#F9FAFB] border border-gray-200 rounded-xl p-2.5 flex items-center gap-2'>
-                      <div className='bg-white border border-gray-200 text-xs py-1 px-2 rounded-lg font-medium whitespace-nowrap'>
-                        {categoryMap[q.category] || q.category}
-                      </div>
-
-                      <p className='text-sm break-keep'>{q.question}</p>
-                    </div>
-
-                    <Button
-                      type='button'
-                      className='bg-black text-white text-sm p-3.5 px-8 rounded-xl'
-                    >
-                      선택
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        ) : (
+        {!isCreatePage && !RecommendQuestionMutation.isPending && (
           <>
             <p className='mb-1 font-medium'>어떤 기업에 지원하시나요?</p>
             <p className='text-xs text-[#717182] font-medium mb-4'>
@@ -123,7 +104,7 @@ const RecommendQuestionModal = ({
               items={selectedJobList}
               selected={selectJob}
               placeholder='프론트엔드 개발자'
-              onSelect={(company) => isSelectJob(company)}
+              onSelect={(job) => isSelectJob(job)}
             />
 
             <div className='flex items-center justify-center gap-3 mt-6'>
@@ -143,6 +124,34 @@ const RecommendQuestionModal = ({
               </Button>
             </div>
           </>
+        )}
+
+        {isCreatePage && RecommendQuestionMutation.data?.success.questions && (
+          <div className='space-y-5 mt-4'>
+            <p className='font-medium mb-7'>{userData?.success.nickname}님을 위한 추천 질문 목록</p>
+            {RecommendQuestionMutation.data.success.questions.map((q, idx) => (
+              <div key={idx} className='flex items-center'>
+                <div className=' bg-[#F9FAFB] border border-gray-200 rounded-xl p-4 flex flex-col gap-4'>
+                  <div className='flex items-center justify-between'>
+                    <div className='bg-white border border-gray-200 text-xs py-1 px-2 rounded-lg font-medium whitespace-nowrap text-center'>
+                      {categoryMap[q.category] || q.category}
+                    </div>
+                    <Button
+                      type='button'
+                      onClick={() => {
+                        setCustomQuestion(q.question);
+                        onCancel();
+                      }}
+                      className='bg-black text-white text-sm py-2 px-6 rounded-xl'
+                    >
+                      선택
+                    </Button>
+                  </div>
+                  <p className='text-sm break-keep'>{q.question}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>
