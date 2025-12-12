@@ -6,6 +6,7 @@ const isLogoutModalAtom = atom<boolean>(false);
 const isAdminLoginModalAtom = atom<boolean>(false);
 const isAdminModeAtom = atom<boolean>(false);
 const historyRefreshAtom = atom<number>(0);
+const reviewRefreshAtom = atom<number>(0);
 
 export {
   pageAtom,
@@ -14,4 +15,5 @@ export {
   isAdminLoginModalAtom,
   isAdminModeAtom,
   historyRefreshAtom,
+  reviewRefreshAtom,
 };

@@ -72,7 +72,7 @@ const router = createBrowserRouter([
                 element: <ReviewAddPage />,
               },
               {
-                path: 'edit',
+                path: 'edit/:id',
                 element: <ReviewEditPage />,
               },
               {

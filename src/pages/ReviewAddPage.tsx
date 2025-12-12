@@ -1,20 +1,44 @@
 import Button from '@/components/common/Button';
 import DropDown from '@/components/ui/Dropdown';
-import { jobItems } from '@/data/coachItems';
+import { jobItems, JOB_CATEGORY_MAP } from '@/data/coachItems';
 import { showToast } from '@/utils/toast';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
+import { createReview } from '@/api/review';
+import { getUserProfile } from '@/api/user';
+import { useSetAtom } from 'jotai';
+import { reviewRefreshAtom } from '@/atoms';
 
 const ReviewAddPage = () => {
   const [isOpen, setISOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
+  const [companyName, setCompanyName] = useState('');
+  const [content, setContent] = useState('');
+  const [tips, setTips] = useState('');
+
+  const [authorName, setAuthorName] = useState('');
+  const setReviewRefresh = useSetAtom(reviewRefreshAtom);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => setISOpen(true), 10); // mount 후 transition 트리거
+
+    // 사용자 프로필 조회
+    const fetchProfile = async () => {
+      try {
+        const profile = await getUserProfile();
+        if (profile) {
+          setAuthorName(profile.nickname);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user profile:', error);
+      }
+    };
+    fetchProfile();
   }, []);
 
   useEffect(() => {
@@ -35,9 +59,47 @@ const ReviewAddPage = () => {
     setTimeout(() => navigate('/review'), 200); // 애니메이션 끝난 뒤 닫기
   };
 
-  const handleCreate = () => {
-    showToast.success('등록되었습니다');
-    navigate('/review');
+  const handleCreate = async () => {
+    if (!companyName.trim()) {
+      showToast.error('회사명을 입력해주세요.');
+      return;
+    }
+    if (!selectedJob) {
+      showToast.error('지원 직군을 선택해주세요.');
+      return;
+    }
+    if (!content.trim()) {
+      showToast.error('면접 후기를 입력해주세요.');
+      return;
+    }
+    if (!tips.trim()) {
+      showToast.error('면접 준비 팁을 입력해주세요.');
+      return;
+    }
+
+    try {
+      const response = await createReview({
+        company_name: companyName,
+        job_category_id: JOB_CATEGORY_MAP[selectedJob],
+        content: content,
+        interview_tip: tips,
+      });
+
+      if (response.resultType === 'SUCCESS') {
+        showToast.success('등록되었습니다');
+        setReviewRefresh((prev) => prev + 1);
+        handleClose();
+      } else {
+        if (response.error?.errorCode === 'ADMIN_CANNOT_CREATE_REVIEW') {
+          showToast.error('관리자는 후기를 작성할 수 없습니다.');
+        } else {
+          showToast.error(response.error?.reason || '후기 등록에 실패했습니다.');
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      showToast.error('후기 등록 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -70,7 +132,7 @@ const ReviewAddPage = () => {
         </section>
 
         <section className='space-y-5 mb-10'>
-          <form className='flex flex-col gap-6'>
+          <form className='flex flex-col gap-6' onSubmit={(e) => e.preventDefault()}>
             <div className='flex gap-9'>
               <div className='flex flex-col gap-2'>
                 <label className='font-medium'>
@@ -78,9 +140,10 @@ const ReviewAddPage = () => {
                 </label>
                 <input
                   type='text'
-                  placeholder='예: 정찬원'
-                  value='정찬원'
-                  className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none'
+                  value={authorName}
+                  placeholder='작성자'
+                  readOnly
+                  className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none text-gray-500'
                 />
               </div>
               <div className='flex flex-col gap-2'>
@@ -90,6 +153,8 @@ const ReviewAddPage = () => {
 
                 <input
                   type='text'
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
                   placeholder='예: 잡메이트'
                   className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none'
                 />
@@ -105,7 +170,7 @@ const ReviewAddPage = () => {
                 items={jobItems}
                 selected={selectedJob}
                 placeholder='직군 선택'
-                onSelect={(question) => setSelectedJob(question)}
+                onSelect={(job) => setSelectedJob(job)}
               />
             </div>
 
@@ -116,6 +181,8 @@ const ReviewAddPage = () => {
 
               <TextareaAutosize
                 minRows={10}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
                 placeholder='면접 과정, 질문 내용, 분위기 등 자유롭게 작성해주세요'
                 className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none leading-6'
               />
@@ -128,6 +195,8 @@ const ReviewAddPage = () => {
 
               <TextareaAutosize
                 minRows={10}
+                value={tips}
+                onChange={(e) => setTips(e.target.value)}
                 placeholder='면접 과정, 질문 내용, 분위기 등 자유롭게 작성해주세요'
                 className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none leading-6'
               />
@@ -144,7 +213,7 @@ const ReviewAddPage = () => {
             취소
           </Button>
           <Button
-            type='submit'
+            type='button' // submit -> button to prevent default form submission reloading page if not handled
             onClick={handleCreate}
             className='bg-black text-white px-4 py-3 w-[70%]'
           >
