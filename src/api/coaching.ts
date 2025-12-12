@@ -3,6 +3,7 @@ import type {
   JobCategoryResponse,
   JobRoleResponse,
   QuestionResponse,
+  RecommendQuestionResponse,
 } from '@/types/coaching';
 import { axiosInstance } from './api';
 import type { HistoryResponse, HistoryDetailResponse } from '@/types/historyManagement';
@@ -32,6 +33,19 @@ export const getJobRole = async (jobCategoryId: number): Promise<JobRoleResponse
 // 기업 조회
 export const getCompanies = async (): Promise<CompaniesResponse> => {
   const { data } = await axiosInstance.get('/coach/companies');
+  return data;
+};
+
+export const postQuestion = async (
+  job_family: string,
+  job: string,
+  company: string,
+): Promise<RecommendQuestionResponse> => {
+  const { data } = await axiosInstance.post('/coach/recommend-questions', {
+    job_family,
+    job,
+    company,
+  });
   return data;
 };
 

@@ -2,18 +2,25 @@ import { useState } from 'react';
 import Button from '../common/Button';
 import DropDown from './Dropdown';
 import type { CommonItem } from '@/types/common';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getUserInfo } from '@/api/auth';
 import { showToast } from '@/utils/toast';
-import { getJobRole } from '@/api/coaching';
+import { getJobRole, postQuestion } from '@/api/coaching';
+import type { RecommendQuestionResponse } from '@/types/coaching';
 
 interface ModalProps {
   companies: CommonItem[];
+  selectedJob: string | null;
   jobCategoryId: number | undefined;
   onCancel: () => void;
 }
 
-const RecommendQuestionModal = ({ companies, jobCategoryId, onCancel }: ModalProps) => {
+const RecommendQuestionModal = ({
+  companies,
+  selectedJob,
+  jobCategoryId,
+  onCancel,
+}: ModalProps) => {
   const [selectCompanies, isSelectCompanies] = useState<string | null>(null);
   const [selectJob, isSelectJob] = useState<string | null>(null);
   const [isCreatePage, isSetCreatePage] = useState(false);
@@ -31,16 +38,36 @@ const RecommendQuestionModal = ({ companies, jobCategoryId, onCancel }: ModalPro
     enabled: !!jobCategoryId,
   });
 
-  const handleCreate = () => {
-    if (!selectCompanies) {
-      showToast.error('기업을 선택해주세요.');
-      return;
-    }
+  const selectedJobList = JobRoleData?.success?.roles?.map((role) => role.name) || [];
 
-    isSetCreatePage(true);
+  const RecommendQuestionMutation = useMutation({
+    mutationFn: () => {
+      if (!selectedJob || !selectJob || !selectCompanies) {
+        throw new Error('모든 값을 선택해주세요.');
+      }
+      return postQuestion(selectedJob, selectJob, selectCompanies);
+    },
+    onSuccess: (data: RecommendQuestionResponse) => {
+      showToast.success('추천 질문이 생성되었습니다.');
+      console.log(data.success.questions);
+      isSetCreatePage(true);
+    },
+    onError: () => {
+      showToast.error('질문 생성에 실패했습니다.');
+    },
+  });
+
+  const handleCreate = () => {
+    RecommendQuestionMutation.mutate();
   };
 
-  const selectedJobList = JobRoleData?.success?.roles?.map((role) => role.name) || [];
+  const categoryMap: Record<string, string> = {
+    Tenacity: '인성',
+    Tech: '기술',
+    Job: '직무',
+    Experience: '경험',
+    Behavior: '가치관',
+  };
 
   return (
     <div onClick={onCancel} className='fixed inset-0 bg-black/40 flex justify-center items-center'>
@@ -52,20 +79,28 @@ const RecommendQuestionModal = ({ companies, jobCategoryId, onCancel }: ModalPro
           <>
             <p className='font-medium mb-7'>{userData?.success.nickname}님을 위한 추천 질문 목록</p>
 
-            <div className='space-y-2'>
-              <div className='flex items-center gap-3'>
-                <div className='flex-1 bg-[#F9FAFB] border border-gray-200 rounded-xl p-2.5 flex items-center gap-2'>
-                  <div className='bg-white border border-gray-200 text-xs py-1 px-2 rounded-lg font-medium'>
-                    인성
-                  </div>
-                  <p className='text-sm break-keep'>자기소개 부탁드립니다</p>
-                </div>
+            {isCreatePage && RecommendQuestionMutation.data?.success.questions && (
+              <div className='space-y-2'>
+                {RecommendQuestionMutation.data.success.questions.map((q, idx) => (
+                  <div key={idx} className='flex items-center gap-3'>
+                    <div className='flex-1 bg-[#F9FAFB] border border-gray-200 rounded-xl p-2.5 flex items-center gap-2'>
+                      <div className='bg-white border border-gray-200 text-xs py-1 px-2 rounded-lg font-medium whitespace-nowrap'>
+                        {categoryMap[q.category] || q.category}
+                      </div>
 
-                <Button type='submit' className='bg-black text-white text-sm p-3.5 px-8 rounded-xl'>
-                  선택
-                </Button>
+                      <p className='text-sm break-keep'>{q.question}</p>
+                    </div>
+
+                    <Button
+                      type='button'
+                      className='bg-black text-white text-sm p-3.5 px-8 rounded-xl'
+                    >
+                      선택
+                    </Button>
+                  </div>
+                ))}
               </div>
-            </div>
+            )}
           </>
         ) : (
           <>

@@ -147,6 +147,7 @@ const Step1Select = ({
       {isModalOpen && (
         <RecommendQuestionModal
           companies={companies}
+          selectedJob={selectedJob}
           jobCategoryId={selectedJobCategoryId}
           onCancel={() => setIsModalOpen(false)}
         />

@@ -25,3 +25,15 @@ export type CompaniesResponse = CommonResponse<{
   count: number;
   companies: CommonItem[];
 }>;
+
+export type RecommendQuestionItem = {
+  category: string;
+  question: string;
+};
+
+export type RecommendQuestionResponse = CommonResponse<{
+  job_family: string;
+  job: string;
+  company: string;
+  questions: RecommendQuestionItem[];
+}>;
