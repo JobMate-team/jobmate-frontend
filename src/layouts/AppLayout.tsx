@@ -14,7 +14,8 @@ import { showToast } from '@/utils/toast';
 import { useEffect } from 'react';
 import LogoutModal from '@/components/ui/LogoutModal';
 import AdminLoginModal from '@/components/ui/AdminLoginModal';
-import { postLogout } from '@/api/auth';
+import { getUserInfo, postLogout } from '@/api/auth';
+import { useQuery } from '@tanstack/react-query';
 
 const AppLayout = () => {
   const [isModalOpen, setIsModalOpen] = useAtom(isModalOpenAtom);
@@ -23,6 +24,19 @@ const AppLayout = () => {
   const [isAdminMode, setIsAdminMode] = useAtom(isAdminModeAtom);
 
   const navigate = useNavigate();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['auth-check'],
+    queryFn: getUserInfo,
+    retry: false,
+  });
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (!data?.success) {
+      navigate('/login', { replace: true });
+    }
+  }, [data, isLoading, navigate]);
 
   const handleDelete = () => {
     setIsModalOpen((prev) => !prev);

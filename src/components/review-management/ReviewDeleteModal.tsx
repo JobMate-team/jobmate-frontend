@@ -8,7 +8,7 @@ export default function ReviewDeleteModal({ isOpen, onClose, onConfirm }: Review
   if (!isOpen) return null;
 
   return (
-    <div className='fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4'>
+    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4'>
       <div className='bg-white rounded-lg shadow-xl w-full max-w-sm overflow-hidden animate-fade-in text-center p-8'>
         <h3 className='text-xl font-bold text-gray-900 mb-2'>해당 후기를 삭제하시겠습니까?</h3>
         <p className='text-gray-500 mb-8'>이 작업은 되돌릴 수 없습니다.</p>

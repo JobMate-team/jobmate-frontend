@@ -19,6 +19,7 @@ import StatisticsPage from './pages/StatisticsPage';
 import KakaoSuccessPage from './pages/kakaoSuccessPage';
 import ReviewManagementPage from './pages/ReviewManagementPage';
 import HistoryManagementPage from './pages/HistoryManagementPage';
+import PublicLayout from './layouts/PublicLayout';
 
 const router = createBrowserRouter([
   {
@@ -27,10 +28,31 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
+        element: <PublicLayout />,
+        children: [
+          {
+            index: true,
+            element: <OnboardingPage />,
+          },
+          {
+            path: 'login',
+            element: <LoginPage />,
+          },
+          {
+            path: 'role',
+            element: <SelectRolePage />,
+          },
+          {
+            path: '/kakao/success',
+            element: <KakaoSuccessPage />,
+          },
+        ],
+      },
+      {
         element: <AppLayout />,
         children: [
           {
-            path: '/',
+            path: '/home',
             element: <HomePage />,
             children: [
               {
@@ -132,22 +154,6 @@ const router = createBrowserRouter([
             ],
           },
         ],
-      },
-      {
-        index: true,
-        element: <OnboardingPage />,
-      },
-      {
-        path: 'login',
-        element: <LoginPage />,
-      },
-      {
-        path: 'role',
-        element: <SelectRolePage />,
-      },
-      {
-        path: '/kakao/success',
-        element: <KakaoSuccessPage />,
       },
     ],
   },
