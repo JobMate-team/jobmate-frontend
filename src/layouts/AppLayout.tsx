@@ -15,15 +15,16 @@ import { useEffect } from 'react';
 import LogoutModal from '@/components/ui/LogoutModal';
 import AdminLoginModal from '@/components/ui/AdminLoginModal';
 import { getUserInfo, postLogout } from '@/api/auth';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const AppLayout = () => {
   const [isModalOpen, setIsModalOpen] = useAtom(isModalOpenAtom);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useAtom(isLogoutModalAtom);
   const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useAtom(isAdminLoginModalAtom);
-  const [isAdminMode, setIsAdminMode] = useAtom(isAdminModeAtom);
+  const [, setIsAdminMode] = useAtom(isAdminModeAtom);
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: ['auth-check'],
@@ -44,16 +45,11 @@ const AppLayout = () => {
   };
 
   const handleLogout = () => {
-    if (isAdminMode) {
-      setIsLogoutModalOpen(false);
-      setIsAdminMode(false);
-      postLogout();
-      navigate('/login');
-    } else {
-      postLogout();
-      setIsLogoutModalOpen(false);
-      navigate('/login');
-    }
+    postLogout();
+    setIsLogoutModalOpen(false);
+    setIsAdminMode(false);
+    queryClient.clear();
+    navigate('/login');
     showToast.success('로그아웃에 성공했습니다');
   };
 
