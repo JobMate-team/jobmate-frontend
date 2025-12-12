@@ -75,7 +75,7 @@ const RecommendQuestionModal = ({
     <div onClick={onCancel} className='fixed inset-0 bg-black/40 flex justify-center items-center'>
       <div
         onClick={(e) => e.stopPropagation()}
-        className='bg-white rounded-[10px] flex flex-col overflow-y-auto p-6 w-[90%] sm:w-110 min-h-85 max-h-[70%] hide-scrollbar'
+        className='bg-white rounded-[10px] flex flex-col overflow-y-auto p-6 w-[90%] sm:w-110  max-h-[70%] hide-scrollbar'
       >
         {RecommendQuestionMutation.isPending && (
           <div>

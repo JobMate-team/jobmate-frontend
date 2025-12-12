@@ -3,13 +3,12 @@ import Button from '@/components/common/Button';
 import { showToast } from '@/utils/toast';
 import { FiSave } from 'react-icons/fi';
 import { LuLightbulb, LuRotateCcw } from 'react-icons/lu';
-import { coachStep } from '@/data/coachItems';
 import { useAtom } from 'jotai';
 import { pageAtom } from '@/atoms';
-import clsx from 'clsx';
 import { Outlet } from 'react-router-dom';
 import Step1Select from '@/components/coaching/Step1Select';
 import Step2Answer from '@/components/coaching/Step2Answer';
+import CoachStepHeader from '@/components/coaching/CoachStepHeader';
 
 const CoachingPage = () => {
   const [page, setPage] = useAtom(pageAtom);
@@ -55,24 +54,13 @@ const CoachingPage = () => {
   };
 
   return (
-    <div className='space-y-5 relative sm:max-w-200 sm:mx-auto pb-50'>
+    <div className='space-y-5 relative sm:max-w-200 sm:mx-auto pb-40'>
       <div className='hidden sm:flex flex-col my-10'>
         <h3 className='text-2xl font-semibold mb-2'>면접 코칭</h3>
         <p className='text-[#717182] mb-6'>질문에 답변하고 AI로부터 즉각적인 피드백을 받아보세요</p>
-        <div className='flex gap-3'>
-          {coachStep.map((step) => (
-            <div
-              key={step.id}
-              className={clsx(
-                'rounded-lg max-sm:text-xs font-medium px-2 sm:px-3 py-1 sm:py-2',
-                page === step.id ? 'bg-black text-white' : 'bg-[#D1D1D1]',
-              )}
-            >
-              {step.content}
-            </div>
-          ))}
-        </div>
+        <CoachStepHeader page={page} />
       </div>
+
       {page === 1 && (
         <Step1Select
           selectedJob={selectedJob}

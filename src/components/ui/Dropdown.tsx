@@ -148,7 +148,7 @@ const DropDown = ({
         className={clsx(
           bgColor,
           SmPadding,
-          'rounded-lg pr-2 pl-4 max-sm:text-sm flex justify-between items-center outline-none gap-2 border',
+          'rounded-lg pr-2 pl-4 max-sm:text-sm flex justify-between items-center outline-none gap-2 border w-full',
           open ? borderColor : 'border-transparent',
         )}
       >

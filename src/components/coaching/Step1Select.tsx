@@ -3,7 +3,7 @@ import Button from '@/components/common/Button';
 import DropDown from '@/components/ui/Dropdown';
 import { FaAngleRight } from 'react-icons/fa6';
 import { useQuery } from '@tanstack/react-query';
-import { getCategories, getCompanies, getQuestions } from '@/api/coaching';
+import { getCategories, getCompanies, getJobRole, getQuestions } from '@/api/coaching';
 import { useEffect, useState } from 'react';
 import { showToast } from '@/utils/toast';
 import RecommendQuestionModal from '../ui/RecommendQuestionModal';
@@ -31,6 +31,7 @@ const Step1Select = ({
   handleNextStep,
 }: Props) => {
   const [selectCompanies, isSelectCompanies] = useState<string | null>(null);
+  const [selectJob, isSelectJob] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: jobData } = useQuery({
@@ -59,7 +60,15 @@ const Step1Select = ({
     staleTime: 5 * 60 * 1000,
   });
 
-  const questionItems = QuestionData?.success.questions?.map((q) => q.text) || [];
+  const { data: JobRoleData } = useQuery({
+    queryKey: ['jobRoles', selectedJobCategoryId],
+    queryFn: () => getJobRole(selectedJobCategoryId!),
+    enabled: !!selectedJobCategoryId,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const questionList = QuestionData?.success.questions?.map((q) => q.text) || [];
+  const selectedJobList = JobRoleData?.success?.roles?.map((role) => role.name) || [];
 
   const toggleCreateQuestion = () => {
     if (!selectedJob) {
@@ -97,7 +106,7 @@ const Step1Select = ({
         <DropDown
           disabled={!selectedJob}
           onDisabledClick={() => showToast.error('직군을 먼저 선택해주세요')}
-          items={questionItems}
+          items={questionList}
           selected={selectedQuestion}
           placeholder='기본 질문 예시'
           onSelect={(question) => setSelectedQuestion(question)}
@@ -107,25 +116,47 @@ const Step1Select = ({
         <TextareaAutosize
           minRows={3}
           placeholder='면접 질문을 직접 입력하세요'
-          className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 border border-transparent focus:border-gray-300 focus:outline-none leading-6'
+          className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm border border-transparent focus:border-gray-300 focus:outline-none leading-6'
           value={customQuestion}
           onChange={(e) => setCustomQuestion(e.target.value)}
         />
+        <div className='sm:flex flex-row gap-5 mb-2'>
+          <div className='sm:flex-1'>
+            <div className='flex gap-1 mt-4 mb-1'>
+              <p className='font-semibold'>특정 기업 중심 피드백</p>
+              <span className='text-red-500'>*</span>
+            </div>
+            <p className='text-xs text-[#717182] font-medium mb-2'>
+              입력하신 기업 인재상을 반영하여 면접 답변을 피드백해드립니다
+            </p>
+            <DropDown
+              items={companies.map((c) => c.name)}
+              selected={selectCompanies}
+              placeholder='기업 선택'
+              onSelect={(company) => isSelectCompanies(company)}
+            />
+          </div>
 
-        <div>
-          <p className='font-semibold mt-4 mb-1'>어떤 기업 중심의 피드백을 원하시나요? (옵션)</p>
-          <p className='text-xs text-[#717182] font-medium'>
-            입력하신 기업 인재상을 반영하여 면접 답변을 피드백해드립니다
-          </p>
+          <div className='sm:flex-1 max-sm:mt-8'>
+            <div className='flex gap-1 mt-4 mb-1'>
+              <p className='font-semibold'>지원 직무</p>
+              <span className='text-red-500'>*</span>
+            </div>
+            <p className='text-xs text-[#717182] font-medium mb-2'>
+              직무에 맞춘 맞춤형 면접 질문을 생성합니다
+            </p>
+            <DropDown
+              disabled={!selectedJob}
+              onDisabledClick={() => showToast.error('직군을 먼저 선택해주세요')}
+              items={selectedJobList}
+              selected={selectJob}
+              placeholder='프론트엔드 개발자'
+              onSelect={(job) => isSelectJob(job)}
+            />
+          </div>
         </div>
-        <DropDown
-          items={companies.map((c) => c.name)}
-          selected={selectCompanies}
-          placeholder='기업 선택'
-          onSelect={(company) => isSelectCompanies(company)}
-        />
 
-        <div className='w-full text-center'>
+        <div className='w-full text-center mt-2'>
           <button
             type='button'
             onClick={toggleCreateQuestion}
