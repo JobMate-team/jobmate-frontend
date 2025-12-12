@@ -12,6 +12,8 @@ interface DropDownProps {
   bgColor?: string;
   borderColor?: string;
   SmPadding?: string;
+  disabled?: boolean;
+  onDisabledClick?: () => void;
 }
 
 const DropDown = ({
@@ -22,6 +24,8 @@ const DropDown = ({
   bgColor = 'bg-[#F3F3F5]',
   borderColor = 'border-gray-300',
   SmPadding = 'py-2.5 sm:py-3',
+  disabled,
+  onDisabledClick,
 }: DropDownProps) => {
   const [open, setOpen] = useState(false);
   const [animate, setAnimate] = useState(false);
@@ -56,6 +60,11 @@ const DropDown = ({
 
   // --- 스크롤 이동 후 OPEN ---
   const handleToggle = () => {
+    if (disabled) {
+      onDisabledClick?.();
+      return;
+    }
+
     if (!open) {
       const isCenter = isDropDownCentered();
 
@@ -139,11 +148,16 @@ const DropDown = ({
         className={clsx(
           bgColor,
           SmPadding,
-          'rounded-lg pr-2 pl-4 max-sm:text-sm flex justify-between items-center outline-none gap-2 border whitespace-nowrap',
+          'rounded-lg pr-2 pl-4 max-sm:text-sm flex justify-between items-center outline-none gap-2 border w-full',
           open ? borderColor : 'border-transparent',
         )}
       >
-        <p className={clsx(selected ? 'text-black' : 'text-[#717182]')}>
+        <p
+          className={clsx(
+            'whitespace-normal wrap-break-word flex-1 text-left leading-5',
+            selected ? 'text-black' : 'text-[#717182]',
+          )}
+        >
           {selected ?? placeholder}
         </p>
         <div className={clsx('transition-transform duration-300', open && 'rotate-180')}>
@@ -162,15 +176,15 @@ const DropDown = ({
             <div
               ref={dropdownRef}
               className={clsx(
-                'bg-white shadow-lg rounded-lg border border-[#E5E5E5] p-3 transition-all duration-150 ease-out z-50 max-h-80 overflow-y-auto thin-scrollbar min-w-50',
+                'bg-white shadow-lg rounded-lg border border-[#E5E5E5] p-3 transition-all duration-150 ease-out z-50 max-h-70 overflow-y-auto thin-scrollbar min-w-50 wrap-break-word',
                 animate ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2',
               )}
               style={dropdownStyle}
             >
-              {items.map((item) => (
+              {items.map((item, idx) => (
                 <div
-                  key={item}
-                  className='cursor-pointer rounded-lg sm:p-4 p-2.5 hover:bg-gray-100 max-sm:text-sm whitespace-nowrap'
+                  key={idx}
+                  className='cursor-pointer rounded-lg sm:p-4 p-2.5 hover:bg-gray-100 max-sm:text-sm whitespace-normal wrap-break-word break-keep leading-5'
                   onClick={() => handleSelect(item)}
                 >
                   {item}

@@ -17,7 +17,7 @@ const ReviewSearch: React.FC<ReviewSearchProps> = ({ searchTerm, onSearchChange 
         placeholder='작성자, 회사, 직군, 질문으로 검색...'
         value={searchTerm}
         onChange={onSearchChange}
-        className='w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
+        className='w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent transition-all'
       />
     </div>
   );

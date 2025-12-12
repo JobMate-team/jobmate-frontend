@@ -27,7 +27,6 @@ const AppLayout = () => {
   const [, setIsAdminMode] = useAtom(isAdminModeAtom);
   const setHistoryRefresh = useSetAtom(historyRefreshAtom);
 
-
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
