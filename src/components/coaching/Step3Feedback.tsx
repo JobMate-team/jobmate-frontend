@@ -4,13 +4,16 @@ import { FiSave } from 'react-icons/fi';
 import { showToast } from '@/utils/toast';
 import type React from 'react';
 import { useAtomValue } from 'jotai';
-import { aiFeedbackAtom, feedbackLoadingAtom } from '@/atoms';
+import { aiFeedbackAtom, coachingIdAtom, feedbackLoadingAtom } from '@/atoms';
+import { postHistory } from '@/api/history';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import clsx from 'clsx';
 
 interface Props {
   customQuestion: string;
   selectedQuestion: string | null;
   customAnswer: string;
-  feedback: string;
   showExampleAnswer: boolean;
   setShowExampleAnswer: React.Dispatch<React.SetStateAction<boolean>>;
   resetCoaching: () => void;
@@ -20,7 +23,6 @@ const Step3Feedback = ({
   customQuestion,
   selectedQuestion,
   customAnswer,
-  feedback,
   showExampleAnswer,
   setShowExampleAnswer,
   resetCoaching,
@@ -28,6 +30,33 @@ const Step3Feedback = ({
   const isLoading = useAtomValue(feedbackLoadingAtom);
   const { summarizedTalent, companyAdvice, totalReview, improvementPoints, exampleAnswer } =
     useAtomValue(aiFeedbackAtom);
+  const coachingId = useAtomValue(coachingIdAtom);
+  const [isSaved, setIsSaved] = useState(false);
+
+  const saveHistoryMutation = useMutation({
+    mutationFn: () => {
+      if (coachingId === null) {
+        throw new Error('coachingId가 없습니다');
+      }
+      return postHistory(coachingId);
+    },
+    onSuccess: () => {
+      showToast.success('히스토리 저장에 성공했습니다');
+      setIsSaved(true);
+    },
+    onError: () => {
+      showToast.error('히스토리 저장에 실패했습니다');
+    },
+  });
+
+  const handleSaveClick = () => {
+    if (isSaved) {
+      showToast.error('이미 히스토리가 저장되었습니다');
+      return;
+    }
+
+    saveHistoryMutation.mutate();
+  };
 
   return (
     <>
@@ -112,11 +141,12 @@ const Step3Feedback = ({
             <p className='font-semibold'>📝 모범 답변 예시</p>
             <Button
               type='button'
-              className='border border-black/10 text-sm font-medium gap-1.5 p-2 px-3 bg-white'
-              onClick={() => {
-                navigator.clipboard.writeText(feedback);
-                showToast.success('히스토리에 저장되었습니다');
-              }}
+              className={clsx(
+                'border border-black/10 text-sm font-medium gap-1.5 p-2 px-3 bg-white',
+                isSaved && 'opacity-50 hover:brightness-100 pointer-events-none',
+              )}
+              disabled={coachingId === null}
+              onClick={handleSaveClick}
             >
               <FiSave size={18} />
               저장

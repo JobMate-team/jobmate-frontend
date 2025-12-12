@@ -21,6 +21,7 @@ const aiFeedbackAtom = atom({
   improvementPoints: [] as string[],
   exampleAnswer: '',
 });
+const coachingIdAtom = atom<number | null>(null);
 
 export {
   pageAtom,
@@ -36,4 +37,5 @@ export {
   feedbackLoadingAtom,
   aiFeedbackAtom,
   reviewRefreshAtom,
+  coachingIdAtom,
 };
