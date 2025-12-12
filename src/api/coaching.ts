@@ -1,10 +1,22 @@
-import type { JobCategoryResponse } from '@/types/coaching';
+import type { CompaniesResponse, JobCategoryResponse, QuestionResponse } from '@/types/coaching';
 import { axiosInstance } from './api';
 import type { HistoryResponse, HistoryDetailResponse } from '@/types/historyManagement';
 
 // 직군 카테고리 조회
 export const getCategories = async (): Promise<JobCategoryResponse> => {
   const { data } = await axiosInstance.get('/coach/job-category');
+  return data;
+};
+
+// 직군에 따른 질문 템플릿 조회
+export const getQuestion = async (): Promise<QuestionResponse> => {
+  const { data } = await axiosInstance.get('/coach/questions');
+  return data;
+};
+
+// 기업 조회
+export const getCompanies = async (): Promise<CompaniesResponse> => {
+  const { data } = await axiosInstance.get('/coach/companies');
   return data;
 };
 
