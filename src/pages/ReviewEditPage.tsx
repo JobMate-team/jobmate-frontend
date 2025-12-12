@@ -1,17 +1,41 @@
 import Button from '@/components/common/Button';
 import DropDown from '@/components/ui/Dropdown';
-import { jobItems } from '@/data/coachItems';
+import { jobItems, JOB_CATEGORY_MAP } from '@/data/coachItems';
 import { showToast } from '@/utils/toast';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
+import { fetchUserReviewDetail, updateReview } from '@/api/review';
+import { useSetAtom } from 'jotai';
+import { reviewRefreshAtom } from '@/atoms';
 
 const ReviewEditPage = () => {
   const [isOpen, setISOpen] = useState(false);
+  const { id } = useParams<{ id: string }>();
+  const setReviewRefresh = useSetAtom(reviewRefreshAtom);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
+  const [companyName, setCompanyName] = useState('');
+  const [content, setContent] = useState('');
+  const [tips, setTips] = useState('');
+  const [authorName, setAuthorName] = useState('');
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id) {
+      fetchUserReviewDetail(Number(id)).then((data) => {
+        if (data) {
+          setCompanyName(data.company_name);
+          setContent(data.content);
+          setTips(data.interview_tip || '');
+          setSelectedJob(data.job_category_name);
+          setAuthorName(data.nickname);
+        }
+      });
+    }
+  }, [id]);
 
   useEffect(() => {
     setTimeout(() => setISOpen(true), 10); // mount 후 transition 트리거
@@ -35,9 +59,45 @@ const ReviewEditPage = () => {
     setTimeout(() => navigate('/review'), 200); // 애니메이션 끝난 뒤 닫기
   };
 
-  const handleCreate = () => {
-    showToast.success('수정되었습니다');
-    navigate('/review');
+  const handleUpdate = async () => {
+    if (!companyName.trim()) {
+      showToast.error('회사명을 입력해주세요.');
+      return;
+    }
+    if (!selectedJob) {
+      showToast.error('직군을 선택해주세요.');
+      return;
+    }
+    if (!content.trim()) {
+      showToast.error('면접 후기를 입력해주세요.');
+      return;
+    }
+    if (!tips.trim()) {
+      showToast.error('면접 준비 팁을 입력해주세요.');
+      return;
+    }
+
+    if (!id) return;
+
+    try {
+      const response = await updateReview(Number(id), {
+        company_name: companyName,
+        job_category_id: JOB_CATEGORY_MAP[selectedJob] || 0,
+        content: content,
+        interview_tip: tips,
+      });
+
+      if (response) {
+        showToast.success('수정되었습니다');
+        setReviewRefresh((prev) => prev + 1);
+        navigate('/review');
+      } else {
+        showToast.error('수정에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error(error);
+      showToast.error('수정 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -78,9 +138,10 @@ const ReviewEditPage = () => {
                 </label>
                 <input
                   type='text'
-                  placeholder='예: 정찬원'
-                  value='정찬원'
-                  className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none'
+                  value={authorName}
+                  readOnly
+                  placeholder='작성자'
+                  className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none text-gray-500'
                 />
               </div>
               <div className='flex flex-col gap-2'>
@@ -90,6 +151,8 @@ const ReviewEditPage = () => {
 
                 <input
                   type='text'
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
                   placeholder='예: 잡메이트'
                   className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none'
                 />
@@ -116,6 +179,8 @@ const ReviewEditPage = () => {
 
               <TextareaAutosize
                 minRows={10}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
                 placeholder='면접 과정, 질문 내용, 분위기 등 자유롭게 작성해주세요'
                 className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none leading-6'
               />
@@ -128,6 +193,8 @@ const ReviewEditPage = () => {
 
               <TextareaAutosize
                 minRows={10}
+                value={tips}
+                onChange={(e) => setTips(e.target.value)}
                 placeholder='면접 과정, 질문 내용, 분위기 등 자유롭게 작성해주세요'
                 className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none leading-6'
               />
@@ -145,7 +212,7 @@ const ReviewEditPage = () => {
           </Button>
           <Button
             type='submit'
-            onClick={handleCreate}
+            onClick={handleUpdate}
             className='bg-black text-white px-4 py-3 w-[70%]'
           >
             수정하기

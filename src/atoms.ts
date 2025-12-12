@@ -6,6 +6,7 @@ const isLogoutModalAtom = atom<boolean>(false);
 const isAdminLoginModalAtom = atom<boolean>(false);
 const isAdminModeAtom = atom<boolean>(false);
 const historyRefreshAtom = atom<number>(0);
+const reviewRefreshAtom = atom<number>(0);
 
 // coaching
 const jobCategoryIdAtom = atom<number | null>(null);
@@ -34,4 +35,5 @@ export {
   questionIdAtom,
   feedbackLoadingAtom,
   aiFeedbackAtom,
+  reviewRefreshAtom,
 };
