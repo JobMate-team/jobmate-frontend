@@ -5,20 +5,30 @@ import type { CommonItem } from '@/types/common';
 import { useQuery } from '@tanstack/react-query';
 import { getUserInfo } from '@/api/auth';
 import { showToast } from '@/utils/toast';
+import { getJobRole } from '@/api/coaching';
 
 interface ModalProps {
   companies: CommonItem[];
+  jobCategoryId: number | undefined;
   onCancel: () => void;
 }
 
-const RecommendQuestionModal = ({ companies, onCancel }: ModalProps) => {
+const RecommendQuestionModal = ({ companies, jobCategoryId, onCancel }: ModalProps) => {
   const [selectCompanies, isSelectCompanies] = useState<string | null>(null);
+  const [selectJob, isSelectJob] = useState<string | null>(null);
   const [isCreatePage, isSetCreatePage] = useState(false);
 
-  const { data } = useQuery({
-    queryKey: ['auth-check'],
+  const { data: userData } = useQuery({
+    queryKey: ['userInfo'],
     queryFn: getUserInfo,
-    retry: false,
+    gcTime: 10 * 60 * 1000,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: JobRoleData } = useQuery({
+    queryKey: ['questions', jobCategoryId],
+    queryFn: () => getJobRole(jobCategoryId!),
+    enabled: !!jobCategoryId,
   });
 
   const handleCreate = () => {
@@ -30,6 +40,8 @@ const RecommendQuestionModal = ({ companies, onCancel }: ModalProps) => {
     isSetCreatePage(true);
   };
 
+  const selectedJobList = JobRoleData?.success?.roles?.map((role) => role.name) || [];
+
   return (
     <div onClick={onCancel} className='fixed inset-0 bg-black/40 flex justify-center items-center'>
       <div
@@ -38,7 +50,7 @@ const RecommendQuestionModal = ({ companies, onCancel }: ModalProps) => {
       >
         {isCreatePage ? (
           <>
-            <p className='font-medium mb-7'>{data?.success.nickname}님을 위한 추천 질문 목록</p>
+            <p className='font-medium mb-7'>{userData?.success.nickname}님을 위한 추천 질문 목록</p>
 
             <div className='space-y-2'>
               <div className='flex items-center gap-3'>
@@ -73,10 +85,10 @@ const RecommendQuestionModal = ({ companies, onCancel }: ModalProps) => {
               직무에 맞춘 맞춤형 면접 질문을 생성합니다
             </p>
             <DropDown
-              items={companies.map((c) => c.name)}
-              selected={selectCompanies}
+              items={selectedJobList}
+              selected={selectJob}
               placeholder='프론트엔드 개발자'
-              onSelect={(company) => isSelectCompanies(company)}
+              onSelect={(company) => isSelectJob(company)}
             />
 
             <div className='flex items-center justify-center gap-3 mt-6'>

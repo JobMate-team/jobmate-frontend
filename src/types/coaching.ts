@@ -16,10 +16,10 @@ export type QuestionResponse = CommonResponse<{
   questions: QuestionItem[];
 }>;
 
-export type JobRoleResponse = {
+export type JobRoleResponse = CommonResponse<{
   jobCategoryId: number;
   roles: CommonItem[];
-};
+}>;
 
 export type CompaniesResponse = CommonResponse<{
   count: number;

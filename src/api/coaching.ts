@@ -22,8 +22,10 @@ export const getQuestions = async (jobCategoryId: number): Promise<QuestionRespo
 };
 
 // 직군에 따른 직무 목록
-export const getJobRole = async (): Promise<JobRoleResponse> => {
-  const { data } = await axiosInstance.get('/coach/job-roles');
+export const getJobRole = async (jobCategoryId: number): Promise<JobRoleResponse> => {
+  const { data } = await axiosInstance.get('/coach/job-roles', {
+    params: { jobCategoryId },
+  });
   return data;
 };
 

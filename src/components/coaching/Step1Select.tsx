@@ -50,12 +50,12 @@ const Step1Select = ({
   const jobCategories = jobData?.success.jobCategories || [];
   const companies = companyData?.success.companies || [];
 
-  const selectedCategoryId = jobCategories.find((c) => c.name === selectedJob)?.id;
+  const selectedJobCategoryId = jobCategories.find((c) => c.name === selectedJob)?.id;
 
   const { data: QuestionData } = useQuery({
-    queryKey: ['questions', selectedCategoryId],
-    queryFn: () => getQuestions(selectedCategoryId!),
-    enabled: !!selectedCategoryId,
+    queryKey: ['questions', selectedJobCategoryId],
+    queryFn: () => getQuestions(selectedJobCategoryId!),
+    enabled: !!selectedJobCategoryId,
     staleTime: 5 * 60 * 1000,
   });
 
@@ -63,9 +63,10 @@ const Step1Select = ({
 
   const toggleCreateQuestion = () => {
     if (!selectedJob) {
-      showToast.error('직군을 선택해주세요');
+      showToast.error('직군을 먼저 선택해주세요');
       return;
-    } else setIsModalOpen(true);
+    }
+    setIsModalOpen(true);
   };
 
   useEffect(() => {
@@ -76,7 +77,10 @@ const Step1Select = ({
   return (
     <>
       <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
-        <p className='font-semibold'>직군 선택</p>
+        <div className='flex gap-1'>
+          <p className='font-semibold'>직군 선택</p>
+          <span className='text-red-500'>*</span>
+        </div>
         <DropDown
           items={jobCategories.map((c) => c.name)}
           selected={selectedJob}
@@ -86,7 +90,10 @@ const Step1Select = ({
       </div>
 
       <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
-        <p className='font-semibold'>면접 질문</p>
+        <div className='flex gap-1'>
+          <p className='font-semibold'>면접 질문</p>
+          <span className='text-red-500'>*</span>
+        </div>
         <DropDown
           disabled={!selectedJob}
           onDisabledClick={() => showToast.error('직군을 먼저 선택해주세요')}
@@ -138,7 +145,11 @@ const Step1Select = ({
       </Button>
 
       {isModalOpen && (
-        <RecommendQuestionModal companies={companies} onCancel={() => setIsModalOpen(false)} />
+        <RecommendQuestionModal
+          companies={companies}
+          jobCategoryId={selectedJobCategoryId}
+          onCancel={() => setIsModalOpen(false)}
+        />
       )}
     </>
   );
