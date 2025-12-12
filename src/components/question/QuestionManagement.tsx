@@ -1,3 +1,4 @@
+import { toast } from 'react-hot-toast';
 import { useState, useEffect } from 'react';
 import { Plus, X, Save } from 'lucide-react';
 import DropDown from '@/components/ui/Dropdown';
@@ -46,15 +47,23 @@ const QuestionManagement = ({
   }, [editingQuestion]);
 
   const handleSave = () => {
-    if (question.trim() && category.trim()) {
-      if (isEditing && onUpdateQuestion) {
-        onUpdateQuestion(question, category);
-      } else {
-        onAddQuestion(question, category);
-        setQuestion('');
-        setCategory('');
-        setIsAdding(false);
-      }
+    if (!question.trim()) {
+      toast.error('질문 내용은 필수입니다');
+      return;
+    }
+
+    if (!category.trim()) {
+      toast.error('카테고리 선택은 필수입니다');
+      return;
+    }
+
+    if (isEditing && onUpdateQuestion) {
+      onUpdateQuestion(question, category);
+    } else {
+      onAddQuestion(question, category);
+      setQuestion('');
+      setCategory('');
+      setIsAdding(false);
     }
   };
 
@@ -66,6 +75,14 @@ const QuestionManagement = ({
     setQuestion('');
     setCategory('');
   };
+
+  // 창 크기 변경 시 리렌더링 (DropDown 위치 재계산용)
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const handleResize = () => setTick((t) => t + 1);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const showForm = isAdding || isEditing;
 
@@ -90,13 +107,17 @@ const QuestionManagement = ({
 
             <div className='flex flex-col gap-2'>
               <label className='text-sm font-bold text-gray-900'>카테고리 *</label>
-              <input
-                type='text'
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                placeholder='예: 인성, 직무, 경험'
-                className='w-full p-3 bg-gray-50 rounded-lg border-none focus:ring-2 focus:ring-black focus:outline-none placeholder:text-gray-400 text-sm'
-              />
+              <div className='relative w-full min-w-0'>
+                <DropDown
+                  items={['인성', '기술', '직무', '경험', '가치관']}
+                  selected={category || null}
+                  onSelect={setCategory}
+                  placeholder='카테고리를 선택해주세요'
+                  bgColor='bg-gray-50 w-full min-w-0 [&>p]:truncate [&>p]:min-w-0 [&>p]:flex-1 text-left'
+                  borderColor='border-gray-200'
+                  SmPadding='py-3'
+                />
+              </div>
             </div>
 
             <div className='flex items-center gap-2 mt-2'>

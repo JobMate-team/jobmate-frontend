@@ -3,12 +3,13 @@ import SideBar from '@/components/layouts/SideBar';
 import MobileHeader from '@/components/layouts/MobileHeader';
 import MobileFooter from '@/components/layouts/MobileFooter';
 import Modal from '@/components/common/Modal';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import {
   isAdminLoginModalAtom,
   isAdminModeAtom,
   isLogoutModalAtom,
   isModalOpenAtom,
+  historyRefreshAtom,
 } from '@/atoms';
 import { showToast } from '@/utils/toast';
 import { useEffect } from 'react';
@@ -17,11 +18,15 @@ import AdminLoginModal from '@/components/ui/AdminLoginModal';
 import { getUserInfo, postLogout } from '@/api/auth';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { deleteAllHistory } from '@/api/history';
+
 const AppLayout = () => {
   const [isModalOpen, setIsModalOpen] = useAtom(isModalOpenAtom);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useAtom(isLogoutModalAtom);
   const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useAtom(isAdminLoginModalAtom);
   const [, setIsAdminMode] = useAtom(isAdminModeAtom);
+  const setHistoryRefresh = useSetAtom(historyRefreshAtom);
+
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -39,9 +44,23 @@ const AppLayout = () => {
     }
   }, [data, isLoading, navigate]);
 
-  const handleDelete = () => {
-    setIsModalOpen((prev) => !prev);
-    showToast.success('삭제되었습니다');
+  const handleDelete = async () => {
+    try {
+      const response = await deleteAllHistory();
+      if (response.resultType === 'SUCCESS') {
+        setIsModalOpen(false);
+        showToast.success('모든 히스토리가 삭제되었습니다.');
+        setHistoryRefresh((prev) => prev + 1);
+        navigate('/history');
+      } else {
+        showToast.error(response.error?.reason || '삭제에 실패했습니다.');
+        setIsModalOpen(false);
+      }
+    } catch (error) {
+      console.error('Failed to delete all history:', error);
+      showToast.error('삭제 중 오류가 발생했습니다.');
+      setIsModalOpen(false);
+    }
   };
 
   const handleLogout = () => {

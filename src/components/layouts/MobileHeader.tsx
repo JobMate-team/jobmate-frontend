@@ -13,7 +13,6 @@ const MobileHeader = () => {
   const renderHeader = () => {
     if (location.pathname === '/home') return <HomeHeader />;
     if (location.pathname.startsWith('/coaching')) return <CoachingHeader />;
-    if (location.pathname.startsWith('/history')) return <HistoryHeader />;
     if (
       location.pathname.startsWith('/review') &&
       !location.pathname.startsWith('/review-management')

@@ -27,7 +27,7 @@ const QuestionList = ({ selectedJob, questions, onEdit, onDelete }: QuestionList
         </span>
       </div>
 
-      <div className='flex flex-col gap-3 lg:overflow-y-auto pr-2 custom-scrollbar lg:h-[calc(100vh-240px)]'>
+      <div className='flex flex-col gap-3 lg:overflow-y-auto pr-2 hide-scrollbar lg:h-[calc(100vh-240px)]'>
         {filteredQuestions.map((q, idx) => (
           <QuestionItem
             key={idx}

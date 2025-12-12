@@ -1,43 +1,78 @@
 import { RightIcon } from '@/assets';
-import { isModalOpenAtom } from '@/atoms';
+import { isModalOpenAtom, historyRefreshAtom } from '@/atoms';
 import Button from '@/components/common/Button';
-import { useSetAtom } from 'jotai';
+import { useSetAtom, useAtomValue } from 'jotai';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { FiCalendar } from 'react-icons/fi';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import UpScrollButton from '@/components/ui/UpScrollButton';
+import { fetchHistoryList } from '@/api/history';
+import { jobItems } from '@/data/coachItems';
+import { showToast } from '@/utils/toast';
 
-const historyItems = [
-  {
-    id: 1,
-    category: '경험',
-    date: '오늘',
-    question: '코드 리뷰에서 가장 중요하게 생각하는 것은?',
-    answer:
-      '코드 컨벤션을 지켰는지 확인하면서 리뷰를 하는 것이 가장 중요하다고 생각합니다. 왜냐하면 중요하다고 생각하기 때문입니다. 코드 컨벤션을 지켰는지 확인하면서 리뷰를 하는 것이 가장 중요하다고 생각합니다. 왜냐하면 중요하다고 생각하기 때문입니다.',
-  },
-  {
-    id: 2,
-    category: '인성',
-    date: '25.10.27',
-    question: '인성 문제있어요?',
-    answer: '없는데요? 왜 물어보세요 그런거',
-  },
-  {
-    id: 3,
-    category: 'IT',
-    date: '24.9.10',
-    question: '개발이 좋으세요? 아니면 고양이발이 좋으세요?',
-    answer:
-      '저는 개인적으로 고양이 발이 더 좋습니다. 고양이 발바닥을 보시면 핑크색 젤리가 있는데 그게 참 야무지거든요.',
-  },
-];
+interface HistoryItemState {
+  id: number;
+  category: string;
+  date: string;
+  question: string;
+  answer: string;
+}
 
 const HistoryPage = () => {
   const setIsModalOpen = useSetAtom(isModalOpenAtom);
   const [isSortOrder, SetIsSortOrder] = useState(false);
+  const [historyItems, setHistoryItems] = useState<HistoryItemState[]>([]);
   const navigate = useNavigate();
+
+  const getJobCategoryName = (id: number) => {
+    return jobItems[id - 1] || '알 수 없음';
+  };
+
+  // useCallback으로 메모이제이션
+  const loadHistory = useCallback(async () => {
+    try {
+      const response = await fetchHistoryList();
+      if (response.resultType === 'SUCCESS' && response.success) {
+        const mappedItems: HistoryItemState[] = response.success.data.map((item) => ({
+          id: item.history_id,
+          category: getJobCategoryName(item.job_category_id),
+          date: new Date(item.created_at)
+            .toLocaleDateString('ko-KR', {
+              year: '2-digit',
+              month: 'numeric',
+              day: 'numeric',
+            })
+            .replace(/\./g, '.')
+            .replace(/\s/g, ''),
+          question: item.question_content,
+          answer: item.answer_text,
+        }));
+        setHistoryItems(mappedItems);
+      } else {
+        const errorMessage = response.error?.reason || '히스토리를 불러오는데 실패했습니다.';
+        showToast.error(errorMessage);
+        if (response.error?.errorCode === 'NOT_FOUND') {
+          setHistoryItems([]);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load history:', error);
+      showToast.error('히스토리를 불러오는 중 오류가 발생했습니다.');
+    }
+  }, []); // 의존성 없음 (fetchHistoryList는 외부 함수)
+
+  const refreshTrigger = useAtomValue(historyRefreshAtom);
+
+  useEffect(() => {
+    loadHistory();
+  }, [loadHistory, refreshTrigger]);
+
+  // 정렬 로직
+  // isSortOrder가 true면 '최신순' (ID 내림차순), false면 '오래된순' (ID 오름차순) 가정
+  const sortedItems = [...historyItems].sort((a, b) => {
+    return isSortOrder ? b.id - a.id : a.id - b.id;
+  });
 
   return (
     <div className='space-y-5 relative pb-30'>
@@ -67,36 +102,40 @@ const HistoryPage = () => {
         </button>
       </div>
 
-      {historyItems.map((item) => (
-        <div
-          key={item.id}
-          className='bg-white rounded-xl px-6 py-5 border border-[#E5E5E5] flex flex-col gap-4'
-        >
-          <div className='flex items-center justify-between mb-2'>
-            <div className='bg-black text-white text-xs font-medium p-1 px-4 border border-[#E5E5E5] rounded-lg'>
-              {item.category}
-            </div>
-            <p className='text-[#6A7282] flex items-center gap-1'>
-              <FiCalendar size={18} />
-              {item.date}
-            </p>
-          </div>
-
-          <p>{item.question}</p>
-
-          <button
-            type='button'
-            onClick={() => navigate(`/history/${item.id}`)}
-            className='flex flex-row items-center gap-2 mt-1 cursor-pointer justify-between outline-none'
+      {sortedItems.length === 0 ? (
+        <div className='text-center py-10 text-gray-500'>저장된 히스토리가 없습니다.</div>
+      ) : (
+        sortedItems.map((item) => (
+          <div
+            key={item.id}
+            className='bg-white rounded-xl px-6 py-5 border border-[#E5E5E5] flex flex-col gap-4'
           >
-            <p className='line-clamp-1 text-[#99A1AF]'>{item.answer}</p>
-            <RightIcon className='h-4 min-w-4' />
-          </button>
-        </div>
-      ))}
+            <div className='flex items-center justify-between mb-2'>
+              <div className='bg-black text-white text-xs font-medium p-1 px-4 border border-[#E5E5E5] rounded-lg'>
+                {item.category}
+              </div>
+              <p className='text-[#6A7282] flex items-center gap-1'>
+                <FiCalendar size={18} />
+                {item.date}
+              </p>
+            </div>
+
+            <p>{item.question}</p>
+
+            <button
+              type='button'
+              onClick={() => navigate(`/history/${item.id}`)}
+              className='flex flex-row items-center gap-2 mt-1 cursor-pointer justify-between outline-none'
+            >
+              <p className='line-clamp-1 text-[#99A1AF]'>{item.answer}</p>
+              <RightIcon className='h-4 min-w-4' />
+            </button>
+          </div>
+        ))
+      )}
 
       <UpScrollButton />
-      <Outlet />
+      <Outlet context={{ loadHistory }} />
     </div>
   );
 };

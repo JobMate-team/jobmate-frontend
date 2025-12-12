@@ -34,8 +34,14 @@ export interface StatisticsData {
   monthlyTrend: MonthlyTrend;
 }
 
+export interface StatisticsError {
+  errorCode: string;
+  reason: string;
+  data: unknown;
+}
+
 export interface StatisticsResponse {
   resultType: string;
-  error: null | string;
+  error: null | StatisticsError;
   success: StatisticsData;
 }
