@@ -2,8 +2,14 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Button from '@/components/common/Button';
 import DropDown from '@/components/ui/Dropdown';
 import { FaAngleRight } from 'react-icons/fa6';
-import { useQuery } from '@tanstack/react-query';
-import { getCategories, getCompanies, getJobRole, getQuestions } from '@/api/coaching';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  getCategories,
+  getCompanies,
+  getJobRole,
+  getQuestions,
+  postQuestion,
+} from '@/api/coaching';
 import { useEffect, useState } from 'react';
 import { showToast } from '@/utils/toast';
 import RecommendQuestionModal from '../ui/RecommendQuestionModal';
@@ -31,7 +37,7 @@ const Step1Select = ({
   handleNextStep,
 }: Props) => {
   const [selectCompanies, isSelectCompanies] = useState<string | null>(null);
-  const [selectJob, isSelectJob] = useState<string | null>(null);
+  const [selectRole, isSelectRole] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: jobData } = useQuery({
@@ -70,12 +76,37 @@ const Step1Select = ({
   const questionList = QuestionData?.success.questions?.map((q) => q.text) || [];
   const selectedJobList = JobRoleData?.success?.roles?.map((role) => role.name) || [];
 
+  const recommendMutation = useMutation({
+    mutationFn: () => {
+      if (!selectedJob || !selectRole || !selectCompanies) {
+        throw new Error('모든 값을 선택해주세요.');
+      }
+      return postQuestion(selectedJob, selectRole, selectCompanies);
+    },
+    onSuccess: () => {
+      showToast.success('추천 질문이 생성되었습니다.');
+    },
+    onError: () => {
+      showToast.error('질문 생성에 실패했습니다.');
+    },
+  });
+
   const toggleCreateQuestion = () => {
     if (!selectedJob) {
-      showToast.error('직군을 먼저 선택해주세요');
+      showToast.error('직군을 선택해주세요');
       return;
     }
+    if (!selectCompanies) {
+      showToast.error('기업을 선택해주세요');
+      return;
+    }
+    if (!selectRole) {
+      showToast.error('직군을 선택해주세요');
+      return;
+    }
+
     setIsModalOpen(true);
+    recommendMutation.mutate();
   };
 
   useEffect(() => {
@@ -114,7 +145,7 @@ const Step1Select = ({
 
         <p className='font-semibold mt-4'>또는 직접 입력</p>
         <TextareaAutosize
-          minRows={3}
+          minRows={6}
           placeholder='면접 질문을 직접 입력하세요'
           className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm border border-transparent focus:border-gray-300 focus:outline-none leading-6'
           value={customQuestion}
@@ -149,9 +180,9 @@ const Step1Select = ({
               disabled={!selectedJob}
               onDisabledClick={() => showToast.error('직군을 먼저 선택해주세요')}
               items={selectedJobList}
-              selected={selectJob}
+              selected={selectRole}
               placeholder='프론트엔드 개발자'
-              onSelect={(job) => isSelectJob(job)}
+              onSelect={(role) => isSelectRole(role)}
             />
           </div>
         </div>
@@ -177,9 +208,8 @@ const Step1Select = ({
 
       {isModalOpen && (
         <RecommendQuestionModal
-          companies={companies}
-          selectedJob={selectedJob}
-          jobCategoryId={selectedJobCategoryId}
+          recommendedQuestions={recommendMutation.data?.success.questions}
+          isLoading={recommendMutation.isPending}
           setCustomQuestion={setCustomQuestion}
           onCancel={() => setIsModalOpen(false)}
         />
