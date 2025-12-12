@@ -92,15 +92,17 @@ const HistoryPage = () => {
         </Button>
       </section>
 
-      <div className='flex justify-end'>
-        <button
-          type='button'
-          onClick={() => SetIsSortOrder((prev) => !prev)}
-          className='text-sm px-3 text-gray-700'
-        >
-          {isSortOrder ? '최신순' : '오래된순'}
-        </button>
-      </div>
+      {sortedItems.length > 0 && (
+        <div className='flex justify-end'>
+          <button
+            type='button'
+            onClick={() => SetIsSortOrder((prev) => !prev)}
+            className='text-sm px-3 text-gray-700'
+          >
+            {isSortOrder ? '최신순' : '오래된순'}
+          </button>
+        </div>
+      )}
 
       {sortedItems.length === 0 ? (
         <div className='text-center py-10 text-gray-500'>저장된 히스토리가 없습니다.</div>
