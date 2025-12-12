@@ -1,9 +1,13 @@
 import type {
   CompaniesResponse,
+  HandFeedbackRequest,
+  HandFeedbackResponse,
   JobCategoryResponse,
   JobRoleResponse,
   QuestionResponse,
   RecommendQuestionResponse,
+  TempFeedbackRequest,
+  TempFeedbackResponse,
 } from '@/types/coaching';
 import { axiosInstance } from './api';
 import type { HistoryResponse, HistoryDetailResponse } from '@/types/historyManagement';
@@ -36,6 +40,7 @@ export const getCompanies = async (): Promise<CompaniesResponse> => {
   return data;
 };
 
+// AI 추천질문 가져오기
 export const postQuestion = async (
   job_family: string,
   job: string,
@@ -46,6 +51,22 @@ export const postQuestion = async (
     job,
     company,
   });
+  return data;
+};
+
+// 템플릿 질문 이용
+export const postTempFeedback = async (
+  body: TempFeedbackRequest,
+): Promise<TempFeedbackResponse> => {
+  const { data } = await axiosInstance.post('/coach/feedback/save', body);
+  return data;
+};
+
+// 직접 입력했을 때
+export const postHandFeedback = async (
+  body: HandFeedbackRequest,
+): Promise<HandFeedbackResponse> => {
+  const { data } = await axiosInstance.post('/coach/feedback/save', body);
   return data;
 };
 
