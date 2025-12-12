@@ -1,12 +1,7 @@
-import type { CommonResponse } from './common';
-
-export type JobCategory = {
-  id: number;
-  name: string;
-};
+import type { CommonItem, CommonResponse } from './common';
 
 export type JobCategoryResponse = CommonResponse<{
-  jobCategories: JobCategory[];
+  jobCategories: CommonItem[];
 }>;
 
 export type QuestionItem = {
@@ -16,17 +11,17 @@ export type QuestionItem = {
 };
 
 export type QuestionResponse = CommonResponse<{
-  jobCategoryId: string;
+  jobCategoryId: number;
   count: number;
   questions: QuestionItem[];
 }>;
 
-export type CompaniesItem = {
-  id: number;
-  name: string;
+export type JobRoleResponse = {
+  jobCategoryId: number;
+  roles: CommonItem[];
 };
 
 export type CompaniesResponse = CommonResponse<{
   count: number;
-  companies: CompaniesItem[];
+  companies: CommonItem[];
 }>;

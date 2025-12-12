@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getCategories, getCompanies } from '@/api/coaching';
 import { useState } from 'react';
 import { showToast } from '@/utils/toast';
+import RecommendQuestionModal from '../ui/RecommendQuestionModal';
 
 interface Props {
   selectedJob: string | null;
@@ -31,6 +32,7 @@ const Step1Select = ({
   handleNextStep,
 }: Props) => {
   const [selectCompanies, isSelectCompanies] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: jobData } = useQuery({
     queryKey: ['jobCategories'],
@@ -53,7 +55,7 @@ const Step1Select = ({
     if (!selectedJob) {
       showToast.error('직군을 선택해주세요');
       return;
-    }
+    } else setIsModalOpen(true);
   };
 
   return (
@@ -117,6 +119,10 @@ const Step1Select = ({
       >
         다음 <FaAngleRight />
       </Button>
+
+      {isModalOpen && (
+        <RecommendQuestionModal companies={companies} onCancel={() => setIsModalOpen(false)} />
+      )}
     </>
   );
 };

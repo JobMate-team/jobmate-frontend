@@ -7,3 +7,8 @@ export type CommonResponse<T> = {
   };
   success: T;
 };
+
+export type CommonItem = {
+  id: number;
+  name: string;
+};

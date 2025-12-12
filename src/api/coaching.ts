@@ -14,6 +14,11 @@ export const getQuestion = async (): Promise<QuestionResponse> => {
   return data;
 };
 
+export const getJobRole = async (): Promise<QuestionResponse> => {
+  const { data } = await axiosInstance.get('/coach/job-roles');
+  return data;
+};
+
 // 기업 조회
 export const getCompanies = async (): Promise<CompaniesResponse> => {
   const { data } = await axiosInstance.get('/coach/companies');
