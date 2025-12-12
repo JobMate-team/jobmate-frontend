@@ -21,7 +21,6 @@ interface HistoryItemState {
 
 const HistoryPage = () => {
   const setIsModalOpen = useSetAtom(isModalOpenAtom);
-  const [showScrollTop, setShowScrollTop] = useState(false);
   const [isSortOrder, SetIsSortOrder] = useState(false);
   const [historyItems, setHistoryItems] = useState<HistoryItemState[]>([]);
   const navigate = useNavigate();
@@ -69,24 +68,6 @@ const HistoryPage = () => {
     loadHistory();
   }, [loadHistory, refreshTrigger]);
 
-  // 스크롤 감지
-  useEffect(() => {
-    const mainElement = document.querySelector('main');
-
-    const handleScroll = () => {
-      if (mainElement && mainElement.scrollTop > 200) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
-    };
-
-    if (mainElement) {
-      mainElement.addEventListener('scroll', handleScroll);
-      return () => mainElement.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
-
   // 정렬 로직
   // isSortOrder가 true면 '최신순' (ID 내림차순), false면 '오래된순' (ID 오름차순) 가정
   const sortedItems = [...historyItems].sort((a, b) => {
@@ -94,7 +75,7 @@ const HistoryPage = () => {
   });
 
   return (
-    <div className='space-y-5 relative pb-30 '>
+    <div className='space-y-5 relative pb-30'>
       <section className='hidden sm:flex items-center justify-between'>
         <div className='flex flex-col mt-10'>
           <h3 className='text-2xl font-semibold mb-2'>히스토리</h3>
@@ -153,7 +134,7 @@ const HistoryPage = () => {
         ))
       )}
 
-      {showScrollTop && <UpScrollButton />}
+      <UpScrollButton />
       <Outlet context={{ loadHistory }} />
     </div>
   );

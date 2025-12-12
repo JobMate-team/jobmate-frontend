@@ -28,7 +28,7 @@ const StatsOverview = ({ coaching, newUsers, avgAnswerLength }: StatsOverviewPro
   return (
     <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
       {/* 이번 달 코칭 횟수 */}
-      <div className='bg-white p-6 rounded-lg border border-gray-200 shadow-sm flex flex-col justify-between h-[140px]'>
+      <div className='bg-white p-6 rounded-lg border border-gray-200 flex flex-col justify-between h-[140px]'>
         <div className='flex items-center justify-between'>
           <h3 className='text-gray-500 text-sm font-medium'>이번 달 코칭 횟수</h3>
           {renderGrowth(coaching.growth)}
@@ -37,7 +37,7 @@ const StatsOverview = ({ coaching, newUsers, avgAnswerLength }: StatsOverviewPro
       </div>
 
       {/* 신규 사용자 */}
-      <div className='bg-white p-6 rounded-lg border border-gray-200 shadow-sm flex flex-col justify-between h-[140px]'>
+      <div className='bg-white p-6 rounded-lg border border-gray-200 flex flex-col justify-between h-[140px]'>
         <div className='flex items-center justify-between'>
           <h3 className='text-gray-500 text-sm font-medium'>신규 사용자</h3>
           {renderGrowth(newUsers.growth)}
@@ -46,7 +46,7 @@ const StatsOverview = ({ coaching, newUsers, avgAnswerLength }: StatsOverviewPro
       </div>
 
       {/* 평균 답변 길이 */}
-      <div className='bg-white p-6 rounded-lg border border-gray-200 shadow-sm flex flex-col justify-between h-[140px]'>
+      <div className='bg-white p-6 rounded-lg border border-gray-200 flex flex-col justify-between h-[140px]'>
         <div className='flex flex-col gap-1'>
           <h3 className='text-gray-500 text-sm font-medium'>평균 답변 길이</h3>
         </div>

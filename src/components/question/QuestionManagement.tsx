@@ -4,7 +4,7 @@ import { Plus, X, Save } from 'lucide-react';
 import DropDown from '@/components/ui/Dropdown';
 import Button from '@/components/common/Button';
 
-const jobs = ['전체 보기', '기획', 'IT', '마케팅', '디자인', '영업', '인사'];
+const jobs = ['전체 보기', '기획', 'IT', '마케팅', '디자인', '영업', '인사', '재무', '연구'];
 
 interface Question {
   category: string;
@@ -88,7 +88,7 @@ const QuestionManagement = ({
 
   return (
     <div
-      className={`bg-white p-4 rounded-lg border border-gray-100 flex flex-col gap-4 ${className}`}
+      className={`bg-white p-4 rounded-lg border border-gray-200 flex flex-col gap-4 ${className}`}
     >
       {showForm ? (
         <>
@@ -151,16 +151,16 @@ const QuestionManagement = ({
                 selected={selectedJob}
                 onSelect={onSelectJob}
                 placeholder='직군을 선택해주세요'
-                bgColor='bg-gray-50 w-full'
+                bgColor='bg-gray-100 w-full'
                 borderColor='border-gray-200'
                 SmPadding='py-2.5'
               />
             </div>
           </div>
 
-          <Button
+          <button
             type='button'
-            className={`w-full py-2.5 text-sm font-medium flex items-center justify-center gap-1 mt-auto ${
+            className={`w-full py-2.5 rounded-lg text-sm font-medium flex items-center justify-center gap-1 mt-auto transition ${
               isAddDisabled
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 : 'bg-black text-white hover:bg-gray-800'
@@ -169,7 +169,7 @@ const QuestionManagement = ({
             disabled={isAddDisabled}
           >
             <Plus size={16} />새 질문 추가
-          </Button>
+          </button>
         </div>
       )}
     </div>

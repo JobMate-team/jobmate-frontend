@@ -4,6 +4,8 @@ import DropDown from '@/components/ui/Dropdown';
 import UserTable, { type User as UserTableUser } from '@/components/user-management/UserTable';
 import UserStats from '@/components/user-management/UserStats';
 import { jobItems } from '@/data/coachItems';
+import { Outlet } from 'react-router-dom';
+import UpScrollButton from '@/components/ui/UpScrollButton';
 import { getUsers, getUserStats, type User as ApiUser, type UserDashboardStats } from '@/api/user';
 
 const jobOptions = ['전체 직군', ...jobItems];
@@ -77,9 +79,9 @@ const UserManagementPage = () => {
   }, []);
 
   return (
-    <div className='flex flex-col gap-8 h-full'>
-      <div className='flex flex-col gap-2'>
-        <h1 className='text-2xl font-bold'>사용자 관리</h1>
+    <div className='space-y-8 pb-30'>
+      <div className='hidden sm:flex flex-col gap-2 mt-10'>
+        <h1 className='text-2xl font-semibold'>사용자 관리</h1>
         <p className='text-gray-500'>서비스 사용자 정보를 관리합니다</p>
       </div>
 
@@ -98,7 +100,7 @@ const UserManagementPage = () => {
             selected={selectedJob}
             placeholder='전체 직군'
             onSelect={setSelectedJob}
-            bgColor='bg-[#F3F3F5] w-full'
+            bgColor='bg-gray-200/50 w-full'
             SmPadding='py-3'
           />
         </div>
@@ -127,6 +129,9 @@ const UserManagementPage = () => {
         {/* 통계 컴포넌트 */}
         <UserStats stats={stats} />
       </div>
+
+      <UpScrollButton />
+      <Outlet />
     </div>
   );
 };
