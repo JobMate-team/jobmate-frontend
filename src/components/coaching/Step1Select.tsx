@@ -13,6 +13,8 @@ import {
 import { useEffect, useState } from 'react';
 import { showToast } from '@/utils/toast';
 import RecommendQuestionModal from '../ui/RecommendQuestionModal';
+import { useSetAtom } from 'jotai';
+import { jobCategoryIdAtom, roleIdAtom, companyIdAtom, questionIdAtom } from '@/atoms';
 
 interface Props {
   selectedJob: string | null;
@@ -40,6 +42,11 @@ const Step1Select = ({
   const [selectRole, isSelectRole] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const setJobCategoryId = useSetAtom(jobCategoryIdAtom);
+  const setRoleId = useSetAtom(roleIdAtom);
+  const setCompanyId = useSetAtom(companyIdAtom);
+  const setQuestionId = useSetAtom(questionIdAtom);
+
   const { data: jobData } = useQuery({
     queryKey: ['jobCategories'],
     queryFn: getCategories,
@@ -55,9 +62,10 @@ const Step1Select = ({
   });
 
   const jobCategories = jobData?.success.jobCategories || [];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const companies = companyData?.success.companies || [];
 
-  const selectedJobCategoryId = jobCategories.find((c) => c.name === selectedJob)?.id;
+  const selectedJobCategoryId = jobCategories.find((c) => c.name === selectedJob)?.id ?? null;
 
   const { data: QuestionData } = useQuery({
     queryKey: ['questions', selectedJobCategoryId],
@@ -75,6 +83,37 @@ const Step1Select = ({
 
   const questionList = QuestionData?.success.questions?.map((q) => q.text) || [];
   const selectedJobList = JobRoleData?.success?.roles?.map((role) => role.name) || [];
+
+  // 직군 ID 저장
+  useEffect(() => {
+    setJobCategoryId(selectedJobCategoryId);
+  }, [selectedJobCategoryId, setJobCategoryId]);
+
+  // 기업 ID 저장
+  useEffect(() => {
+    const selectedComId = companies.find((c) => c.name === selectCompanies)?.id ?? null;
+    setCompanyId(selectedComId);
+  }, [selectCompanies, companies, setCompanyId]);
+
+  // 직무 ID 저장
+  useEffect(() => {
+    const selectedRoleId =
+      JobRoleData?.success?.roles?.find((r) => r.name === selectRole)?.id ?? null;
+    setRoleId(selectedRoleId);
+  }, [selectRole, JobRoleData, setRoleId]);
+
+  // 면접 질문 ID 저장
+  useEffect(() => {
+    const selectedQuestionId =
+      QuestionData?.success?.questions?.find((q) => q.text === selectedQuestion)?.id ?? null;
+    setQuestionId(selectedQuestionId);
+  }, [selectedQuestion, QuestionData, setQuestionId]);
+
+  useEffect(() => {
+    setSelectedQuestion(null);
+    isSelectRole(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedJob]);
 
   const recommendMutation = useMutation({
     mutationFn: () => {
@@ -108,11 +147,6 @@ const Step1Select = ({
     setIsModalOpen(true);
     recommendMutation.mutate();
   };
-
-  useEffect(() => {
-    setSelectedQuestion(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedJob]);
 
   return (
     <>

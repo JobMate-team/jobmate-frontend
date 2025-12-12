@@ -3,6 +3,11 @@ import Button from '@/components/common/Button';
 import { FaAngleLeft } from 'react-icons/fa6';
 import { FeedbackIcon } from '@/assets';
 import type React from 'react';
+import { useAtomValue } from 'jotai';
+import { companyIdAtom, jobCategoryIdAtom, questionIdAtom, roleIdAtom } from '@/atoms';
+import { showToast } from '@/utils/toast';
+import { useMutation } from '@tanstack/react-query';
+import { postTempFeedback } from '@/api/coaching';
 
 interface Props {
   customQuestion: string | null;
@@ -22,6 +27,34 @@ const Step2Answer = ({
   setPage,
   handleNextStep,
 }: Props) => {
+  const jobCategoryId = useAtomValue(jobCategoryIdAtom);
+  const roleId = useAtomValue(roleIdAtom);
+  const companyId = useAtomValue(companyIdAtom);
+  const questionId = useAtomValue(questionIdAtom);
+
+  const tempFeedbackMutation = useMutation({
+    mutationFn: () =>
+      postTempFeedback({
+        job_category_id: jobCategoryId!,
+        role_id: roleId!,
+        company_id: companyId!,
+        question_id: questionId!,
+        question_source: 'template',
+        user_answer: customAnswer,
+      }),
+    onSuccess: () => {
+      showToast.success('피드백이 생성되었습니다.');
+    },
+    onError: () => {
+      showToast.error('피드백 생성에 실패했습니다.');
+    },
+  });
+
+  const handleSave = () => {
+    handleNextStep();
+    tempFeedbackMutation.mutate();
+  };
+
   return (
     <>
       <div className='bg-black rounded-xl p-6 flex flex-col gap-4 text-white'>
@@ -51,7 +84,7 @@ const Step2Answer = ({
         <Button
           type='submit'
           className='w-full bg-black text-white font-medium px-4 py-3 gap-2'
-          onClick={handleNextStep}
+          onClick={handleSave}
         >
           <FeedbackIcon />
           피드백 받기
