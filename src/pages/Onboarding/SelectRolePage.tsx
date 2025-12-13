@@ -36,7 +36,7 @@ const SelectRolePage = () => {
     mutationFn: (selectedRole: number) => patchJobCate(selectedRole),
     onSuccess: () => {
       showToast.success('환영합니다!');
-      navigate('/', { replace: true });
+      navigate('/home', { replace: true });
     },
     onError: () => {
       showToast.error('직군 선택에 실패했습니다.');

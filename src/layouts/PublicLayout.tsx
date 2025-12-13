@@ -14,9 +14,16 @@ const PublicLayout = () => {
 
   useEffect(() => {
     if (isLoading) return;
-    if (data?.success) {
-      navigate('/home', { replace: true });
-    } else return;
+
+    const user = data?.success;
+
+    if (!user) return; // 로그인 안된 경우 그냥 렌더링
+
+    // 로그인은 되어 있지만 직군 미선택이면 이동 금지
+    if (user.job_category_id == null) return;
+
+    // 로그인 + 직군 선택 완료 → 홈으로 이동
+    navigate('/home', { replace: true });
   }, [data, isLoading, navigate]);
 
   return <Outlet />;
