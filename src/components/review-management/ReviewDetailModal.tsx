@@ -20,6 +20,21 @@ export default function ReviewDetailModal({
   const [editedReview, setEditedReview] = useState<Review | null>(null);
 
   useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleEsc);
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
     setEditedReview(review);
   }, [review]);
 
@@ -35,7 +50,7 @@ export default function ReviewDetailModal({
   };
 
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4'>
+    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4'>
       <div className='bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto hide-scrollbar relative animate-fade-in'>
         {/* 닫기 버튼 */}
         <button

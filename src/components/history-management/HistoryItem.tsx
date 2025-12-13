@@ -33,7 +33,7 @@ const HistoryItem = ({ record, onViewDetail }: HistoryItemProps) => {
       <button
         type='button'
         onClick={() => onViewDetail?.(record.id)}
-        className='flex items-center gap-1.5 text-sm font-medium text-gray-700 hover:text-black transition-colors md:self-center self-end'
+        className='flex items-center gap-1.5 text-sm font-medium text-gray-700 hover:text-black transition-colors md:self-center self-end outline-none'
       >
         <Eye size={16} />
         <span className='whitespace-nowrap'>상세보기</span>
