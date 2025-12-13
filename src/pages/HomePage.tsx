@@ -9,6 +9,7 @@ import { getUserProfile } from '@/api/user';
 const HomePage = () => {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useAtom(userProfileAtom);
+  const isAdminMode = localStorage.getItem('adminMode') !== null;
 
   useEffect(() => {
     if (!userProfile) {
@@ -37,7 +38,7 @@ const HomePage = () => {
         </div>
         <button
           type='button'
-          onClick={() => navigate('/coaching')}
+          onClick={() => navigate(isAdminMode ? '/history-management' : '/coaching')}
           className='bg-white text-black font-semibold px-20 py-3 rounded-lg hover:bg-gray-200 transition whitespace-nowrap'
         >
           지금 시작하기 →

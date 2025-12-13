@@ -1,3 +1,15 @@
+import type { JSX } from 'react';
+import { HiSpeakerphone } from 'react-icons/hi';
+import {
+  IoIosBrush,
+  IoIosFlask,
+  IoMdBriefcase,
+  IoMdDesktop,
+  IoMdPaper,
+  IoMdPeople,
+  IoMdStats,
+} from 'react-icons/io';
+
 export interface User {
   id: number;
   name: string;
@@ -12,15 +24,15 @@ interface UserTableProps {
   users: User[];
 }
 
-const JOB_EMOJI: Record<string, string> = {
-  기획: '📋',
-  IT: '💻',
-  마케팅: '📢',
-  디자인: '🎨',
-  영업: '💼',
-  인사: '👥',
-  재무: '📊',
-  연구: '🧪',
+const JOB_EMOJI: Record<string, JSX.Element> = {
+  기획: <IoMdPaper />,
+  IT: <IoMdDesktop />,
+  마케팅: <HiSpeakerphone />,
+  디자인: <IoIosBrush />,
+  영업: <IoMdBriefcase />,
+  인사: <IoMdPeople />,
+  재무: <IoMdStats />,
+  연구: <IoIosFlask />,
 };
 
 const UserTable = ({ users }: UserTableProps) => {

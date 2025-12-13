@@ -31,7 +31,7 @@ export default function ReviewItem({ review, onView, onEdit, onDelete }: ReviewI
             {review.content_preview}
           </h3>
           <div className='flex flex-wrap items-center text-sm text-gray-500 gap-y-1 gap-x-3 mb-3'>
-            <div className='flex items-center space-x-1'>
+            <div className='flex items-center space-x-1.5 font-medium'>
               <div className='w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-600'>
                 {review.user_name[0]}
               </div>
@@ -49,21 +49,21 @@ export default function ReviewItem({ review, onView, onEdit, onDelete }: ReviewI
         <div className='flex flex-row sm:flex-col space-x-2 sm:space-x-0 sm:space-y-2 w-full sm:w-auto sm:ml-4 sm:self-start sm:min-w-20'>
           <button
             onClick={onView}
-            className='flex items-center justify-center flex-1 sm:flex-none px-3 py-2 sm:py-1.5 border border-gray-200 rounded-lg text-xs text-gray-600 hover:bg-gray-50 transition-colors outline-none'
+            className='flex items-center justify-center flex-1 sm:flex-none px-3 py-2 sm:py-1.5 border border-gray-200 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-50 transition-colors outline-none'
           >
             <FiEye className='mr-1.5' />
             보기
           </button>
           <button
             onClick={onEdit}
-            className='flex items-center justify-center flex-1 sm:flex-none px-3 py-2 sm:py-1.5 border border-gray-200 rounded-lg text-xs text-gray-600 hover:bg-gray-50 transition-colors outline-none'
+            className='flex items-center justify-center flex-1 sm:flex-none px-3 py-2 sm:py-1.5 border border-gray-200 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-50 transition-colors outline-none'
           >
             <FiEdit2 className='mr-1.5' />
             수정
           </button>
           <button
             onClick={onDelete}
-            className='flex items-center justify-center flex-1 sm:flex-none px-3 py-2 sm:py-1.5 border border-red-200 rounded-lg text-xs text-red-500 hover:bg-red-50 transition-colors outline-none'
+            className='flex items-center justify-center flex-1 sm:flex-none px-3 py-2 sm:py-1.5 border border-red-200 rounded-lg text-xs font-medium text-red-500 hover:bg-red-50 transition-colors outline-none'
           >
             <FiTrash2 className='mr-1.5' />
             삭제
