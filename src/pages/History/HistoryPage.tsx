@@ -97,7 +97,7 @@ const HistoryPage = () => {
             onClick={() => setIsSortOrder((prev) => !prev)}
             className='text-sm px-3 text-gray-700'
           >
-            {isSortOrder ? '최신순' : '오래된순'}
+            {isSortOrder ? '오래된순' : '최신순'}
           </button>
         </div>
       )}
