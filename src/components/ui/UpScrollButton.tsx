@@ -36,7 +36,7 @@ const UpScrollButton = () => {
   return (
     <button
       onClick={scrollToTop}
-      className='fixed max-sm:bottom-22 bottom-10 max-sm:right-5 right-10 bg-gray-400 text-white w-15 h-15 rounded-full flex items-center justify-center shadow-lg hover:brightness-90 transition'
+      className='fixed max-sm:bottom-22 bottom-10 opacity-70 hover:opacity-100 max-sm:right-5 right-10 bg-gray-400 text-white w-15 h-15 rounded-full flex items-center justify-center shadow-lg hover:brightness-90 transition'
     >
       <FaArrowUp className='text-xl' />
     </button>
