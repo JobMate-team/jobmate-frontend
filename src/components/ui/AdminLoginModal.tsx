@@ -12,20 +12,33 @@ import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 import clsx from 'clsx';
 import { useMutation } from '@tanstack/react-query';
 import { postAdminLogin } from '@/api/auth';
+import { getUserProfile } from '@/api/user';
+import { userProfileAtom } from '@/atoms';
 
 const AdminLoginModal = () => {
   const [showPassword, setShowPassword] = useState(false);
   const setIsAdminMode = useSetAtom(isAdminModeAtom);
   const setIsAdminLoginModalOpen = useSetAtom(isAdminLoginModalAtom);
+  const setUserProfile = useSetAtom(userProfileAtom);
 
   const navigate = useNavigate();
 
   const adminLoginMutation = useMutation({
     mutationFn: postAdminLogin,
-    onSuccess: () => {
+    onSuccess: async () => {
       showToast.success('관리자 로그인에 성공했습니다.');
       setIsAdminLoginModalOpen(false);
       setIsAdminMode(true);
+
+      try {
+        const adminProfile = await getUserProfile();
+        if (adminProfile) {
+          setUserProfile(adminProfile);
+        }
+      } catch (error) {
+        console.error('Failed to fetch admin profile:', error);
+      }
+
       navigate('/home', { replace: true });
     },
     onError: () => {

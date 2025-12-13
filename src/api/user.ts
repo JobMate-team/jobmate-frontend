@@ -54,24 +54,40 @@ export interface GetUserProfileResponse {
   success: {
     id: number;
     email: string;
-    nickname: string;
-    jobCategory: {
+    nickname?: string;
+    name?: string;
+    role?: string;
+    jobCategory?: {
       id: number;
       name: string;
     };
   };
 }
 
-export type UserProfile = GetUserProfileResponse['success'];
+export type UserProfile = {
+  id: number;
+  email: string;
+  nickname: string;
+  name?: string;
+  role?: string;
+  jobCategory?: {
+    id: number;
+    name: string;
+  };
+};
 
 /**
  * 사용자 프로필 조회 (GET /user/profile)
  * 작성자 이름을 가져오기 위해 사용
  */
-export const getUserProfile = async () => {
+export const getUserProfile = async (): Promise<UserProfile | null> => {
   const response = await axiosInstance.get<GetUserProfileResponse>('/user/profile');
   if (response.data.resultType === 'SUCCESS') {
-    return response.data.success;
+    const raw = response.data.success;
+    return {
+      ...raw,
+      nickname: raw.nickname || raw.name || '',
+    };
   }
   return null;
 };

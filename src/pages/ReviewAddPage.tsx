@@ -32,7 +32,7 @@ const ReviewAddPage = () => {
       try {
         const profile = await getUserProfile();
         if (profile) {
-          setAuthorName(profile.nickname);
+          setAuthorName(profile.nickname || '');
         }
       } catch (error) {
         console.error('Failed to fetch user profile:', error);

@@ -49,18 +49,27 @@ const AppLayout = () => {
       // jobItems의 인덱스+1이 ID라고 가정. (기획:1, IT:2...)
       // 정확한 매핑을 위해 JOB_CATEGORY_MAP의 역매핑이 필요하거나 리스트 인덱스 활용
       // 여기서는 jobItems 배열을 사용 (0번째가 1번 ID로 가정)
-      const jobName = data.success.job_category_id
-        ? jobItems[data.success.job_category_id - 1] || '기타'
-        : '미설정';
+      const val = data.success;
+
+      // 닉네임 처리: nickname이 없으면 name 사용
+      const displayName = val.nickname || val.name || '';
+
+      // 직무 처리: jobCategory 객체가 있으면 사용, 없으면 ID로 매핑
+      let jobCategoryObj = val.jobCategory;
+      if (!jobCategoryObj && val.job_category_id) {
+        const jobName = jobItems[val.job_category_id - 1] || '기타';
+        jobCategoryObj = {
+          id: val.job_category_id,
+          name: jobName,
+        };
+      }
 
       setUserProfile({
-        id: data.success.id,
-        email: data.success.email,
-        nickname: data.success.nickname,
-        jobCategory: {
-          id: data.success.job_category_id,
-          name: jobName,
-        },
+        id: val.id,
+        email: val.email,
+        nickname: displayName,
+        role: val.role,
+        jobCategory: jobCategoryObj || { id: 0, name: '미설정' },
       });
     }
   }, [data, isLoading, navigate, setUserProfile]);

@@ -40,7 +40,7 @@ const MyPage = () => {
           console.error('Failed to fetch profile', error);
         }
       } else {
-        setEditNickname(userProfile.nickname);
+        setEditNickname(userProfile.nickname || '');
       }
     };
     fetchProfile();

@@ -12,7 +12,7 @@ export const postLogout = async (): Promise<ResPonseLogout> => {
 };
 
 export const getUserInfo = async (): Promise<ResPonseUserInfo> => {
-  const { data } = await axiosInstance.get('/auth/me');
+  const { data } = await axiosInstance.get('/user/profile');
   return data;
 };
 

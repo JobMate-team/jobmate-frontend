@@ -8,8 +8,14 @@ export type ResPonseLogout = CommonResponse<{
 export type ResPonseUserInfo = CommonResponse<{
   id: number;
   email: string;
-  nickname: string;
-  job_category_id: number;
+  nickname?: string;
+  name?: string;
+  role?: string;
+  job_category_id?: number;
+  jobCategory?: {
+    id: number;
+    name: string;
+  };
 }>;
 
 export type ResPonseJobCate = CommonResponse<{
