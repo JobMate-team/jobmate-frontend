@@ -11,6 +11,11 @@ export const postLogout = async (): Promise<ResPonseLogout> => {
   return data;
 };
 
+export const getMyInfo = async (): Promise<ResPonseUserInfo> => {
+  const { data } = await axiosInstance.get('/auth/me');
+  return data;
+};
+
 export const getUserInfo = async (): Promise<ResPonseUserInfo> => {
   const { data } = await axiosInstance.get('/user/profile');
   return data;

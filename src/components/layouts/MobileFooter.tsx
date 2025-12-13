@@ -50,9 +50,28 @@ const MobileFooter = () => {
             >
               <Icon className={clsx('w-6 h-6', isActive ? 'text-black' : 'text-gray-500')} />
               <span
-                className={clsx('text-xs', isActive ? 'text-black font-medium' : 'text-gray-500')}
+                className={clsx(
+                  'text-xs whitespace-pre-line',
+                  isActive ? 'text-black font-medium' : 'text-gray-500',
+                )}
               >
-                {item.label}
+                {(() => {
+                  const label = item.label.trim();
+
+                  if (label.includes(' ')) {
+                    // 공백 있으면 공백 기준으로 줄바꿈
+                    return label.split(' ').join('\n');
+                  } else if (label.length === 4) {
+                    // 공백 없고 정확히 4글자면 2글자씩 줄바꿈
+                    return label.slice(0, 2) + '\n' + label.slice(2);
+                  } else if (label.length > 4) {
+                    // 공백 없고 5글자 이상이면 3글자 다음 줄바꿈
+                    return label.slice(0, 3) + '\n' + label.slice(3);
+                  }
+
+                  // 나머지는 그대로
+                  return label;
+                })()}
               </span>
             </button>
           );
