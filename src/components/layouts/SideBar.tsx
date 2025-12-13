@@ -1,4 +1,4 @@
-import { isAdminModeAtom, isLogoutModalAtom, pageAtom } from '@/atoms';
+import { isAdminModeAtom, isLogoutModalAtom, pageAtom, userProfileAtom } from '@/atoms';
 import { adminMenuItems, menuItems } from '@/data/menuItems';
 import type { MenuItem } from '@/types/MenuItem';
 import clsx from 'clsx';
@@ -13,6 +13,7 @@ const SideBar = () => {
   const setPage = useSetAtom(pageAtom);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useAtom(isLogoutModalAtom);
   const isAdminMode = useAtomValue(isAdminModeAtom);
+  const userProfile = useAtomValue(userProfileAtom);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -160,7 +161,7 @@ const SideBar = () => {
               className='flex items-center gap-3 p-2 rounded-lg hover:bg-gray-200 cursor-pointer transition'
             >
               <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
-                정
+                {userProfile?.nickname ? userProfile.nickname.charAt(0) : ''}
               </div>
               <div
                 className={clsx(
@@ -168,8 +169,12 @@ const SideBar = () => {
                   isSidebarOpen ? 'opacity-100 translate-x-0 w-32' : 'opacity-0 -translate-x-2 w-0',
                 )}
               >
-                <span className='text-sm font-medium whitespace-nowrap'>정찬원</span>
-                <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
+                <span className='text-sm font-medium whitespace-nowrap'>
+                  {userProfile?.nickname}
+                </span>
+                <span className='text-xs text-gray-500 whitespace-nowrap'>
+                  {userProfile?.email}
+                </span>
               </div>
             </div>
           ) : (
@@ -196,11 +201,15 @@ const SideBar = () => {
           {!isAdminMode ? (
             <div className='flex items-center gap-3 p-2'>
               <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
-                정
+                {userProfile?.nickname ? userProfile.nickname.charAt(0) : ''}
               </div>
               <div className='flex flex-col'>
-                <span className='text-sm font-medium whitespace-nowrap'>정찬원</span>
-                <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
+                <span className='text-sm font-medium whitespace-nowrap'>
+                  {userProfile?.nickname}
+                </span>
+                <span className='text-xs text-gray-500 whitespace-nowrap'>
+                  {userProfile?.email}
+                </span>
               </div>
             </div>
           ) : (

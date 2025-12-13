@@ -1,15 +1,18 @@
 import { LogoIcon } from '@/assets';
 import { features } from '@/data/homeFeatures';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useAtomValue } from 'jotai';
+import { userProfileAtom } from '@/atoms';
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const userProfile = useAtomValue(userProfileAtom);
 
   return (
     <>
       <div className='bg-black rounded-2xl p-8 text-white mb-8 shadow-lg'>
         <div className='flex flex-col gap-5 mb-6'>
-          <p className='text-lg'>안녕하세요. 정찬원님! 👋🏻 </p>
+          <p className='text-lg'>안녕하세요. {userProfile?.nickname || ''}님! 👋🏻 </p>
           <div className='flex flex-row gap-3'>
             <LogoIcon className='w-12 h-12' />
             <div>

@@ -4,12 +4,14 @@ import MobileHeader from '@/components/layouts/MobileHeader';
 import MobileFooter from '@/components/layouts/MobileFooter';
 import Modal from '@/components/common/Modal';
 import { useAtom, useSetAtom } from 'jotai';
+import { jobItems } from '@/data/coachItems';
 import {
   isAdminLoginModalAtom,
   isAdminModeAtom,
   isLogoutModalAtom,
   isModalOpenAtom,
   historyRefreshAtom,
+  userProfileAtom,
 } from '@/atoms';
 import { showToast } from '@/utils/toast';
 import { useEffect } from 'react';
@@ -27,9 +29,10 @@ const AppLayout = () => {
   const [, setIsAdminMode] = useAtom(isAdminModeAtom);
   const setHistoryRefresh = useSetAtom(historyRefreshAtom);
 
-
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const setUserProfile = useSetAtom(userProfileAtom);
 
   const { data, isLoading } = useQuery({
     queryKey: ['auth-check'],
@@ -41,8 +44,27 @@ const AppLayout = () => {
     if (isLoading) return;
     if (!data?.success) {
       navigate('/login', { replace: true });
+      // job_category_id를 내 프로필 형식(UserProfile)에 맞게 변환
+      // jobItems의 인덱스+1이 ID라고 가정. (기획:1, IT:2...)
+      // 정확한 매핑을 위해 JOB_CATEGORY_MAP의 역매핑이 필요하거나 리스트 인덱스 활용
+      // 여기서는 jobItems 배열을 사용 (0번째가 1번 ID로 가정)
+      if (data?.success) {
+        const jobName = data.success.job_category_id
+          ? jobItems[data.success.job_category_id - 1] || '기타'
+          : '미설정';
+
+        setUserProfile({
+          id: data.success.id,
+          email: data.success.email,
+          nickname: data.success.nickname,
+          jobCategory: {
+            id: data.success.job_category_id,
+            name: jobName,
+          },
+        });
+      }
     }
-  }, [data, isLoading, navigate]);
+  }, [data, isLoading, navigate, setUserProfile]);
 
   const handleDelete = async () => {
     try {

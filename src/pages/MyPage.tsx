@@ -1,13 +1,20 @@
 import { useNavigate } from 'react-router-dom';
+import { getUserProfile, updateUserProfile } from '@/api/user';
+import { patchJobCate } from '@/api/auth';
 import { RightIcon } from '@/assets';
 import { User, Briefcase, Shield, Moon, LogOut, ChevronDown } from 'lucide-react';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IoIosClose } from 'react-icons/io';
-import { jobItems } from '@/data/coachItems';
+import { jobItems, JOB_CATEGORY_MAP } from '@/data/coachItems';
 import DropDown from '@/components/ui/Dropdown';
 import { useAtom, useSetAtom } from 'jotai';
-import { isAdminLoginModalAtom, isAdminModeAtom, isLogoutModalAtom } from '@/atoms';
+import {
+  isAdminLoginModalAtom,
+  isAdminModeAtom,
+  isLogoutModalAtom,
+  userProfileAtom,
+} from '@/atoms';
 import Button from '@/components/common/Button';
 import { showToast } from '@/utils/toast';
 
@@ -16,6 +23,28 @@ const MyPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isChangeJob, setIsChangeJob] = useState(false);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useAtom(userProfileAtom);
+  const [editNickname, setEditNickname] = useState('');
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      // 이미 아톰에 데이터가 있으면 그거 쓰고, 없으면 fetch
+      if (!userProfile) {
+        try {
+          const data = await getUserProfile();
+          setUserProfile(data);
+          if (data?.nickname) {
+            setEditNickname(data.nickname);
+          }
+        } catch (error) {
+          console.error('Failed to fetch profile', error);
+        }
+      } else {
+        setEditNickname(userProfile.nickname);
+      }
+    };
+    fetchProfile();
+  }, [userProfile, setUserProfile]);
 
   const setIsAdminModalOpen = useSetAtom(isAdminLoginModalAtom);
   const [isAdminMode] = useAtom(isAdminModeAtom);
@@ -23,19 +52,59 @@ const MyPage = () => {
 
   const navigate = useNavigate();
 
-  const handleProfileSave = () => {
-    setIsEditOpen(false);
-    showToast.success('저장되었습니다');
+  const handleProfileSave = async () => {
+    if (!editNickname.trim()) {
+      showToast.error('이름을 입력해주세요.');
+      return;
+    }
+
+    try {
+      const response = await updateUserProfile(editNickname);
+      if (response.resultType === 'SUCCESS') {
+        setIsEditOpen(false);
+        showToast.success('닉네임이 성공적으로 변경되었습니다.');
+        // 프로필 상태 업데이트
+        setUserProfile((prev) => (prev ? { ...prev, nickname: editNickname } : prev));
+      } else {
+        showToast.error('닉네임 변경에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('Failed to update profile', error);
+      showToast.error('닉네임 변경 중 오류가 발생했습니다.');
+    }
   };
 
-  const handleJobSave = () => {
+  const handleJobSave = async () => {
     if (!selectedJob) {
       showToast.error('직무를 선택해주세요');
       return;
     }
-    setIsChangeJob(false);
-    setSelectedJob(null);
-    showToast.success('저장되었습니다');
+
+    const jobCategoryId = JOB_CATEGORY_MAP[selectedJob];
+    if (!jobCategoryId) {
+      showToast.error('유효하지 않은 직무입니다.');
+      return;
+    }
+
+    try {
+      const response = await patchJobCate(jobCategoryId);
+      if (response.resultType === 'SUCCESS') {
+        setIsChangeJob(false);
+        setSelectedJob(null);
+        showToast.success('직무가 업데이트되었습니다.');
+
+        // 프로필 정보 Refetch
+        const updatedProfile = await getUserProfile();
+        if (updatedProfile) {
+          setUserProfile(updatedProfile);
+        }
+      } else {
+        showToast.error('직무 업데이트에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('Failed to update job category', error);
+      showToast.error('직무 업데이트 중 오류가 발생했습니다.');
+    }
   };
 
   const handleChangeMode = () => {
@@ -72,16 +141,16 @@ const MyPage = () => {
 
           <section className='bg-white rounded-xl p-5 py-10 flex items-center gap-4 shadow-md'>
             <div className='w-15 h-15 bg-black text-white rounded-full flex items-center justify-center text-2xl font-medium'>
-              정
+              {userProfile?.nickname ? userProfile.nickname.charAt(0) : ''}
             </div>
             <div className='flex flex-col'>
               <div className='flex items-center gap-2'>
-                <p className='font-semibold text-lg'>정찬원</p>
+                <p className='font-semibold text-lg'>{userProfile?.nickname || ''}</p>
                 <div className='bg-[#F3F3F5] items-center px-3 py-1 text-sm font-medium rounded-xl border border-gray-300'>
-                  IT
+                  {userProfile?.jobCategory?.name || '미설정'}
                 </div>
               </div>
-              <p className='mt-2'>example.example.com</p>
+              <p className='mt-2'>{userProfile?.email || ''}</p>
             </div>
           </section>
 
@@ -107,24 +176,29 @@ const MyPage = () => {
               </div>
 
               {isEditOpen && (
-                <form className='space-y-4 mt-2'>
+                <form
+                  className='space-y-4 mt-2'
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleProfileSave();
+                  }}
+                >
                   <label className='font-medium'>이름</label>
                   <input
                     type='text'
-                    placeholder='정찬원'
-                    value='정찬원'
+                    placeholder='이름을 입력하세요'
+                    value={editNickname}
+                    onChange={(e) => setEditNickname(e.target.value)}
                     className='w-full bg-[#F3F3F5] px-4 py-3 rounded-lg border border-transparent focus:border-gray-300 focus:outline-none mt-2'
                   />
 
                   <p className='font-medium mt-2'>이메일</p>
-                  <div className='w-full bg-[#F3F3F5] p-4 rounded-lg mt-2'>example.example.com</div>
+                  <div className='w-full bg-[#F3F3F5] p-4 rounded-lg mt-2'>
+                    {userProfile?.email || ''}
+                  </div>
 
                   <div className='flex justify-end'>
-                    <Button
-                      type='submit'
-                      onClick={handleProfileSave}
-                      className='bg-black text-white p-3 w-20'
-                    >
+                    <Button type='submit' className='bg-black text-white p-3 w-20'>
                       저장
                     </Button>
                   </div>
