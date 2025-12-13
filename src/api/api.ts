@@ -38,16 +38,12 @@ axiosInstance.interceptors.response.use(
       if (!refreshPromise) {
         refreshPromise = (async () => {
           try {
-            // ✅ 여기서 refreshToken은 body로 보내지 않는다.
-            //    쿠키에 있는 refreshToken을 서버가 읽게 하는 것.
             await axiosInstance.post('/auth/refresh');
-            // 성공하면 쿠키에 새 accessToken/refreshToken 이 심어짐
           } catch (err) {
             // 리프레시 실패 → 로그인 페이지로 이동
             console.error('토큰 리프레시 실패', err);
 
             const PUBLIC_ROUTES = ['/', '/login', '/role', '/kakao/success'];
-
             const currentPath = window.location.pathname;
 
             if (!PUBLIC_ROUTES.includes(currentPath)) {

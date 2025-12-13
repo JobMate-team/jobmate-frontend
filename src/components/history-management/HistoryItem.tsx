@@ -11,7 +11,7 @@ const HistoryItem = ({ record, onViewDetail }: HistoryItemProps) => {
 
   return (
     <div className='bg-white border border-gray-200 rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-gray-300 transition-colors'>
-      <div className='flex flex-col gap-3'>
+      <div className='flex flex-col gap-3 w-full'>
         {/* 뱃지 */}
         <div>
           <span className='inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium bg-white text-gray-600 border border-gray-200'>
@@ -36,7 +36,7 @@ const HistoryItem = ({ record, onViewDetail }: HistoryItemProps) => {
         className='flex items-center gap-1.5 text-sm font-medium text-gray-700 hover:text-black transition-colors md:self-center self-end'
       >
         <Eye size={16} />
-        <span>상세보기</span>
+        <span className='whitespace-nowrap'>상세보기</span>
       </button>
     </div>
   );

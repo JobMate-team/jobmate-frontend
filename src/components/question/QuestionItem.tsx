@@ -55,7 +55,7 @@ const QuestionItem = ({ category, jobGroup, question, onEdit, onDelete }: Questi
             <span>{jobGroup}</span>
           </span>
         </div>
-        <p className='text-gray-900 text-sm font-medium break-words whitespace-pre-wrap'>
+        <p className='text-gray-900 text-sm font-medium wrap-break-word whitespace-pre-wrap'>
           {question}
         </p>
       </div>

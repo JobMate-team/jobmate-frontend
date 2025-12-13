@@ -1,3 +1,4 @@
+import type { SaveHistoryResponse } from '@/types/history';
 import { axiosInstance } from './api';
 
 export interface HistoryItem {
@@ -22,6 +23,13 @@ export interface HistoryListResponse {
     data: HistoryItem[];
   } | null;
 }
+
+export const postHistory = async (coaching_id: number): Promise<SaveHistoryResponse> => {
+  const response = await axiosInstance.post('/history', {
+    coachingId: coaching_id,
+  });
+  return response.data;
+};
 
 export const fetchHistoryList = async (): Promise<HistoryListResponse> => {
   const response = await axiosInstance.get('/history');
