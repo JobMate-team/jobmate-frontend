@@ -235,7 +235,26 @@ const Step1Select = ({
       <Button
         type='button'
         className='w-full bg-black text-white font-medium sm:max-w-[80%] sm:mx-auto mt-10 px-4 py-3 gap-2'
-        onClick={handleNextStep}
+        onClick={() => {
+          if (!selectedJob) {
+            showToast.error('직군을 선택해주세요.');
+            return;
+          }
+          if (!selectedQuestion && !customQuestion) {
+            showToast.error('면접 질문을 선택하거나 입력해주세요.');
+            return;
+          }
+          if (!selectCompanies) {
+            showToast.error('기업을 선택해주세요.');
+            return;
+          }
+          if (!selectRole) {
+            showToast.error('직무를 선택해주세요.');
+            return;
+          }
+
+          handleNextStep();
+        }}
       >
         다음 <FaAngleRight />
       </Button>
