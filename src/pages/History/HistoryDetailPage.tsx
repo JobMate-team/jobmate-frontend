@@ -1,11 +1,12 @@
 import Modal from '@/components/common/Modal';
 import { showToast } from '@/utils/toast';
 import clsx from 'clsx';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { FiCalendar } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 import { useNavigate, useParams, useOutletContext } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { fetchHistoryDetail, deleteHistory } from '@/api/history';
 import { jobItems } from '@/data/coachItems';
 
@@ -27,8 +28,6 @@ const HistoryDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { loadHistory } = useOutletContext<HistoryPageContext>();
-  const [item, setItem] = useState<HistoryDetailState | null>(null);
-  const [loading, setLoading] = useState(true);
 
   const [isOpen, setISOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,16 +36,16 @@ const HistoryDetailPage = () => {
     return jobItems[id - 1] || '알 수 없음';
   };
 
-  const loadDetail = useCallback(async () => {
-    if (!id) return;
+  const { data: item, isLoading } = useQuery({
+    queryKey: ['historyDetail', id],
+    queryFn: async () => {
+      if (!id) throw new Error('ID is required');
 
-    try {
-      setLoading(true);
       const response = await fetchHistoryDetail(Number(id));
 
       if (response.resultType === 'SUCCESS' && response.success) {
         const data = response.success.data;
-        setItem({
+        return {
           id: data.history_id,
           category: getJobCategoryName(data.job_category_id),
           date: new Date(data.created_at)
@@ -61,32 +60,28 @@ const HistoryDetailPage = () => {
           answer: data.answer_text,
           aiFeedback: data.ai_feedback,
           modelAnswer: data.ai_model_answer,
-        });
+        } as HistoryDetailState;
       } else if (response.resultType === 'FAIL' && response.error?.errorCode === 'NOT_FOUND') {
         showToast.error('해당 히스토리를 찾을 수 없습니다.');
         navigate('/history');
+        throw new Error('History not found');
       } else {
         showToast.error(response.error?.reason || '히스토리 상세 정보를 불러오는데 실패했습니다.');
         navigate('/history');
+        throw new Error(response.error?.reason || 'Failed to fetch history detail');
       }
-    } catch (error) {
-      console.error('Failed to load history detail:', error);
-      showToast.error('히스토리 상세 정보를 불러오는 중 오류가 발생했습니다.');
-      navigate('/history');
-    } finally {
-      setLoading(false);
-    }
-  }, [id, navigate]);
+    },
+    enabled: !!id,
+    gcTime: 10 * 60 * 1000,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  });
 
   useEffect(() => {
-    loadDetail();
-  }, [loadDetail]);
-
-  useEffect(() => {
-    if (!loading && item) {
+    if (!isLoading && item) {
       setTimeout(() => setISOpen(true), 10);
     }
-  }, [loading, item]);
+  }, [isLoading, item]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -109,7 +104,7 @@ const HistoryDetailPage = () => {
 
   const handleClose = () => {
     setISOpen(false);
-    setTimeout(() => navigate('/history'), 200); // 애니메이션 끝난 뒤 닫기
+    setTimeout(() => navigate('/history'), 200);
   };
 
   const handleDelete = async () => {
@@ -150,14 +145,12 @@ const HistoryDetailPage = () => {
     try {
       parsedFeedback = JSON.parse(item.aiFeedback);
     } catch {
-      // 파싱 실패 시 일반 텍스트로 표시
       parsedFeedback = null;
     }
 
     if (parsedFeedback) {
       return (
         <div className='flex flex-col gap-4'>
-          {/* 인재상 & 맞춤 조언 */}
           {parsedFeedback['요약된_인재상'] && (
             <div className='bg-blue-50 p-4 rounded-lg'>
               <h4 className='font-bold text-blue-900 mb-2 flex items-center gap-2 text-sm sm:text-base'>
@@ -180,7 +173,6 @@ const HistoryDetailPage = () => {
             </div>
           )}
 
-          {/* 전체 총평 */}
           {parsedFeedback['전체_총평'] && (
             <div>
               <h4 className='font-bold text-gray-900 mb-2 text-sm sm:text-base'>전체 총평</h4>
@@ -190,7 +182,6 @@ const HistoryDetailPage = () => {
             </div>
           )}
 
-          {/* 개선 포인트 */}
           {parsedFeedback['개선포인트'] && Array.isArray(parsedFeedback['개선포인트']) && (
             <div>
               <h4 className='font-bold text-gray-900 mb-2 text-sm sm:text-base'>개선 포인트</h4>
@@ -266,7 +257,7 @@ const HistoryDetailPage = () => {
     );
   };
 
-  if (loading) return null; // Or a spinner
+  if (isLoading) return null;
   if (!item) return null;
 
   return (

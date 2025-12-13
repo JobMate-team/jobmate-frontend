@@ -124,7 +124,9 @@ const HistoryPage = () => {
 
             <button
               type='button'
-              onClick={() => navigate(`/history/${item.id}`)}
+              onClick={() =>
+                navigate(`/history/${item.id}`, { replace: true, state: { fromHistory: true } })
+              }
               className='flex items-center gap-2 justify-between'
             >
               <p className='line-clamp-1 text-[#99A1AF]'>{item.answer}</p>
@@ -135,7 +137,7 @@ const HistoryPage = () => {
       )}
 
       <UpScrollButton />
-      <Outlet context={{ refetch }} />
+      <Outlet context={{ loadHistory: refetch }} />
     </div>
   );
 };

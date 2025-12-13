@@ -81,20 +81,26 @@ const DropDown = ({
     }
   };
 
-  // --- 스크롤 잠금 + 모바일 touchmove 방지 ---
+  // --- 스크롤 잠금 ---
   useEffect(() => {
-    if (open) {
-      const originalOverflow = document.body.style.overflow;
-      document.body.style.overflow = 'hidden';
+    if (!open) return;
 
-      const preventScroll = (e: TouchEvent) => e.preventDefault();
-      document.addEventListener('touchmove', preventScroll, { passive: false });
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
 
-      return () => {
-        document.body.style.overflow = originalOverflow;
-        document.removeEventListener('touchmove', preventScroll);
-      };
-    }
+    const preventScroll = (e: TouchEvent) => {
+      if (dropdownRef.current?.contains(e.target as Node)) {
+        return; // 드롭다운 내부는 스크롤 허용
+      }
+      e.preventDefault();
+    };
+
+    document.addEventListener('touchmove', preventScroll, { passive: false });
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.removeEventListener('touchmove', preventScroll);
+    };
   }, [open]);
 
   const closeDropdown = () => {
