@@ -9,7 +9,7 @@ interface HistorySearchProps {
 const HistorySearch = ({
   value,
   onChange,
-  placeholder = '이름, 이메일, 직무로 검색...',
+  placeholder = '직군, 직무로 검색...',
 }: HistorySearchProps) => {
   return (
     <div className='relative w-full'>
