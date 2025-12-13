@@ -71,7 +71,21 @@ const Step3Feedback = ({
       </div>
 
       <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
-        <p className='font-semibold py-2'>AI 피드백</p>
+        <div className='flex items-center justify-between py-2'>
+          <p className='font-semibold'>AI 피드백</p>
+          <Button
+            type='button'
+            className={clsx(
+              'border border-black/10 text-sm font-medium gap-1.5 p-2 px-3 bg-white',
+              isSaved && 'opacity-50 hover:brightness-100 pointer-events-none',
+            )}
+            disabled={coachingId === null || isLoading}
+            onClick={handleSaveClick}
+          >
+            <FiSave size={18} />
+            저장
+          </Button>
+        </div>
         <div className='bg-[#F3F3F5] rounded-lg p-4 mb-2 whitespace-pre-wrap'>
           {isLoading ? (
             <div className='flex items-center gap-3'>
@@ -143,18 +157,6 @@ const Step3Feedback = ({
         <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
           <div className='flex items-center justify-between'>
             <p className='font-semibold'>📝 모범 답변 예시</p>
-            <Button
-              type='button'
-              className={clsx(
-                'border border-black/10 text-sm font-medium gap-1.5 p-2 px-3 bg-white',
-                isSaved && 'opacity-50 hover:brightness-100 pointer-events-none',
-              )}
-              disabled={coachingId === null || isLoading}
-              onClick={handleSaveClick}
-            >
-              <FiSave size={18} />
-              저장
-            </Button>
           </div>
           <div className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm mb-2 leading-relaxed whitespace-pre-wrap'>
             {isLoading ? (
