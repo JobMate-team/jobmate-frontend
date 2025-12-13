@@ -46,9 +46,6 @@ const AppLayout = () => {
       navigate('/login', { replace: true });
     } else {
       // job_category_id를 내 프로필 형식(UserProfile)에 맞게 변환
-      // jobItems의 인덱스+1이 ID라고 가정. (기획:1, IT:2...)
-      // 정확한 매핑을 위해 JOB_CATEGORY_MAP의 역매핑이 필요하거나 리스트 인덱스 활용
-      // 여기서는 jobItems 배열을 사용 (0번째가 1번 ID로 가정)
       const val = data.success;
 
       // 닉네임 처리: nickname이 없으면 name 사용
