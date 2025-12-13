@@ -9,12 +9,7 @@ import { IoIosClose } from 'react-icons/io';
 import { jobItems, JOB_CATEGORY_MAP } from '@/data/coachItems';
 import DropDown from '@/components/ui/Dropdown';
 import { useAtom, useSetAtom } from 'jotai';
-import {
-  isAdminLoginModalAtom,
-  isAdminModeAtom,
-  isLogoutModalAtom,
-  userProfileAtom,
-} from '@/atoms';
+import { isAdminLoginModalAtom, isLogoutModalAtom, userProfileAtom } from '@/atoms';
 import Button from '@/components/common/Button';
 import { showToast } from '@/utils/toast';
 
@@ -47,10 +42,11 @@ const MyPage = () => {
   }, [userProfile, setUserProfile]);
 
   const setIsAdminModalOpen = useSetAtom(isAdminLoginModalAtom);
-  const [isAdminMode] = useAtom(isAdminModeAtom);
   const setIsModalOpen = useSetAtom(isLogoutModalAtom);
 
   const navigate = useNavigate();
+
+  const isAdminMode = localStorage.getItem('adminMode') !== null;
 
   const handleProfileSave = async () => {
     if (!editNickname.trim()) {

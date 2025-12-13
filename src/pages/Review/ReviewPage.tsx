@@ -15,7 +15,7 @@ import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa';
 import DropDown from '@/components/ui/Dropdown';
 import { jobItems, JOB_CATEGORY_MAP } from '@/data/coachItems';
 import { useAtomValue } from 'jotai';
-import { isAdminModeAtom, reviewRefreshAtom } from '@/atoms';
+import { reviewRefreshAtom } from '@/atoms';
 import {
   getUserReviews,
   toggleReviewLike,
@@ -33,7 +33,6 @@ const ReviewPage = () => {
   const [isPopular, setIsPopular] = useState(false);
   const navigate = useNavigate();
 
-  const isAdminMode = useAtomValue(isAdminModeAtom);
   const reviewRefresh = useAtomValue(reviewRefreshAtom);
 
   const [reviews, setReviews] = useState<UserReview[]>([]);
@@ -265,7 +264,7 @@ const ReviewPage = () => {
                     />
                     <p>{data.likes}</p>
                   </button>
-                  {(isOwner || isAdminMode) && (
+                  {isOwner && (
                     <>
                       <button
                         type='button'

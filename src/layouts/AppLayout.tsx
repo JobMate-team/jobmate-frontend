@@ -7,7 +7,6 @@ import { useAtom, useSetAtom } from 'jotai';
 import { jobItems } from '@/data/coachItems';
 import {
   isAdminLoginModalAtom,
-  isAdminModeAtom,
   isLogoutModalAtom,
   isModalOpenAtom,
   historyRefreshAtom,
@@ -26,7 +25,6 @@ const AppLayout = () => {
   const [isModalOpen, setIsModalOpen] = useAtom(isModalOpenAtom);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useAtom(isLogoutModalAtom);
   const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useAtom(isAdminLoginModalAtom);
-  const [, setIsAdminMode] = useAtom(isAdminModeAtom);
   const setHistoryRefresh = useSetAtom(historyRefreshAtom);
 
   const navigate = useNavigate();
@@ -93,7 +91,7 @@ const AppLayout = () => {
   const handleLogout = () => {
     postLogout();
     setIsLogoutModalOpen(false);
-    setIsAdminMode(false);
+    localStorage.removeItem('adminMode');
     queryClient.clear();
     navigate('/login');
     showToast.success('로그아웃에 성공했습니다');

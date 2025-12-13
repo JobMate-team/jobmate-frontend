@@ -1,6 +1,4 @@
-import { useAtomValue } from 'jotai';
 import Button from '../common/Button';
-import { isAdminModeAtom } from '@/atoms';
 
 interface ModalProps {
   onConfirm: () => void;
@@ -8,7 +6,8 @@ interface ModalProps {
 }
 
 const LogoutModal = ({ onConfirm, onCancel }: ModalProps) => {
-  const isAdminMode = useAtomValue(isAdminModeAtom);
+  const isAdminMode = localStorage.getItem('adminMode') !== null;
+
   return (
     <div onClick={onCancel} className='fixed inset-0 bg-black/40 flex justify-center items-center'>
       <div

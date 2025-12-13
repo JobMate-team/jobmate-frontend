@@ -1,4 +1,4 @@
-import { isAdminModeAtom, isLogoutModalAtom, pageAtom, userProfileAtom } from '@/atoms';
+import { isLogoutModalAtom, pageAtom, userProfileAtom } from '@/atoms';
 import { adminMenuItems, menuItems } from '@/data/menuItems';
 import type { MenuItem } from '@/types/MenuItem';
 import clsx from 'clsx';
@@ -12,11 +12,12 @@ const SideBar = () => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const setPage = useSetAtom(pageAtom);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useAtom(isLogoutModalAtom);
-  const isAdminMode = useAtomValue(isAdminModeAtom);
   const userProfile = useAtomValue(userProfileAtom);
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const isAdminMode = localStorage.getItem('adminMode') !== null;
 
   const itemsToRender = isAdminMode ? adminMenuItems : menuItems;
 

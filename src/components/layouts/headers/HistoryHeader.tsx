@@ -1,11 +1,11 @@
-import { isAdminModeAtom, isModalOpenAtom } from '@/atoms';
+import { isModalOpenAtom } from '@/atoms';
 import Button from '@/components/common/Button';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import { FaRegTrashAlt } from 'react-icons/fa';
 
 const HistoryHeader = () => {
   const setIsModalOpen = useSetAtom(isModalOpenAtom);
-  const isAdminMode = useAtomValue(isAdminModeAtom);
+  const isAdminMode = localStorage.getItem('adminMode') !== null;
 
   return (
     <div className='flex justify-between items-center p-6'>

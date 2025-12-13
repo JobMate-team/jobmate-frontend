@@ -1,12 +1,10 @@
-import { isAdminModeAtom } from '@/atoms';
 import Button from '@/components/common/Button';
-import { useAtomValue } from 'jotai';
 import { FaPlus } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 
 const ReviewHeader = () => {
   const navigate = useNavigate();
-  const isAdminMode = useAtomValue(isAdminModeAtom);
+  const isAdminMode = localStorage.getItem('adminMode') !== null;
 
   return (
     <div className='flex justify-between items-center p-6'>

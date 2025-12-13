@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { LogOut, Shield } from 'lucide-react';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { isAdminModeAtom, isLogoutModalAtom, userProfileAtom } from '@/atoms';
+import { isLogoutModalAtom, userProfileAtom } from '@/atoms';
 
 const HomeHeader = () => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const setIsLogoutModalOpen = useSetAtom(isLogoutModalAtom);
-  const isAdminMode = useAtomValue(isAdminModeAtom);
   const userProfile = useAtomValue(userProfileAtom);
+
+  const isAdminMode = localStorage.getItem('adminMode') !== null;
 
   // ref 생성
   const buttonRef = useRef<HTMLButtonElement>(null);

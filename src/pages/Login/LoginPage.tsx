@@ -3,9 +3,14 @@ import { isAdminLoginModalAtom } from '@/atoms';
 import Button from '@/components/common/Button';
 import AdminLoginModal from '@/components/ui/AdminLoginModal';
 import { useAtom } from 'jotai';
+import { useEffect } from 'react';
 
 const LoginPage = () => {
   const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useAtom(isAdminLoginModalAtom);
+
+  useEffect(() => {
+    localStorage.removeItem('adminMode');
+  }, []);
 
   return (
     <main className='relative bg-gray-50 min-h-dvh flex justify-center items-center p-4'>

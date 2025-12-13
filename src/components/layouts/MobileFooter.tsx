@@ -1,14 +1,14 @@
-import { isAdminModeAtom, pageAtom } from '@/atoms';
+import { pageAtom } from '@/atoms';
 import { adminMenuItems, menuItems } from '@/data/menuItems';
 import type { MenuItem } from '@/types/MenuItem';
 import clsx from 'clsx';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const MobileFooter = () => {
   const setPage = useSetAtom(pageAtom);
-  const isAdminMode = useAtomValue(isAdminModeAtom);
+  const isAdminMode = localStorage.getItem('adminMode') !== null;
 
   const itemsToRender = isAdminMode ? adminMenuItems : menuItems;
 
@@ -55,23 +55,21 @@ const MobileFooter = () => {
                   isActive ? 'text-black font-medium' : 'text-gray-500',
                 )}
               >
-                {(() => {
-                  const label = item.label.trim();
+                {isAdminMode
+                  ? (() => {
+                      const label = item.label.trim();
 
-                  if (label.includes(' ')) {
-                    // 공백 있으면 공백 기준으로 줄바꿈
-                    return label.split(' ').join('\n');
-                  } else if (label.length === 4) {
-                    // 공백 없고 정확히 4글자면 2글자씩 줄바꿈
-                    return label.slice(0, 2) + '\n' + label.slice(2);
-                  } else if (label.length > 4) {
-                    // 공백 없고 5글자 이상이면 3글자 다음 줄바꿈
-                    return label.slice(0, 3) + '\n' + label.slice(3);
-                  }
+                      if (label.includes(' ')) {
+                        return label.split(' ').join('\n');
+                      } else if (label.length === 4) {
+                        return label.slice(0, 2) + '\n' + label.slice(2);
+                      } else if (label.length > 4) {
+                        return label.slice(0, 3) + '\n' + label.slice(3);
+                      }
 
-                  // 나머지는 그대로
-                  return label;
-                })()}
+                      return label;
+                    })()
+                  : item.label}
               </span>
             </button>
           );

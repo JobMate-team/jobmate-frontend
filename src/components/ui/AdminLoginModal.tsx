@@ -4,7 +4,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { adminLoginSchema, type adminLoginType } from '@/schema/adminLoginSchema';
 import { useSetAtom } from 'jotai';
-import { isAdminLoginModalAtom, isAdminModeAtom } from '@/atoms';
+import { isAdminLoginModalAtom } from '@/atoms';
 import { useNavigate } from 'react-router-dom';
 import { showToast } from '@/utils/toast';
 import { useState } from 'react';
@@ -17,7 +17,6 @@ import { userProfileAtom } from '@/atoms';
 
 const AdminLoginModal = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const setIsAdminMode = useSetAtom(isAdminModeAtom);
   const setIsAdminLoginModalOpen = useSetAtom(isAdminLoginModalAtom);
   const setUserProfile = useSetAtom(userProfileAtom);
 
@@ -28,8 +27,8 @@ const AdminLoginModal = () => {
     onSuccess: async () => {
       showToast.success('관리자 로그인에 성공했습니다.');
       setIsAdminLoginModalOpen(false);
-      setIsAdminMode(true);
 
+      localStorage.setItem('adminMode', 'true');
       try {
         const adminProfile = await getUserProfile();
         if (adminProfile) {

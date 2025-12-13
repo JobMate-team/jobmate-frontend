@@ -2,7 +2,7 @@ import { ShiningIcon } from '@/assets';
 import Button from '@/components/common/Button';
 import { onboardingDatas } from '@/data/onboardingDatas';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,10 @@ const OnboardingPage = () => {
   const [page, setPage] = useState(0);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem('adminMode');
+  }, []);
 
   const goNext = () => {
     if (page === onboardingDatas.length - 1) {
