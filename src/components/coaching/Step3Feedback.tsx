@@ -128,8 +128,12 @@ const Step3Feedback = ({
 
         <Button
           type='button'
-          className='w-full bg-black text-white px-4 py-3 gap-2'
+          className={clsx(
+            'w-full bg-black text-white px-4 py-3 gap-2',
+            isLoading && 'opacity-50 hover:brightness-100 pointer-events-none',
+          )}
           onClick={resetCoaching}
+          disabled={isLoading}
         >
           <LuRotateCcw size={18} /> 새로운 질문 연습하기
         </Button>
@@ -145,7 +149,7 @@ const Step3Feedback = ({
                 'border border-black/10 text-sm font-medium gap-1.5 p-2 px-3 bg-white',
                 isSaved && 'opacity-50 hover:brightness-100 pointer-events-none',
               )}
-              disabled={coachingId === null}
+              disabled={coachingId === null || isLoading}
               onClick={handleSaveClick}
             >
               <FiSave size={18} />
