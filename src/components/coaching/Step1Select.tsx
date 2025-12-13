@@ -179,7 +179,7 @@ const Step1Select = ({
 
         <p className='font-semibold mt-4'>또는 직접 입력</p>
         <TextareaAutosize
-          minRows={6}
+          minRows={1.5}
           placeholder='면접 질문을 직접 입력하세요'
           className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm border border-transparent focus:border-gray-300 focus:outline-none leading-6'
           value={customQuestion}
