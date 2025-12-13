@@ -1,20 +1,20 @@
 import { useState, useEffect, useCallback } from 'react';
 import { showToast } from '@/utils/toast';
-import ReviewCategory from '../components/review-management/ReviewCategory';
-import ReviewSearch from '../components/review-management/ReviewSearch';
-import ReviewList from '../components/review-management/ReviewList';
-import ReviewDetailModal from '../components/review-management/ReviewDetailModal';
-import ReviewDeleteModal from '../components/review-management/ReviewDeleteModal';
+import ReviewCategory from '@/components/review-management/ReviewCategory';
+import ReviewSearch from '@/components/review-management/ReviewSearch';
+import ReviewList from '@/components/review-management/ReviewList';
+import ReviewDetailModal from '@/components/review-management/ReviewDetailModal';
+import ReviewDeleteModal from '@/components/review-management/ReviewDeleteModal';
 import { Outlet } from 'react-router-dom';
-import { CATEGORIES } from '../data/mockReviews';
+import { CATEGORIES } from '@/data/mockReviews';
 import {
   fetchReviews,
   fetchReviewDetail,
   updateReview,
   deleteReview,
   type Review,
-} from '../api/review';
-import { jobItems } from '../data/coachItems';
+} from '@/api/review';
+import { jobItems } from '@/data/coachItems';
 
 export default function ReviewManagementPage() {
   const [selectedCategory, setSelectedCategory] = useState('전체');

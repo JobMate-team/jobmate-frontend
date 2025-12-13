@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { getUserInfo } from '@/api/auth';
+import { getMyInfo } from '@/api/auth';
 import { showToast } from '@/utils/toast';
 
 const KakaoSuccessPage = () => {
   const navigate = useNavigate();
 
   const { data, isError, isLoading } = useQuery({
-    queryKey: ['userInfo'],
-    queryFn: getUserInfo,
+    queryKey: ['myInfo'],
+    queryFn: getMyInfo,
   });
 
   useEffect(() => {
