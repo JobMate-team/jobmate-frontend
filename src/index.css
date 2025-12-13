@@ -111,3 +111,8 @@ button {
 .thin-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.3);
 }
+
+.dropdown-scroll {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
+}

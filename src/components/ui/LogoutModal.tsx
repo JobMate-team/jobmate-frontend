@@ -15,9 +15,14 @@ const LogoutModal = ({ onConfirm, onCancel }: ModalProps) => {
         onClick={(e) => e.stopPropagation()}
         className='bg-white rounded-[10px] flex flex-col overflow-hidden px-5 py-10 space-y-3 w-80'
       >
-        <p className='text-center font-semibold text-xl'>
-          {isAdminMode ? '관리자 모드를 종료합니다' : '로그아웃 하시겠습니까?'}
-        </p>
+        <div>
+          <p className='text-center font-semibold text-xl'>
+            {isAdminMode ? '관리자 모드를 종료합니다' : '로그아웃 하시겠습니까?'}
+          </p>
+
+          <p className='text-center text-[#767676] mt-1'>로그인 페이지로 이동합니다</p>
+        </div>
+
         <div className='flex items-center justify-center gap-3 mt-3'>
           <Button
             type='button'

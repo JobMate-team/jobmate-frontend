@@ -182,7 +182,7 @@ const DropDown = ({
             <div
               ref={dropdownRef}
               className={clsx(
-                'bg-white shadow-lg rounded-lg border border-[#E5E5E5] p-3 transition-all duration-150 ease-out z-50 max-h-70 overflow-y-auto thin-scrollbar min-w-50 wrap-break-word',
+                'bg-white shadow-lg rounded-lg border border-[#E5E5E5] p-3 transition-all duration-150 ease-out z-50 max-h-70 thin-scrollbar min-w-50 wrap-break-word dropdown-scroll',
                 animate ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2',
               )}
               style={dropdownStyle}
