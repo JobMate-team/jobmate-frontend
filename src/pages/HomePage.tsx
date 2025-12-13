@@ -1,12 +1,26 @@
 import { LogoIcon } from '@/assets';
 import { features } from '@/data/homeFeatures';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { userProfileAtom } from '@/atoms';
+import { useEffect } from 'react';
+import { getUserProfile } from '@/api/user';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const userProfile = useAtomValue(userProfileAtom);
+  const [userProfile, setUserProfile] = useAtom(userProfileAtom);
+
+  useEffect(() => {
+    if (!userProfile) {
+      getUserProfile()
+        .then((data) => {
+          if (data) {
+            setUserProfile(data);
+          }
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [userProfile, setUserProfile]);
 
   return (
     <>
