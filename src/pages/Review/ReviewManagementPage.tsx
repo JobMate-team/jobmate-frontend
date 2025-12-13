@@ -6,7 +6,7 @@ import ReviewList from '@/components/review-management/ReviewList';
 import ReviewDetailModal from '@/components/review-management/ReviewDetailModal';
 import ReviewDeleteModal from '@/components/review-management/ReviewDeleteModal';
 import { Outlet } from 'react-router-dom';
-import { CATEGORIES } from '@/data/mockReviews';
+import { CATEGORIES } from '@/data/coachItems';
 import {
   fetchReviews,
   fetchReviewDetail,
