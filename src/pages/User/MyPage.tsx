@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUserProfile, updateUserProfile } from '@/api/user';
 import { patchJobCate } from '@/api/auth';
 import { RightIcon } from '@/assets';
-import { User, Briefcase, Shield, Moon, LogOut, ChevronDown } from 'lucide-react';
+import { User, Briefcase, Shield, LogOut, ChevronDown } from 'lucide-react';
 import clsx from 'clsx';
 import { useState, useEffect } from 'react';
 import { IoIosClose } from 'react-icons/io';
@@ -14,7 +14,6 @@ import Button from '@/components/common/Button';
 import { showToast } from '@/utils/toast';
 
 const MyPage = () => {
-  const [isDark, setIsDark] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isChangeJob, setIsChangeJob] = useState(false);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
@@ -247,34 +246,6 @@ const MyPage = () => {
           </section>
 
           <section className='bg-white rounded-xl p-5 shadow-md border border-black/10'>
-            <article className='flex items-center gap-4'>
-              <div className='bg-[#F3F4F6] rounded-[10px] p-3 flex items-center justify-center font-semibold'>
-                <Moon className='text-[#4A5565]' />
-              </div>
-              <div className='sm:text-lg flex items-center justify-between w-full'>
-                <p>다크모드</p>
-                <button
-                  type='button'
-                  onClick={() => setIsDark((prev) => !prev)}
-                  className={clsx(
-                    'relative bg-[#CBCED4] w-12 h-7 rounded-full p-1 transition-all duration-300 ease-in-outfocus:outline-none',
-                    isDark
-                      ? 'bg-linear-to-r from-purple-600 to-indigo-600 focus:ring-purple-500/50'
-                      : 'bg-linear-to-r from-blue-400 to-cyan-400 focus:ring-blue-400/50',
-                  )}
-                >
-                  <div
-                    className={clsx(
-                      'w-5 h-5 bg-white rounded-full shadow-lg transform transition-all duration-300 ease-in-out flex items-center justify-center',
-                      isDark ? 'translate-x-5' : 'translate-x-0',
-                    )}
-                  ></div>
-                </button>
-              </div>
-            </article>
-
-            <div className='h-px w-full my-5 bg-gray-200' />
-
             <article className='flex items-center gap-4'>
               <div
                 className={clsx(
