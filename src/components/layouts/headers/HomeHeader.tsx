@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { LogOut, Shield } from 'lucide-react';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { isAdminModeAtom, isLogoutModalAtom } from '@/atoms';
+import { isAdminModeAtom, isLogoutModalAtom, userProfileAtom } from '@/atoms';
 
 const HomeHeader = () => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const setIsLogoutModalOpen = useSetAtom(isLogoutModalAtom);
   const isAdminMode = useAtomValue(isAdminModeAtom);
+  const userProfile = useAtomValue(userProfileAtom);
 
   // ref 생성
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -44,7 +45,7 @@ const HomeHeader = () => {
           className='w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-lg text-gray-500'
           onClick={() => setIsProfileMenuOpen((prev) => !prev)}
         >
-          정
+          {userProfile?.nickname ? userProfile.nickname.charAt(0) : ''}
         </button>
       ) : (
         <button
@@ -65,11 +66,15 @@ const HomeHeader = () => {
           {!isAdminMode ? (
             <div className='flex items-center gap-3 p-2'>
               <div className='w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-semibold text-sm text-gray-500'>
-                정
+                {userProfile?.nickname ? userProfile.nickname.charAt(0) : ''}
               </div>
               <div className='flex flex-col'>
-                <span className='text-sm font-medium whitespace-nowrap'>정찬원</span>
-                <span className='text-xs text-gray-500 whitespace-nowrap'>myemail@example.com</span>
+                <span className='text-sm font-medium whitespace-nowrap'>
+                  {userProfile?.nickname}
+                </span>
+                <span className='text-xs text-gray-500 whitespace-nowrap'>
+                  {userProfile?.email}
+                </span>
               </div>
             </div>
           ) : (

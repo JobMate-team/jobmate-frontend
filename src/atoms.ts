@@ -1,4 +1,5 @@
 import { atom } from 'jotai';
+import type { UserProfile } from '@/api/user';
 
 const pageAtom = atom<number>(1);
 const isModalOpenAtom = atom<boolean>(false);
@@ -7,6 +8,7 @@ const isAdminLoginModalAtom = atom<boolean>(false);
 const isAdminModeAtom = atom<boolean>(false);
 const historyRefreshAtom = atom<number>(0);
 const reviewRefreshAtom = atom<number>(0);
+const userProfileAtom = atom<UserProfile | null>(null);
 
 // coaching
 const jobCategoryIdAtom = atom<number | null>(null);
@@ -37,5 +39,6 @@ export {
   feedbackLoadingAtom,
   aiFeedbackAtom,
   reviewRefreshAtom,
+  userProfileAtom,
   coachingIdAtom,
 };

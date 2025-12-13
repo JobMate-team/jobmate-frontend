@@ -48,15 +48,21 @@ export const getUserStats = async () => {
 /**
  * 사용자 프로필 조회 응답 인터페이스
  */
-interface GetUserProfileResponse {
+export interface GetUserProfileResponse {
   resultType: string;
   error: unknown;
   success: {
     id: number;
     email: string;
     nickname: string;
+    jobCategory: {
+      id: number;
+      name: string;
+    };
   };
 }
+
+export type UserProfile = GetUserProfileResponse['success'];
 
 /**
  * 사용자 프로필 조회 (GET /user/profile)
@@ -68,4 +74,26 @@ export const getUserProfile = async () => {
     return response.data.success;
   }
   return null;
+};
+
+/**
+ * 사용자 프로필 수정 응답 인터페이스
+ */
+export interface UpdateUserProfileResponse {
+  resultType: string;
+  error: unknown;
+  success: {
+    message: string;
+  };
+}
+
+/**
+ * 사용자 프로필 수정 (PATCH /user/profile)
+ * 닉네임 변경
+ */
+export const updateUserProfile = async (nickname: string) => {
+  const response = await axiosInstance.patch<UpdateUserProfileResponse>('/user/profile', {
+    nickname,
+  });
+  return response.data;
 };
