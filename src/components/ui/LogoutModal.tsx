@@ -19,21 +19,21 @@ const LogoutModal = ({ onConfirm, onCancel }: ModalProps) => {
             {isAdminMode ? '관리자 모드를 종료합니다' : '로그아웃 하시겠습니까?'}
           </p>
 
-          <p className='text-center text-[#767676] mt-1'>로그인 페이지로 이동합니다</p>
+          <p className='text-center text-sm text-[#767676] mt-2'>로그인 페이지로 이동합니다</p>
         </div>
 
         <div className='flex items-center justify-center gap-3 mt-3'>
           <Button
             type='button'
             onClick={onCancel}
-            className='bg-white border border-[#DADADA] font-medium p-3 flex-1'
+            className='bg-white border border-[#DADADA] text-sm font-medium p-2.5 flex-1'
           >
             취소
           </Button>
           <Button
             type='button'
             onClick={onConfirm}
-            className='bg-black text-white font-medium p-3 flex-1'
+            className='bg-black text-white font-medium text-sm p-2.5 flex-1'
           >
             {isAdminMode ? '확인' : '로그아웃'}
           </Button>

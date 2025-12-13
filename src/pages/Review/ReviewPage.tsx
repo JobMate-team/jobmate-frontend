@@ -299,7 +299,12 @@ const ReviewPage = () => {
                   {data.job_category_name}
                 </div>
               </div>
-              <p className='text-[#364153] leading-[22px] line-clamp-4 whitespace-pre-wrap'>
+              <p
+                className={clsx(
+                  'text-[#364153] leading-[22px] whitespace-pre-wrap',
+                  isOpen ? '' : 'line-clamp-4',
+                )}
+              >
                 {data.content}
               </p>
 
