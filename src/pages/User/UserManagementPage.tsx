@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import SearchBar from '@/components/common/SearchBar';
 import DropDown from '@/components/ui/Dropdown';
+import Pagination from '@/components/common/Pagination';
 import UserTable, { type User as UserTableUser } from '@/components/user-management/UserTable';
 import UserStats from '@/components/user-management/UserStats';
 import { jobItems } from '@/data/coachItems';
@@ -13,57 +15,48 @@ const jobOptions = ['전체 직군', ...jobItems];
 const UserManagementPage = () => {
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [users, setUsers] = useState<UserTableUser[]>([]);
   const [stats, setStats] = useState<UserDashboardStats | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<unknown>(null);
+  const [page, setPage] = useState(1);
+  const LIMIT = 10;
+
+  const {
+    data: userData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['users', searchQuery, selectedJob],
+    queryFn: () => {
+      const jobCategoryIndex = selectedJob ? jobOptions.indexOf(selectedJob) : 0;
+      const jobCategoryId = jobCategoryIndex > 0 ? jobCategoryIndex : undefined;
+      return getUsers(searchQuery, jobCategoryId, 10000, 0);
+    },
+  });
+
+  const adaptedUsers: UserTableUser[] =
+    userData?.success?.map((user: ApiUser) => ({
+      id: user.id,
+      name: user.nickname,
+      email: user.email,
+      job: user.job_category_name || '미지정',
+      joinDate: new Date(user.created_at)
+        .toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        })
+        .replace(/\. /g, '.')
+        .slice(0, -1),
+      coachingCount: user.coaching_count,
+      reviewCount: user.review_count,
+    })) || [];
+
+  const totalItems = adaptedUsers.length;
+  const displayedUsers = adaptedUsers.slice((page - 1) * LIMIT, page * LIMIT);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const jobCategoryIndex = selectedJob ? jobOptions.indexOf(selectedJob) : 0;
-        const jobCategoryId = jobCategoryIndex > 0 ? jobCategoryIndex : undefined;
-
-        const response = await getUsers(searchQuery, jobCategoryId);
-
-        if (response && response.success) {
-          const adaptedUsers: UserTableUser[] = response.success.map((user: ApiUser) => ({
-            id: user.id,
-            name: user.nickname,
-            email: user.email,
-            job: user.job_category_name || '미지정', // Handle null job category
-            joinDate: new Date(user.created_at)
-              .toLocaleDateString('ko-KR', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-              })
-              .replace(/\. /g, '.')
-              .slice(0, -1), // Format: 2024.12.09
-            coachingCount: user.coaching_count,
-            reviewCount: user.review_count,
-          }));
-          setUsers(adaptedUsers);
-        }
-      } catch (err) {
-        setError(err);
-        console.error('Failed to fetch users:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    const timer = setTimeout(() => {
-      fetchUsers();
-    }, 300); // Simple debounce
-    return () => clearTimeout(timer);
+    setPage(1);
   }, [searchQuery, selectedJob]);
 
-  // Separate effect for stats to avoid refetching on search/filter if not needed,
-  // or fetch once on mount. Usually dashboard stats might not change with search/filter unless specified.
-  // The API spec implies /admin/users/dashboard is a global stat, not filtered.
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -117,8 +110,17 @@ const UserManagementPage = () => {
             <p className='mt-4 text-lg font-medium'>데이터를 불러오는데 실패했습니다.</p>
             <p className='text-sm text-gray-400 mt-2'>잠시 후 다시 시도해주세요.</p>
           </div>
-        ) : users.length > 0 ? (
-          <UserTable users={users} />
+        ) : displayedUsers.length > 0 ? (
+          <div className='flex-1 w-full flex flex-col gap-4'>
+            <UserTable users={displayedUsers} />
+
+            <Pagination
+              totalItems={totalItems}
+              itemsPerPage={LIMIT}
+              currentPage={page}
+              onPageChange={setPage}
+            />
+          </div>
         ) : (
           <div className='flex-1 w-full flex flex-col items-center justify-center bg-white border border-gray-200 rounded-xl min-h-[400px] text-gray-500'>
             <p className='mt-4 text-lg font-medium'>검색 결과가 없습니다</p>

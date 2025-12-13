@@ -29,10 +29,17 @@ interface GetUserStatsResponse {
   success: UserDashboardStats;
 }
 
-export const getUsers = async (search?: string, jobCategory?: number) => {
-  const params: { search?: string; jobCategory?: number } = {};
+export const getUsers = async (
+  search?: string,
+  jobCategory?: number,
+  limit?: number,
+  offset?: number,
+) => {
+  const params: { search?: string; jobCategory?: number; limit?: number; offset?: number } = {};
   if (search) params.search = search;
   if (jobCategory) params.jobCategory = jobCategory;
+  if (limit) params.limit = limit;
+  if (offset !== undefined) params.offset = offset;
 
   const response = await axiosInstance.get<GetUsersResponse>('/admin/users', {
     params,
