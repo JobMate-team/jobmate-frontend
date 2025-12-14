@@ -81,7 +81,11 @@ const Step1Select = ({
     staleTime: 5 * 60 * 1000,
   });
 
-  const questionList = QuestionData?.success.questions?.map((q) => q.text) || [];
+  const questionList =
+    QuestionData?.success.questions?.map((q) => ({
+      text: q.text,
+      type: q.question_type,
+    })) || [];
   const selectedJobList = JobRoleData?.success?.roles?.map((role) => role.name) || [];
 
   // 직군 ID 저장
@@ -164,30 +168,27 @@ const Step1Select = ({
       </div>
 
       <div className='bg-white rounded-xl px-6 py-4 border border-[#E5E5E5] flex flex-col gap-4'>
-        <div className='flex gap-1'>
-          <p className='font-semibold'>면접 질문</p>
-          <span className='text-red-500'>*</span>
-        </div>
-        <DropDown
-          disabled={!selectedJob}
-          onDisabledClick={() => showToast.error('직군을 먼저 선택해주세요')}
-          items={questionList}
-          selected={selectedQuestion}
-          placeholder='기본 질문 예시'
-          onSelect={(question) => setSelectedQuestion(question)}
-        />
-
-        <p className='font-semibold mt-4'>또는 직접 입력</p>
-        <TextareaAutosize
-          minRows={1.5}
-          placeholder='면접 질문을 직접 입력하세요'
-          className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm border border-transparent focus:border-gray-300 focus:outline-none leading-6'
-          value={customQuestion}
-          onChange={(e) => setCustomQuestion(e.target.value)}
-        />
         <div className='sm:flex flex-row gap-5 mb-2'>
           <div className='sm:flex-1'>
-            <div className='flex gap-1 mt-4 mb-1'>
+            <div className='flex gap-1 mb-1'>
+              <p className='font-semibold'>지원 직무</p>
+              <span className='text-red-500'>*</span>
+            </div>
+            <p className='text-xs text-[#717182] font-medium mb-2'>
+              직무에 맞춘 맞춤형 면접 질문을 생성합니다
+            </p>
+            <DropDown
+              disabled={!selectedJob}
+              onDisabledClick={() => showToast.error('직군을 먼저 선택해주세요')}
+              items={selectedJobList}
+              selected={selectRole}
+              placeholder='직무 선택'
+              onSelect={(role) => isSelectRole(role)}
+            />
+          </div>
+
+          <div className='sm:flex-1 max-sm:mt-8'>
+            <div className='flex gap-1 mb-1'>
               <p className='font-semibold'>특정 기업 중심 피드백</p>
               <span className='text-red-500'>*</span>
             </div>
@@ -201,25 +202,28 @@ const Step1Select = ({
               onSelect={(company) => isSelectCompanies(company)}
             />
           </div>
-
-          <div className='sm:flex-1 max-sm:mt-8'>
-            <div className='flex gap-1 mt-4 mb-1'>
-              <p className='font-semibold'>지원 직무</p>
-              <span className='text-red-500'>*</span>
-            </div>
-            <p className='text-xs text-[#717182] font-medium mb-2'>
-              직무에 맞춘 맞춤형 면접 질문을 생성합니다
-            </p>
-            <DropDown
-              disabled={!selectedJob}
-              onDisabledClick={() => showToast.error('직군을 먼저 선택해주세요')}
-              items={selectedJobList}
-              selected={selectRole}
-              placeholder='프론트엔드 개발자'
-              onSelect={(role) => isSelectRole(role)}
-            />
-          </div>
         </div>
+
+        <div className='flex gap-1 mt-4'>
+          <p className='font-semibold'>질문 직접 입력</p>
+        </div>
+        <TextareaAutosize
+          minRows={1}
+          placeholder='면접 질문을 직접 입력하세요'
+          className='bg-[#F3F3F5] rounded-lg p-4 max-sm:text-sm border border-transparent focus:border-gray-300 focus:outline-none leading-6'
+          value={customQuestion}
+          onChange={(e) => setCustomQuestion(e.target.value)}
+        />
+
+        <p className='font-semibold mt-4'>또는 기본 질문 선택</p>
+        <DropDown
+          disabled={!selectedJob}
+          onDisabledClick={() => showToast.error('직군을 먼저 선택해주세요')}
+          items={questionList}
+          selected={selectedQuestion}
+          placeholder='기본 질문 예시'
+          onSelect={(question) => setSelectedQuestion(question)}
+        />
 
         <div className='w-full text-center mt-2'>
           <button

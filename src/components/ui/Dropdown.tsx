@@ -3,8 +3,13 @@ import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
 
+interface DropDownItem {
+  text: string;
+  type?: string;
+}
+
 interface DropDownProps {
-  items: string[];
+  items: (string | DropDownItem)[];
   selected: string | null;
   placeholder?: string;
   // eslint-disable-next-line no-unused-vars
@@ -187,15 +192,26 @@ const DropDown = ({
               )}
               style={dropdownStyle}
             >
-              {items.map((item, idx) => (
-                <div
-                  key={idx}
-                  className='cursor-pointer rounded-lg sm:p-4 p-2.5 hover:bg-gray-100 max-sm:text-sm whitespace-normal wrap-break-word break-keep leading-5'
-                  onClick={() => handleSelect(item)}
-                >
-                  {item}
-                </div>
-              ))}
+              {items.map((item, idx) => {
+                const isObject = typeof item !== 'string';
+                const text = isObject ? item.text : item;
+                const type = isObject ? item.type : null;
+
+                return (
+                  <div
+                    key={idx}
+                    className='cursor-pointer rounded-lg sm:p-4 p-2.5 hover:bg-gray-100 max-sm:text-sm whitespace-normal wrap-break-word break-keep leading-5'
+                    onClick={() => handleSelect(text)}
+                  >
+                    {type && (
+                      <span className='inline-block px-2 py-0.5 mb-1 text-xs font-medium text-gray-600 bg-white border border-gray-200 rounded-lg'>
+                        {type}
+                      </span>
+                    )}
+                    <div className={clsx(type && 'mt-1')}>{text}</div>
+                  </div>
+                );
+              })}
             </div>
           </>,
           document.body,
