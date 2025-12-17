@@ -11,6 +11,7 @@
 - ***docs*** : 문서 작업 (주로 main 에서 readme.md 작성)
 - ***refactor*** : 리팩토링 (기능 변경 없이 아키텍처, 클래스 구조, 함수 추출 등 로직/설계 변경에 집중)
 - ***chore*** : 파일 옮기기, 파일 이름 변경, 주석 추가 등 단순한 작업
+- ***bulid*** : 라이브러리 설치
 
 ### **커밋 메세지 작성 규칙**
 
@@ -48,9 +49,9 @@
     
     ex) 회원가입 시 발생하는 오류의 상태 코드를 변경하고 싶음
     
-      → [#3]feature/signup 브랜치가 dev와 병합되어 있는지 확인
+      → feature/signup 브랜치가 dev와 병합되어 있는지 확인
       
-      → dev에서 [#2]fix/status-code-error 를 생성하여 버그 수정
+      → dev에서 fix/status-code-error 를 생성하여 버그 수정
       
       → 이후 dev와 병합
     
@@ -62,7 +63,7 @@
 1. 기능 개발은 반드시 feature 브랜치에서 개발
 2. 개발 완료 시 dev 브랜치로 합병
    - 브랜치명은 ***kebab-case*** 를 사용한다.
-         ex) `[#1]feature/get-user`
+         ex) `feature/get-user`
         
 3. 모든 QA 및 버그 수정 완료 시 main으로 병합
 
